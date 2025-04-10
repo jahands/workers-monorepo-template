@@ -1,0 +1,33 @@
+{
+	"name": "@repo/dependency-tests",
+	"version": "0.6.14",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@hono/standard-validator": "0.1.2",
+		"@hono/zod-validator": "0.4.3",
+		"@jahands/typeid": "0.2.1",
+		"@repo/zod": "workspace:*",
+		"@types/luxon": "3.4.2",
+		"arktype": "2.1.15",
+		"dayjs": "1.11.13",
+		"hono": "4.7.5",
+		"itty-sockets": "0.1.0",
+		"luxon": "3.6.0",
+		"xstate": "5.19.2"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.8.14",
+		"@cloudflare/workers-types": "4.20250410.0",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/test-helpers": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "2.1.9"
+	}
+}

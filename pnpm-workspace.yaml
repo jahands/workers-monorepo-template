@@ -1,0 +1,9 @@
+packages:
+  - '1projects/*/*' # apps and packages in single directory
+  - '1projects/*/1apps/*'
+  - '1projects/*/1packages/*'
+  - 'apps/*'
+  - 'apps2/*'
+  - 'bunapps/*'
+  - 'docker/*'
+  - 'packages/*'

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+# Script that will only output the package.json version
+# if the version has changed in the current commit and
+# we're on the `main` branch. This  is used to only
+# push images when the package is versioned.
+
+version=$(get-pkg-json-version)
+previous_version=$(get-pkg-json-version previous)
+
+if [[ "$version" != "$previous_version" && "$(get-branch)" == "main" ]]; then
+  echo "$version"
+fi

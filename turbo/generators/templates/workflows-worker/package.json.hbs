@@ -1,0 +1,46 @@
+{
+	"name": "{{ slug name }}",
+	"version": "0.1.0",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"dev": "runx dev wrangler",
+		"build:wrangler": "runx build wrangler",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"fix:workers-types": "run-wrangler-types",
+		"deploy:wrangler":"runx deploy wrangler",
+		"sentry:commits": "runx sentry commits {{ slug name }}",
+		"sentry:finalize": "runx sentry finalize {{ slug name }}",
+		"sentry:sourcemaps": "runx sentry sourcemaps {{ slug name }}",
+		"test": "run-vitest",
+		"write-api-tokens": "runx workflows write-api-tokens"
+	},
+	"dependencies": {
+		"@hono/zod-validator": "0.4.1",
+		"@repo/cftrace": "workspace:*",
+		"@repo/hono-helpers": "workspace:*",
+		"@repo/logging": "workspace:*",
+		"@repo/otel": "workspace:*",
+		"@repo/workflows-helpers": "workspace:*",
+		"@sentry/tracing": "7.76.0",
+		"@sentry/types": "7.76.0",
+		"hono": "4.4.13",
+		"itty-time": "1.0.6",
+		"p-queue": "8.0.1",
+		"toucan-js": "3.3.1",
+		"ts-pattern": "5.5.0",
+		"ulidx": "2.4.1",
+		"@repo/zod": "workspace:*"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.5.24",
+		"@types/node": "22.13.10",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/test-helpers": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "2.1.1",
+		"wrangler": "4.0.0"
+	}
+}

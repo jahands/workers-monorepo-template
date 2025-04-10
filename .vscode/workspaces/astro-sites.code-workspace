@@ -1,0 +1,61 @@
+{
+	"folders": [
+		{
+			"name": "Config",
+			"path": "../../"
+		},
+		{
+			"name": "Astro Blog",
+			"path": "../../1projects/astroblog/astroblog"
+		},
+		{
+			"name": "ND Stories",
+			"path": "../../1projects/ndstories/ndstories"
+		},
+		{
+			"name": "UUID Rocks",
+			"path": "../../1projects/uuid-rocks/uuid-rocks"
+		},
+		{
+			"name": "EchoBack.dev Docs",
+			"path": "../../1projects/echoback/echoback-docs"
+		},
+		{
+			"name": "Monorepo.rocks",
+			"path": "../../apps/monorepo-rocks"
+		},
+		{
+			"name": "Tools",
+			"path": "../../packages/tools"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"1projects/": true,
+			"apps/": true,
+			"apps2/": true,
+			"bunapps/": true,
+			"docker/": true,
+			"packages/": true,
+			"turbo/": true
+		},
+
+		"astro.content-intellisense": true,
+		"typescript.preferences.autoImportFileExcludePatterns": ["**/vitest/dist/**"],
+
+		"github-actions.workflows.pinned.workflows": [
+			".github/workflows/release.yml",
+			".github/workflows/branches.yml"
+		],
+		"github-actions.workflows.pinned.refresh.enabled": true,
+		"github-actions.workflows.pinned.refresh.interval": 30,
+
+		"files.associations": {
+			"**/packages/tools/bin/*": "shellscript",
+			"**/*.css": "tailwindcss",
+			"turbo.json": "jsonc",
+			"**/packages/typescript-config/*.json": "jsonc",
+			"**/snippets/stylus/**/*.css": "stylus"
+		}
+	}
+}

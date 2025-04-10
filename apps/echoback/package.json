@@ -1,0 +1,36 @@
+{
+	"name": "echoback",
+	"version": "0.6.1",
+	"private": true,
+	"sideEffects": false,
+	"scripts": {
+		"build:wrangler": "runx build wrangler",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"deploy:wrangler": "runx deploy wrangler",
+		"dev": "runx dev wrangler",
+		"fix:workers-types": "run-wrangler-types",
+		"sentry:commits": "runx sentry commits echoback",
+		"sentry:finalize": "runx sentry finalize echoback",
+		"sentry:sourcemaps": "runx sentry sourcemaps echoback",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@sentry/tracing": "7.76.0",
+		"@sentry/types": "7.76.0",
+		"hono": "4.7.5",
+		"p-queue": "8.1.0",
+		"toucan-js": "3.3.1",
+		"ts-pattern": "5.6.2"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "0.8.9",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/test-helpers": "workspace:*",
+		"@repo/tools": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "22.14.0",
+		"vitest": "2.1.9",
+		"wrangler": "4.7.0"
+	}
+}

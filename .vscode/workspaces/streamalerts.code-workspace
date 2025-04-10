@@ -1,0 +1,44 @@
+{
+	"folders": [
+		{
+			"name": "Config",
+			"path": "../../"
+		},
+		{
+			"name": "StreamAlerts",
+			"path": "../../apps/streamalerts"
+		},
+		{
+			"name": "Packages",
+			"path": "../../packages"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"1projects/": true,
+			"apps/": true,
+			"apps2/": true,
+			"bunapps/": true,
+			"docker/": true,
+			"packages/": true,
+			"turbo/": true
+		},
+
+		"typescript.preferences.autoImportFileExcludePatterns": ["**/vitest/dist/**"],
+
+		"github-actions.workflows.pinned.workflows": [
+			".github/workflows/release.yml",
+			".github/workflows/branches.yml"
+		],
+		"github-actions.workflows.pinned.refresh.enabled": true,
+		"github-actions.workflows.pinned.refresh.interval": 30,
+
+		"files.associations": {
+			"**/packages/tools/bin/*": "shellscript",
+			"**/*.css": "tailwindcss",
+			"turbo.json": "jsonc",
+			"**/packages/typescript-config/*.json": "jsonc",
+			"**/snippets/stylus/**/*.css": "stylus"
+		}
+	}
+}

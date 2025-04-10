@@ -1,0 +1,118 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": ["**/.env.*local", "**/.dev.vars"],
+	"globalEnv": [
+		"CI",
+		"GITHUB_ACTIONS",
+		"CF_ACCESS_CLIENT_ID",
+		"CF_ACCESS_CLIENT_SECRET",
+		"VITEST",
+		"FORCE_COLOR",
+		"NODE_ENV"
+	],
+	"globalPassThroughEnv": ["DEV", "SENTRY_RELEASE", "WRANGLER_LOG"],
+	"remoteCache": {
+		"enabled": true,
+		"signature": true
+	},
+	"ui": "stream",
+	"tasks": {
+		"topo": {
+			"dependsOn": ["^topo"]
+		},
+		"build:nocache": {
+			"dependsOn": ["^build", "^build:nocache", "topo"],
+			"outputLogs": "new-only",
+			"cache": false
+		},
+		"build": {
+			"dependsOn": ["^build", "build:nocache", "^build:nocache", "topo"],
+			"outputs": ["dist/**", ".astro/**", "build/**", ".wrangler/deploy/config.json"],
+			"outputLogs": "new-only"
+		},
+		"build:wrangler": {
+			"dependsOn": ["build", "topo"],
+			"outputs": ["dist/**", ".astro/**", "build/**"],
+			"outputLogs": "new-only"
+		},
+		"check": {
+			"dependsOn": ["build", "^check:types", "^check:lint", "check:types", "check:lint", "topo"],
+			"outputLogs": "new-only"
+		},
+		"test": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"//#test:ci": {
+			"dependsOn": [
+				"build",
+				// certain packages require building before running tests at the root
+				"@repo/test-helpers#build",
+			],
+			"outputLogs": "new-only"
+		},
+		"test:ci": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check:ci": {
+			"dependsOn": [
+				"//#check:format",
+				"//#check:deps",
+				"check:types",
+				"check:lint",
+				"//#test:ci",
+				"test:ci",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"//#check:deps": {
+			"outputLogs": "new-only"
+		},
+		"check:types": {
+			"dependsOn": ["build", "^check:types", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check:lint": {
+			"dependsOn": ["build", "^check:lint", "topo"],
+			"outputLogs": "new-only",
+			"passThroughEnv": ["FIX_ESLINT"]
+		},
+		"//#check:format": {
+			"dependsOn": [],
+			"outputLogs": "new-only"
+		},
+		"fix:workers-types": {
+			"outputs": ["worker-configuration.d.ts", "topo"],
+			"outputLogs": "new-only"
+		},
+		"deploy": {
+			"dependsOn": ["deploy:wrangler", "sentry:finalize", "topo"],
+			"outputLogs": "new-only"
+		},
+		"deploy:wrangler": {
+			"dependsOn": ["^build", "build", "topo"],
+			"outputs": ["dist/**", ".astro/**", "build/**"],
+			"outputLogs": "new-only"
+		},
+		"sentry:sourcemaps": {
+			"dependsOn": ["deploy:wrangler", "topo"],
+			"outputLogs": "new-only"
+		},
+		"sentry:commits": {
+			"dependsOn": ["deploy:wrangler", "topo"],
+			"outputLogs": "new-only"
+		},
+		"sentry:finalize": {
+			"dependsOn": ["sentry:sourcemaps", "sentry:commits", "topo"],
+			"outputLogs": "new-only"
+		},
+		"//#format": {
+			"outputLogs": "new-only"
+		},
+		"//#build": {
+			"outputLogs": "new-only"
+		}
+	}
+}

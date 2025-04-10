@@ -1,0 +1,23 @@
+{
+	"name": "@repo/tools-schema",
+	"version": "0.3.3",
+	"private": true,
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		"./*": "./src/*.ts"
+	},
+	"scripts": {
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@repo/zod": "workspace:*"
+	},
+	"devDependencies": {
+		"@jahands/typeid": "0.2.1",
+		"@repo/typescript-config": "workspace:*",
+		"vitest": "2.1.9"
+	}
+}

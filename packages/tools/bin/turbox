@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+runx_path="$(realpath "$(dirname $0)/../src/bin/turbox.ts")"
+
+bun "$runx_path" "$@"

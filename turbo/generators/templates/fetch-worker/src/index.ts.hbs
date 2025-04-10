@@ -1,0 +1,32 @@
+import { Hono } from 'hono'
+import { instrument } from '@repo/otel'
+import {
+	useSentry,
+	useMeta,
+	useAxiomLogger,
+	useNotFound,
+	useOnError,
+	getTracingConfig,
+{{> useAuthImportPartial }}
+} from '@repo/hono-helpers'
+import { initSentry } from './helpers/sentry'
+import { App, Env } from './types'
+
+const app = new Hono<App>()
+	.use(
+		'*', // Middleware
+		useMeta,
+		useSentry(initSentry, 'http.server'),
+		useAxiomLogger()
+	)
+
+	// Hooks
+	.onError(useOnError())
+	.notFound(useNotFound())
+{{> useAuthMiddlewarePartial }}
+
+const handler = {
+	fetch: app.fetch,
+} satisfies ExportedHandler<Env>
+
+export default instrument(handler, getTracingConfig<App>())

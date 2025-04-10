@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+
+function echoerr() {
+  echo "$@" >&2
+}
+
+mode="${1:-}"
+if [[ -z "$mode" ]]; then
+  # use current commit
+  pkg_json_version=$(cat ./package.json | jq -r '.version')
+elif [[ "$mode" == "previous" ]]; then
+  pkg_json_version=$(git show HEAD^:./package.json | jq -r '.version')
+else
+  echoerr "getting version from previous commit"
+  exit 1
+fi
+
+echo "$pkg_json_version"

@@ -1,0 +1,95 @@
+{
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"*.ts": "$(capture).js, $(capture).d.ts",
+		"*.js": "$(capture).js.map, $(capture).min.js, $(capture).d.ts",
+		"*.jsx": "$(capture).js",
+		"*.tsx": "$(capture).ts",
+		"tsconfig.json": "tsconfig.*.json",
+		"package.json": "bun.lock, .gitattributes, dagger.json, env.d.ts, postcss.config.ts, vitest.config.*.ts, Dockerfile, railway.json, vitest.config.*.ts, uuid-rocks.code-workspace, astro.config.ts, ndstories.code-workspace, wrangler.jsonc, workflows.code-workspace, astroblog.code-workspace, .env.example, astro.config.mjs, drizzle.config.ts, Earthfile, workers.code-workspace, Justfile, .mise.toml, .prettierignore, .syncpackrc.cjs, CHANGELOG.md, .dev.vars.example, vitest.config.ts, vitest.workspace.ts, .dev.vars, postcss.config.mjs, .eslintrc.cjs, vite.config.ts, worker-configuration.d.ts, .editorconfig, .eslintignore, .earthlyignore, .git-blame-ignore-revs, README.md, package-lock.json, .sentryclirc, .npmrc, yarn.lock, .yarnrc, .nvmrc, .node-version, .eslintrc, .eslintcache, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, .prettierrc.cjs, .env, .gitignore, server.ts, .eslintrc.js, tailwind.config.ts, turbo.json, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
+	},
+	"editor.detectIndentation": true,
+
+	// https://arktype.io/docs/intro/setup#settings
+	// allow autocomplete for ArkType expressions like "string | num"
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
+	// prioritize ArkType's "type" for autoimports
+	"typescript.preferences.autoImportSpecifierExcludeRegexes": ["^(node:)?os$"],
+	"typescript.preferences.autoImportFileExcludePatterns": ["**/vitest/dist/**"],
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+
+	// I always prefer format on save
+	"editor.formatOnSave": true,
+
+	"github-actions.workflows.pinned.workflows": [
+		".github/workflows/release.yml",
+		".github/workflows/branches.yml"
+	],
+	"github-actions.workflows.pinned.refresh.enabled": true,
+	"github-actions.workflows.pinned.refresh.interval": 30,
+
+	"files.associations": {
+		"**/packages/tools/bin/*": "shellscript",
+		"**/*.css": "tailwindcss",
+		"turbo.json": "jsonc",
+		"**/packages/typescript-config/*.json": "jsonc",
+		"**/snippets/stylus/**/*.css": "stylus"
+	},
+	"eslint.workingDirectories": [
+		{
+			"mode": "auto"
+		}
+	],
+	"cSpell.words": [
+		"cftrace",
+		"cloudflareaccess",
+		"codemod",
+		"geobox",
+		"GOTIFY",
+		"gotifyroute",
+		"Hono",
+		"itty",
+		"jachands",
+		"luxon",
+		"microlabs",
+		"miniflare",
+		"opentelemetry",
+		"otel",
+		"pnpx",
+		"runx",
+		"syncpack",
+		"typecheck",
+		"addrs",
+		"blogtrottr",
+		"BLOGTROTTRHOOK",
+		"BOTTOKEN",
+		"BULKHOOK",
+		"COUPONHOOK",
+		"CRYPTOHOOK",
+		"devlist",
+		"DEVLISTHOOK",
+		"DISCORDHOOK",
+		"disqus",
+		"DISQUSHOOK",
+		"FEWHOOK",
+		"gerrit",
+		"GERRITHOOK",
+		"gitea",
+		"GITEAHOOK",
+		"GITHUBHOOK",
+		"GITLABHOOK",
+		"GOOGLEALERTSHOOK",
+		"GOVHOOK",
+		"INCIDENTHOOK",
+		"INVESTORHOOK",
+		"logtail",
+		"POLITICSHOOK",
+		"SUSHOOK",
+		"WEATHERHOOK",
+		"miniflare",
+		"countify",
+		"tldraw"
+	]
+}

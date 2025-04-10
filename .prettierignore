@@ -1,0 +1,14 @@
+.changeset
+pnpm-lock.yaml
+bun.lock
+/turbo/generators/**/*.hbs
+**/drizzle/meta/**/*.json
+**/migrations/**/*.sql
+**/email-scm-dash/build/
+*.bun-build
+vitest.config.ts.timestamp*
+vite.config.ts.timestamp*
+worker-configuration.d.ts
+**/dist/**
+**/dist2/**
+/.dagger/sdk/**

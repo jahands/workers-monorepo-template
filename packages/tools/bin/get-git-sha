@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euo pipefail
+
+gitsha=$(git log -1 --pretty=format:%h)
+echo "$gitsha"

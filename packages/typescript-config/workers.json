@@ -1,0 +1,27 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"include": [
+		"${configDir}/worker-configuration.d.ts",
+		"${configDir}/env.d.ts",
+		"${configDir}/**/*.ts",
+		"${configDir}/**/*.tsx"
+	],
+	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/dist2/"],
+	"compilerOptions": {
+		"target": "es2022",
+		"lib": ["es2022"],
+		"jsx": "react",
+		"module": "es2022",
+		"moduleResolution": "bundler",
+		"types": ["./worker-configuration.d.ts", "@cloudflare/vitest-pool-workers"],
+		"resolveJsonModule": true,
+		"allowJs": true,
+		"checkJs": false,
+		"noEmit": true,
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true
+	}
+}

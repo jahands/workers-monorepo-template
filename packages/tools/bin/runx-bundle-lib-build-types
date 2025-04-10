@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+script_path="$(realpath "$(dirname $0)/../src/bin/runx-bundle-lib-build-types.ts")"
+
+bun "$script_path" "$@"

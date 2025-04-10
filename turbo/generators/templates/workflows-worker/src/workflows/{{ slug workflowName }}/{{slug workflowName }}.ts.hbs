@@ -1,0 +1,41 @@
+import { WorkflowEntrypoint } from 'cloudflare:workers'
+import { z } from '@repo/zod'
+
+import { WorkflowContext } from '../../types'
+
+import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
+import type { Env } from '../../types'
+
+export type {{ pascal workflowName }}Params = z.infer<typeof {{ pascal workflowName }}Params>
+export const {{ pascal workflowName }}Params = z.object({})
+
+export class {{ pascal workflowName }} extends WorkflowEntrypoint<Env, {{ pascal workflowName }}Params> {
+	async run(event: WorkflowEvent<{{ pascal workflowName }}Params>, step: WorkflowStep) {
+		const c = new WorkflowContext({
+			ctx: this.ctx,
+			env: this.env,
+			event,
+			step,
+			workflow: '{{ pascal workflowName }}'
+		})
+
+		await c.run(async () => {
+			const params = {{ pascal workflowName }}Params.parse(event.payload)
+			await handle{{ pascal workflowName }}(c, params)
+		})
+	}
+}
+
+async function handle{{ pascal workflowName }}(c: WorkflowContext, params: {{ pascal workflowName }}Params): Promise<void> {
+	c.logger.info(`params: ${JSON.stringify(params)}`, { msc: { params } })
+
+	const uuid = await c.step.do('get a uuid', async () => {
+		const res = await fetch('https://uuid.rocks/plain')
+		if (!res.ok) {
+			throw new Error('failed to fetch uuid')
+		}
+		return await res.text()
+	})
+
+	c.logger.debug(`uuid: ${uuid}`)
+}

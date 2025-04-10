@@ -1,0 +1,41 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "echoback",
+	"account_id": "f9b1e1e2cf50cca79a58e395b6084239", // main
+	"main": "src/index.ts",
+	"compatibility_date": "2025-03-12",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	"preview_urls": false,
+	"logpush": true,
+	"routes": [],
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	"placement": {
+		"mode": "off"
+	},
+	"vars": {
+		"NAME": "echoback",
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown", // overridden during deployment
+		"AXIOM_DATASET": "workers",
+		"AXIOM_DATASET_OTEL": "workers-otel"
+	},
+	"queues": {
+		"producers": [
+			{
+				"queue": "echoback-queue",
+				"binding": "QUEUE"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "echoback-queue",
+				"max_batch_size": 100,
+				"max_batch_timeout": 30
+			}
+		]
+	}
+}

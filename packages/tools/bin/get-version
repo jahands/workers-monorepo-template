@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+# Script to get version for Workers packages
+# TODO: Give this file a more specific name
+
+pkg_json_version=$(cat ./package.json | jq -r '.version')
+gitsha=$(get-git-sha)
+echo "$pkg_json_version-$gitsha"

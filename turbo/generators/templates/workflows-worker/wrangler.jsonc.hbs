@@ -1,0 +1,46 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "{{ slug name }}",
+	"account_id": "f9b1e1e2cf50cca79a58e395b6084239", // main
+	"main": "src/index.ts",
+	"compatibility_date": "2025-03-12",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"preview_urls": false,
+	"logpush": true,
+	"routes": ["{{ slug name }}.workflows.uuid.rocks/*"],
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	"placement": {
+		"mode": "off"
+	},
+	"secrets_store_secrets": [
+		{
+			"binding": "AXIOM_API_KEY2",
+			"store_id": "a5b2c908653c42fa843eed15e87a31e1",
+			"secret_name": "AXIOM_TOKEN_WORKERS_GENERAL"
+		}
+	],
+	"vars": {
+		"NAME": "{{ slug name }}",
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown", // overridden during deployment
+		"AXIOM_DATASET": "workers",
+		"AXIOM_DATASET_OTEL": "workers-otel"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "KV",
+			"id": "fe6a0b61900b40318b9e1947ad88a790" // "workflows" - shared across Workflows
+		}
+	],
+	"workflows": [
+		{
+			"name": "{{ pascal workflowName }}",
+			"binding": "{{ pascal workflowName }}",
+			"class_name": "{{ pascal workflowName }}"
+		}
+	]
+}

@@ -1,0 +1,55 @@
+{
+	"name": "@repo/workspace-dependencies",
+	"version": "0.2.27",
+	"private": true,
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		"./zx": {
+			"import": "./src/zx.ts",
+			"require": {
+				"require": "./dist/zx.cjs",
+				"types": "./dist/zx.d.ts"
+			}
+		},
+		"./yaml": {
+			"import": "./src/yaml.ts",
+			"require": {
+				"require": "./dist/yaml.cjs",
+				"types": "./dist/yaml.d.ts"
+			}
+		},
+		"./zod": {
+			"import": "./src/zod.ts",
+			"require": {
+				"require": "./dist/zod.cjs",
+				"types": "./dist/zod.d.ts"
+			}
+		},
+		"./slugify": {
+			"import": "./src/slugify.ts",
+			"require": {
+				"require": "./dist/slugify.cjs",
+				"types": "./dist/slugify.d.ts"
+			}
+		}
+	},
+	"scripts": {
+		"build": "runx build lib zx.ts yaml.ts zod.ts slugify.ts -d src -f cjs --platform node",
+		"check:lint": "run-eslint-workers",
+		"check:types": "run-tsc",
+		"test": "run-vitest"
+	},
+	"dependencies": {
+		"@repo/tools": "workspace:*",
+		"@repo/zod": "workspace:*",
+		"esbuild": "0.25.1",
+		"slugify": "1.6.6",
+		"wrangler": "4.9.1",
+		"yaml": "2.7.0",
+		"zx": "8.3.2"
+	},
+	"devDependencies": {
+		"vitest": "2.1.9"
+	}
+}

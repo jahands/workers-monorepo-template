@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+
+if test -f ./vitest.config.ts; then
+  vitest run --testTimeout=15000
+elif test -f ./vitest.config.node.ts; then
+  vitest run --testTimeout=15000 -c ./vitest.config.node.ts
+fi
