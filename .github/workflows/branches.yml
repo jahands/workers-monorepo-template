@@ -9,7 +9,7 @@ env:
 
 jobs:
   check:
-    name: Test and Deploy
+    name: Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency: ${{ github.workflow }}
