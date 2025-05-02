@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+
+turbo build -F @repo/workspace-dependencies
+turbo gen "$@"

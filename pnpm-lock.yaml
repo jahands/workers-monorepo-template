@@ -85,6 +85,40 @@ importers:
         specifier: 4.14.1
         version: 4.14.1(@cloudflare/workers-types@4.20250502.0)
 
+  apps/fetch-worker:
+    dependencies:
+      '@repo/hono-helpers':
+        specifier: workspace:*
+        version: link:../../packages/hono-helpers
+      hono:
+        specifier: 4.7.8
+        version: 4.7.8
+      workers-tagged-logger:
+        specifier: 0.10.0
+        version: 0.10.0
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.8.24
+        version: 0.8.24(@cloudflare/workers-types@4.20250502.0)(@vitest/runner@3.1.2)(@vitest/snapshot@3.1.2)(vitest@3.1.2)
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: 22.15.3
+        version: 22.15.3
+      vitest:
+        specifier: 3.1.2
+        version: 3.1.2(@types/node@22.15.3)(@vitest/ui@3.1.2)(lightningcss@1.29.2)
+      wrangler:
+        specifier: 4.14.1
+        version: 4.14.1(@cloudflare/workers-types@4.20250502.0)
+
   packages/eslint-config:
     devDependencies:
       '@types/eslint':

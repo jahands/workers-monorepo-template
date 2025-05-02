@@ -18,7 +18,8 @@
 		"fix:workers-types": "turbo fix:workers-types",
 		"test": "vitest",
 		"test:ci": "run-vitest-ci",
-		"update-deps": "run-update-deps"
+		"update-deps": "run-update-deps",
+		"new-worker": "run-turbo-gen"
 	},
 	"devDependencies": {
 		"@changesets/cli": "2.29.2",
