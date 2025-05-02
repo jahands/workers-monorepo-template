@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo
+set -eu
 
 repo_root=$(git rev-parse --show-toplevel)
 cd "$repo_root"
