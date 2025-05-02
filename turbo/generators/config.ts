@@ -26,7 +26,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 
 	// create a generator
 	plop.setGenerator('new-worker', {
-		description: 'Create a new Fetch Cloudflare Worker',
+		description: 'Create a new Cloudflare Worker using Hono',
 		// gather information from the user
 		prompts: [
 			{
