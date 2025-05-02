@@ -47,7 +47,7 @@ export const checkCmd = new Command('check')
 			deps: ['pnpm', 'check:deps'],
 			lint: ['turbo', turboFlags, 'check:lint'].flat(),
 			types: ['turbo', turboFlags, 'check:types'].flat(),
-			format: ['check:format'],
+			format: ['pnpm', 'check:format'],
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]
