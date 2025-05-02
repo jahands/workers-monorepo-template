@@ -1,18 +1,15 @@
 {
-	"name": "echoback",
-	"version": "0.6.1",
+	"name": "example-worker-echoback",
+	"version": "0.1.0",
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
 		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
-		"deploy:wrangler": "runx deploy wrangler",
+		"deploy": "run-wrangler-deploy",
 		"dev": "runx dev wrangler",
 		"fix:workers-types": "run-wrangler-types",
-		"sentry:commits": "runx sentry commits echoback",
-		"sentry:finalize": "runx sentry finalize echoback",
-		"sentry:sourcemaps": "runx sentry sourcemaps echoback",
 		"test": "run-vitest"
 	},
 	"dependencies": {

@@ -1,16 +1,8 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": ["**/.env.*local", "**/.dev.vars"],
-	"globalEnv": [
-		"CI",
-		"GITHUB_ACTIONS",
-		"CF_ACCESS_CLIENT_ID",
-		"CF_ACCESS_CLIENT_SECRET",
-		"VITEST",
-		"FORCE_COLOR",
-		"NODE_ENV"
-	],
-	"globalPassThroughEnv": ["SENTRY_RELEASE", "WRANGLER_LOG"],
+	"globalDependencies": ["**/.dev.vars"],
+	"globalEnv": ["CI", "GITHUB_ACTIONS", "VITEST"],
+	"globalPassThroughEnv": ["WRANGLER_LOG"],
 	"remoteCache": {
 		// Enable if using Turbo Remote Cache
 		"enabled": false,
@@ -21,11 +13,6 @@
 		"topo": {
 			"dependsOn": ["^topo"]
 		},
-		"build:nocache": {
-			"dependsOn": ["^build", "^build:nocache", "topo"],
-			"outputLogs": "new-only",
-			"cache": false
-		},
 		"build": {
 			"dependsOn": ["^build", "topo"],
 			"outputs": ["dist/**", ".wrangler/deploy/config.json"],
@@ -33,7 +20,6 @@
 		},
 		"build:wrangler": {
 			"dependsOn": ["build", "topo"],
-			"outputs": ["dist/**"],
 			"outputLogs": "new-only"
 		},
 		"check": {
@@ -62,7 +48,7 @@
 		"check:lint": {
 			"dependsOn": ["build", "^check:lint", "topo"],
 			"outputLogs": "new-only",
-			"passThroughEnv": ["FIX_ESLINT"]
+			"env": ["FIX_ESLINT"]
 		},
 		"//#check:format": {
 			"dependsOn": [],
@@ -73,30 +59,8 @@
 			"outputLogs": "new-only"
 		},
 		"deploy": {
-			"dependsOn": ["deploy:wrangler", "sentry:finalize", "topo"],
-			"outputLogs": "new-only"
-		},
-		"deploy:wrangler": {
-			"dependsOn": ["^build", "build", "topo"],
-			"outputs": ["dist/**", ".astro/**", "build/**"],
-			"outputLogs": "new-only"
-		},
-		"sentry:sourcemaps": {
-			"dependsOn": ["deploy:wrangler", "topo"],
-			"outputLogs": "new-only"
-		},
-		"sentry:commits": {
-			"dependsOn": ["deploy:wrangler", "topo"],
-			"outputLogs": "new-only"
-		},
-		"sentry:finalize": {
-			"dependsOn": ["sentry:sourcemaps", "sentry:commits", "topo"],
-			"outputLogs": "new-only"
-		},
-		"//#format": {
-			"outputLogs": "new-only"
-		},
-		"//#build": {
+			"dependsOn": ["topo"],
+			"outputs": ["dist/**", "build/**"],
 			"outputLogs": "new-only"
 		}
 	}

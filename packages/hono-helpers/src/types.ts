@@ -5,11 +5,20 @@ export const WorkersEnvironment = z.enum(['VITEST', 'development', 'staging', 'p
 
 /** Global bindings */
 export type SharedHonoEnv = {
-	/** Name of the worker used in logging/etc specified in wrangler.jsonc vars */
+	/**
+	 * Name of the worker used in logging/etc.
+	 * Automatically pulled from package.json
+	 */
 	NAME: string
-	// All workers should specify env in wrangler.jsonc vars
+	/**
+	 * Environment of the worker.
+	 * All workers should specify env in wrangler.jsonc vars
+	 */
 	ENVIRONMENT: WorkersEnvironment
-	/** Release version of the Worker (based on the current git commit) */
+	/**
+	 * Release version of the Worker (based on the current git commit).
+	 * Useful for logs, Sentry, etc.
+	 */
 	SENTRY_RELEASE: string
 }
 /** Global Hono variables */

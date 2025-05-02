@@ -17,7 +17,6 @@
 		"mode": "off"
 	},
 	"vars": {
-		"NAME": "example-worker-echoback",
 		"ENVIRONMENT": "development", // overridden during deployment
 		"SENTRY_RELEASE": "unknown" // overridden during deployment
 	}

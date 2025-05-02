@@ -9,11 +9,11 @@ args=(
 	.
 )
 
-if [[ ! -z "${FIX_ESLINT:-}" ]]; then
+if [[ -n "${FIX_ESLINT:-}" ]]; then
 	args+=("--fix")
 fi
 
-if [[ ! -z "${GITHUB_ACTIONS:-}" ]]; then
+if [[ -n "${GITHUB_ACTIONS:-}" || -n "${CI:-}" ]]; then
 	args+=("--max-warnings=0")
 fi
 
