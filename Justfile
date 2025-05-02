@@ -29,14 +29,8 @@ cs:
 fix *flags:
   pnpm runx fix {{flags}}
 
-# Run test cli
-[no-cd]
 test *flags:
-  pnpm runx test --auto-build {{flags}}
-
-# Run tests for all packages
-test-all *flags:
-  pnpm turbo test:ci --log-order=grouped {{flags}}
+  pnpm vitest {{flags}}
 
 [no-cd]
 build *flags:
