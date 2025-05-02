@@ -4,11 +4,11 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build:wrangler": "runx build wrangler",
+		"build:wrangler": "run-wrangler-build",
 		"check:lint": "run-eslint-workers",
 		"check:types": "run-tsc",
 		"deploy": "run-wrangler-deploy",
-		"dev": "runx dev wrangler",
+		"dev": "run-wrangler-dev",
 		"fix:workers-types": "run-wrangler-types",
 		"test": "run-vitest"
 	},
