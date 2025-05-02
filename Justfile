@@ -1,6 +1,6 @@
-set shell := ["zsh", "-c"]
-
-alias up := update
+# This Justfile isn't strictly necessary, but it's
+# a convenient way to run commands in the repo
+# without needing to remember all commands.
 
 [private]
 @help:
@@ -14,11 +14,6 @@ install:
 [no-cd]
 dev *flags:
   pnpm run dev {{flags}}
-
-# Run preview script
-[no-cd]
-preview *flags:
-  pnpm run preview {{flags}}
 
 # Create changeset
 cs:
@@ -37,9 +32,8 @@ build *flags:
   pnpm turbo build {{flags}}
 
 # Check for issues with deps/lint/types/format
-[no-cd]
 check *flags:
-  pnpm runx check {{flags}}
+  pnpm check
 
 # Update things in the repo
 update *flags:
