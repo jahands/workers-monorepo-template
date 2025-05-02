@@ -6,7 +6,7 @@
 	"scripts": {
 		"build:workspace": "turbo -F @repo/workspace-dependencies build",
 		"changeset:new": "run-changeset-new",
-		"check": "run-s check:deps check:format check:turbo",
+		"check": "runx check",
 		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"check:turbo": "turbo check",
