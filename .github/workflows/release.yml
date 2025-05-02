@@ -24,6 +24,8 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --child-concurrency=10
+      - name: Build
+        run: pnpm turbo build
       - name: Check
         run: pnpm check
       - name: Deploy

@@ -3,11 +3,11 @@ set -eu
 
 runx_path="$(realpath "$(dirname $0)/../src/bin/runx.ts")"
 
+bin_dir="$(realpath "$(dirname $0)")"
+tsx_path="$(realpath "$bin_dir/../node_modules/.bin/tsx")"
+
 if command -v bun >/dev/null 2>&1; then
 	bun "$runx_path" "$@"
-elif command -v tsx >/dev/null 2>&1; then
-	tsx "$runx_path" "$@"
 else
-	echo "Could not find bun or tsx - unable to run runx"
-	exit 1
+	"$tsx_path" "$runx_path" "$@"
 fi
