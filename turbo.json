@@ -59,8 +59,9 @@
 			"outputLogs": "new-only"
 		},
 		"deploy": {
-			"dependsOn": ["topo"],
-			"outputs": ["dist/**", "build/**"],
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
 			"outputLogs": "new-only"
 		}
 	}

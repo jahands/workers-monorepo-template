@@ -35,6 +35,10 @@ build *flags:
 check *flags:
   pnpm check
 
+# Deploy Workers, etc.
+deploy *flags:
+  pnpm turbo deploy {{flags}}
+
 # Update things in the repo
 update *flags:
   pnpm runx update {{flags}}
