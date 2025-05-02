@@ -78,7 +78,7 @@ export const checkCmd = new Command('check')
 				const exitCode = await $`${checks.deps}`.exitCode
 				table.push([
 					'deps',
-					`${checks.deps}`,
+					checks.deps.join(' '),
 					getAndCheckOutcome(exitCode),
 					'Root',
 				] satisfies TableRow)
