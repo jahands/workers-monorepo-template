@@ -12,11 +12,6 @@ const config = {
 			pinVersion: 'workspace:*',
 		},
 		{
-			label: 'pin vitest compatible with @cloudflare/vitest-pool-workers',
-			dependencies: ['vitest', '@vitest/ui'],
-			pinVersion: '2.1.9',
-		},
-		{
 			label: 'pin typescript for eslint',
 			dependencies: ['typescript'],
 			pinVersion: '5.5.4',
