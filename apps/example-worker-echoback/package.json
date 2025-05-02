@@ -17,20 +17,20 @@
 	},
 	"dependencies": {
 		"@repo/hono-helpers": "workspace:*",
-		"hono": "4.7.5",
+		"hono": "4.7.8",
 		"p-queue": "8.1.0",
-		"toucan-js": "3.3.1",
+		"toucan-js": "4.1.1",
 		"ts-pattern": "5.7.0",
-		"workers-tagged-logger": "0.9.0"
+		"workers-tagged-logger": "0.10.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.23",
+		"@cloudflare/vitest-pool-workers": "0.8.24",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/test-helpers": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"@types/node": "22.14.0",
+		"@types/node": "22.15.3",
 		"vitest": "2.1.9",
-		"wrangler": "4.9.1"
+		"wrangler": "4.14.1"
 	}
 }

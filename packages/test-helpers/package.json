@@ -39,8 +39,8 @@
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/zod": "workspace:*",
-		"esbuild": "0.25.1",
-		"miniflare": "4.20250321.1",
+		"esbuild": "0.25.3",
+		"miniflare": "4.20250428.1",
 		"ts-pattern": "5.7.0",
 		"vitest": "2.1.9"
 	}
