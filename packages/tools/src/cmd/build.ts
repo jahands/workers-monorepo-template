@@ -37,7 +37,9 @@ buildCmd
 		await fs.rm('./dist/', { force: true, recursive: true })
 
 		await Promise.all([
-			$`runx-bundle-lib-build-types ${entryPoints}`,
+			$({
+				stdio: 'inherit',
+			})`runx-bundle-lib-build-types ${entryPoints}`,
 
 			...formats.map(async (outFormat) => {
 				type Config = {
