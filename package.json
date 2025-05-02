@@ -12,7 +12,7 @@
 		"fix:format": "prettier . --write --cache --ignore-unknown",
 		"test:ci": "run-vitest-ci",
 		"test": "run-vitest-ci",
-		"chore:update-deps": "run-update-deps"
+		"update-deps": "run-update-deps"
 	},
 	"devDependencies": {
 		"@changesets/cli": "2.29.2",

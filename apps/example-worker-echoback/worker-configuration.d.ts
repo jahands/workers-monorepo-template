@@ -1,4 +1,5 @@
-// Runtime types generated with workerd@1.20250408.0 2025-03-12 nodejs_compat
+/* eslint-disable */
+// Runtime types generated with workerd@1.20250428.0 2025-04-28 nodejs_compat
 // Begin runtime types
 /*! *****************************************************************************
 Copyright (c) Cloudflare. All rights reserved.
@@ -1588,11 +1589,11 @@ interface R2PutOptions {
     onlyIf?: (R2Conditional | Headers);
     httpMetadata?: (R2HTTPMetadata | Headers);
     customMetadata?: Record<string, string>;
-    md5?: (ArrayBuffer | string);
-    sha1?: (ArrayBuffer | string);
-    sha256?: (ArrayBuffer | string);
-    sha384?: (ArrayBuffer | string);
-    sha512?: (ArrayBuffer | string);
+    md5?: ((ArrayBuffer | ArrayBufferView) | string);
+    sha1?: ((ArrayBuffer | ArrayBufferView) | string);
+    sha256?: ((ArrayBuffer | ArrayBufferView) | string);
+    sha384?: ((ArrayBuffer | ArrayBufferView) | string);
+    sha512?: ((ArrayBuffer | ArrayBufferView) | string);
     storageClass?: string;
     ssecKey?: (ArrayBuffer | string);
 }
@@ -2187,7 +2188,7 @@ declare class URLSearchParams {
     ]>;
 }
 declare class URLPattern {
-    constructor(input?: (string | URLPatternURLPatternInit), baseURL?: (string | URLPatternURLPatternOptions), patternOptions?: URLPatternURLPatternOptions);
+    constructor(input?: (string | URLPatternInit), baseURL?: (string | URLPatternOptions), patternOptions?: URLPatternOptions);
     get protocol(): string;
     get username(): string;
     get password(): string;
@@ -2196,10 +2197,10 @@ declare class URLPattern {
     get pathname(): string;
     get search(): string;
     get hash(): string;
-    test(input?: (string | URLPatternURLPatternInit), baseURL?: string): boolean;
-    exec(input?: (string | URLPatternURLPatternInit), baseURL?: string): URLPatternURLPatternResult | null;
+    test(input?: (string | URLPatternInit), baseURL?: string): boolean;
+    exec(input?: (string | URLPatternInit), baseURL?: string): URLPatternResult | null;
 }
-interface URLPatternURLPatternInit {
+interface URLPatternInit {
     protocol?: string;
     username?: string;
     password?: string;
@@ -2210,22 +2211,22 @@ interface URLPatternURLPatternInit {
     hash?: string;
     baseURL?: string;
 }
-interface URLPatternURLPatternComponentResult {
+interface URLPatternComponentResult {
     input: string;
     groups: Record<string, string>;
 }
-interface URLPatternURLPatternResult {
-    inputs: (string | URLPatternURLPatternInit)[];
-    protocol: URLPatternURLPatternComponentResult;
-    username: URLPatternURLPatternComponentResult;
-    password: URLPatternURLPatternComponentResult;
-    hostname: URLPatternURLPatternComponentResult;
-    port: URLPatternURLPatternComponentResult;
-    pathname: URLPatternURLPatternComponentResult;
-    search: URLPatternURLPatternComponentResult;
-    hash: URLPatternURLPatternComponentResult;
+interface URLPatternResult {
+    inputs: (string | URLPatternInit)[];
+    protocol: URLPatternComponentResult;
+    username: URLPatternComponentResult;
+    password: URLPatternComponentResult;
+    hostname: URLPatternComponentResult;
+    port: URLPatternComponentResult;
+    pathname: URLPatternComponentResult;
+    search: URLPatternComponentResult;
+    hash: URLPatternComponentResult;
 }
-interface URLPatternURLPatternOptions {
+interface URLPatternOptions {
     ignoreCase?: boolean;
 }
 /**
@@ -2381,6 +2382,8 @@ interface Socket {
     get writable(): WritableStream;
     get closed(): Promise<void>;
     get opened(): Promise<SocketInfo>;
+    get upgraded(): boolean;
+    get secureTransport(): "on" | "off" | "starttls";
     close(): Promise<void>;
     startTls(options?: TlsOptions): Socket;
 }
@@ -3707,6 +3710,11 @@ declare abstract class Ai<AiModelList extends AiModelListType = AiModels> {
         extraHeaders?: object;
     }): Promise<ConversionResponse>;
 }
+type GatewayRetries = {
+    maxAttempts?: 1 | 2 | 3 | 4 | 5;
+    retryDelayMs?: number;
+    backoff?: 'constant' | 'linear' | 'exponential';
+};
 type GatewayOptions = {
     id: string;
     cacheKey?: string;
@@ -3714,6 +3722,9 @@ type GatewayOptions = {
     skipCache?: boolean;
     metadata?: Record<string, number | string | boolean | null | bigint>;
     collectLog?: boolean;
+    eventId?: string;
+    requestTimeoutMs?: number;
+    retries?: GatewayRetries;
 };
 type AiGatewayPatchLog = {
     score?: number | null;
@@ -3747,21 +3758,26 @@ type AiGatewayLog = {
     response_head_complete: boolean;
     created_at: Date;
 };
-type AIGatewayProviders = "workers-ai" | "anthropic" | "aws-bedrock" | "azure-openai" | "google-vertex-ai" | "huggingface" | "openai" | "perplexity-ai" | "replicate" | "groq" | "cohere" | "google-ai-studio" | "mistral" | "grok" | "openrouter" | "deepseek" | "cerebras" | "cartesia" | "elevenlabs" | "adobe-firefly";
+type AIGatewayProviders = 'workers-ai' | 'anthropic' | 'aws-bedrock' | 'azure-openai' | 'google-vertex-ai' | 'huggingface' | 'openai' | 'perplexity-ai' | 'replicate' | 'groq' | 'cohere' | 'google-ai-studio' | 'mistral' | 'grok' | 'openrouter' | 'deepseek' | 'cerebras' | 'cartesia' | 'elevenlabs' | 'adobe-firefly';
 type AIGatewayHeaders = {
-    "cf-aig-metadata": Record<string, number | string | boolean | null | bigint> | string;
-    "cf-aig-custom-cost": {
+    'cf-aig-metadata': Record<string, number | string | boolean | null | bigint> | string;
+    'cf-aig-custom-cost': {
         per_token_in?: number;
         per_token_out?: number;
     } | {
         total_cost?: number;
     } | string;
-    "cf-aig-cache-ttl": number | string;
-    "cf-aig-skip-cache": boolean | string;
-    "cf-aig-cache-key": string;
-    "cf-aig-collect-log": boolean | string;
+    'cf-aig-cache-ttl': number | string;
+    'cf-aig-skip-cache': boolean | string;
+    'cf-aig-cache-key': string;
+    'cf-aig-event-id': string;
+    'cf-aig-request-timeout': number | string;
+    'cf-aig-max-attempts': number | string;
+    'cf-aig-retry-delay': number | string;
+    'cf-aig-backoff': string;
+    'cf-aig-collect-log': boolean | string;
     Authorization: string;
-    "Content-Type": string;
+    'Content-Type': string;
     [key: string]: string | number | boolean | object;
 };
 type AIGatewayUniversalRequest = {
@@ -3777,7 +3793,10 @@ interface AiGatewayLogNotFound extends Error {
 declare abstract class AiGateway {
     patchLog(logId: string, data: AiGatewayPatchLog): Promise<void>;
     getLog(logId: string): Promise<AiGatewayLog>;
-    run(data: AIGatewayUniversalRequest | AIGatewayUniversalRequest[]): Promise<Response>;
+    run(data: AIGatewayUniversalRequest | AIGatewayUniversalRequest[], options?: {
+        gateway?: GatewayOptions;
+        extraHeaders?: object;
+    }): Promise<Response>;
     getUrl(provider?: AIGatewayProviders | string): Promise<string>; // eslint-disable-line
 }
 interface AutoRAGInternalError extends Error {
@@ -3786,8 +3805,18 @@ interface AutoRAGNotFoundError extends Error {
 }
 interface AutoRAGUnauthorizedError extends Error {
 }
+type ComparisonFilter = {
+    key: string;
+    type: 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte';
+    value: string | number | boolean;
+};
+type CompoundFilter = {
+    type: 'and' | 'or';
+    filters: ComparisonFilter[];
+};
 type AutoRagSearchRequest = {
     query: string;
+    filters?: CompoundFilter | ComparisonFilter;
     max_num_results?: number;
     ranking_options?: {
         ranker?: string;
@@ -3795,8 +3824,14 @@ type AutoRagSearchRequest = {
     };
     rewrite_query?: boolean;
 };
+type AutoRagAiSearchRequest = AutoRagSearchRequest & {
+    stream?: boolean;
+};
+type AutoRagAiSearchRequestStreaming = Omit<AutoRagAiSearchRequest, 'stream'> & {
+    stream: true;
+};
 type AutoRagSearchResponse = {
-    object: "vector_store.search_results.page";
+    object: 'vector_store.search_results.page';
     search_query: string;
     data: {
         file_id: string;
@@ -3804,7 +3839,7 @@ type AutoRagSearchResponse = {
         score: number;
         attributes: Record<string, string | number | boolean | null>;
         content: {
-            type: "text";
+            type: 'text';
             text: string;
         }[];
     }[];
@@ -3816,7 +3851,9 @@ type AutoRagAiSearchResponse = AutoRagSearchResponse & {
 };
 declare abstract class AutoRAG {
     search(params: AutoRagSearchRequest): Promise<AutoRagSearchResponse>;
-    aiSearch(params: AutoRagSearchRequest): Promise<AutoRagAiSearchResponse>;
+    aiSearch(params: AutoRagAiSearchRequestStreaming): Promise<Response>;
+    aiSearch(params: AutoRagAiSearchRequest): Promise<AutoRagAiSearchResponse>;
+    aiSearch(params: AutoRagAiSearchRequest): Promise<AutoRagAiSearchResponse | Response>;
 }
 interface BasicImageTransformations {
     /**
