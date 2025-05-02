@@ -53,6 +53,8 @@ This monorepo is organized as follows:
 - `Justfile`: Defines convenient aliases for common development tasks.
 - `pnpm-workspace.yaml`: Defines the pnpm workspace structure.
 - `turbo.json`: Configures Turborepo build and task execution.
+- `.syncpackrc.cjs`: Configures `syncpack` for managing and synchronizing dependency versions across packages in the monorepo.
+  - The included configuration ensures that dependencies are all kept in sync and use a pinned version so that we can choose when to update dependencies.
 
 ## Available Commands
 
