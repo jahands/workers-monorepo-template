@@ -43,3 +43,6 @@ deploy *flags:
 update *flags:
   pnpm runx update {{flags}}
 
+# Update dependencies using syncpack
+update-deps:
+  pnpm update-deps
