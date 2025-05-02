@@ -4,16 +4,10 @@
 	"main": "src/index.ts",
 	"compatibility_date": "2025-04-28",
 	"compatibility_flags": ["nodejs_compat"],
-	"workers_dev": true,
-	"preview_urls": false,
 	"routes": [],
 	"logpush": true,
 	"observability": {
-		"enabled": true,
-		"head_sampling_rate": 1
-	},
-	"placement": {
-		"mode": "off"
+		"enabled": true
 	},
 	"vars": {
 		"ENVIRONMENT": "development", // overridden during deployment
