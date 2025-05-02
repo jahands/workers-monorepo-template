@@ -25,4 +25,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Check
-        run: pnpm check
+        run: pnpm check:ci
+      - name: Test
+        run: pnpm test:ci

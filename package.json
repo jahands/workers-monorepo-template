@@ -7,6 +7,7 @@
 		"build:workspace": "turbo -F @repo/workspace-dependencies build",
 		"changeset:new": "run-changeset-new",
 		"check": "runx check",
+		"check:ci": "run-s check:deps check:format check:turbo",
 		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"check:turbo": "turbo check",
@@ -15,8 +16,8 @@
 		"fix:lint": "FIX_ESLINT=1 turbo check:lint",
 		"fix:format": "prettier . --write --cache --ignore-unknown",
 		"fix:workers-types": "turbo fix:workers-types",
-		"test:ci": "run-vitest-ci",
 		"test": "vitest",
+		"test:ci": "run-vitest-ci",
 		"update-deps": "run-update-deps"
 	},
 	"devDependencies": {
