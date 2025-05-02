@@ -21,11 +21,17 @@ dev *flags:
 cs:
   pnpm run-changeset-new
 
+# Check for issues with deps/lint/types/format
+[no-cd]
+check *flags:
+  pnpm runx check {{flags}}
+
 # Fix deps, lint, format, etc.
 [no-cd]
 fix *flags:
   pnpm runx fix {{flags}}
 
+[no-cd]
 test *flags:
   pnpm vitest {{flags}}
 
@@ -33,17 +39,9 @@ test *flags:
 build *flags:
   pnpm turbo build {{flags}}
 
-# Check for issues with deps/lint/types/format
-check *flags:
-  pnpm check
-
 # Deploy Workers, etc.
 deploy *flags:
   pnpm turbo deploy {{flags}}
-
-# Update things in the repo
-update *flags:
-  pnpm runx update {{flags}}
 
 # Update dependencies using syncpack
 update-deps:
