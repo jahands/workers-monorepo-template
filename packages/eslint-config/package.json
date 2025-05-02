@@ -23,6 +23,6 @@
 		"eslint-plugin-react-hooks": "4.6.2",
 		"eslint-plugin-unused-imports": "3.2.0",
 		"typescript": "5.5.4",
-		"vitest": "2.1.9"
+		"vitest": "3.1.2"
 	}
 }

@@ -21,7 +21,7 @@
 		"@dotenvx/dotenvx": "1.42.2",
 		"@jahands/cli-tools": "0.9.3",
 		"@repo/zod": "workspace:*",
-		"@types/node": "22.14.0",
+		"@types/node": "22.15.3",
 		"cli-table3": "0.6.5",
 		"commander": "13.1.0",
 		"dayjs": "1.11.13",
@@ -39,6 +39,6 @@
 	},
 	"devDependencies": {
 		"@sentry/bun": "9.15.0",
-		"vitest": "2.1.9"
+		"vitest": "3.1.2"
 	}
 }

@@ -6,8 +6,10 @@
 	"scripts": {
 		"build:workspace": "turbo -F @repo/workspace-dependencies build",
 		"changeset:new": "run-changeset-new",
-		"check:deps": "runx check --deps",
+		"check": "run-s check:deps check:format check:turbo",
+		"check:deps": "syncpack lint",
 		"check:format": "prettier . --check --cache --ignore-unknown",
+		"check:turbo": "turbo check",
 		"fix": "runx fix",
 		"fix:format": "prettier . --write --cache --ignore-unknown",
 		"test:ci": "run-vitest-ci",

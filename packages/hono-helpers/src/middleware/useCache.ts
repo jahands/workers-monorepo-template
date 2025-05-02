@@ -20,7 +20,7 @@ export function useCache<T extends HonoApp>(ttl: number) {
 		if (c.res.status === httpStatus.OK) {
 			const clonedRes = c.res.clone()
 			clonedRes.headers.set('Cloudflare-CDN-Cache-Control', `max-age=${ttl}`)
-			c.get('txWaitUntil').push(cache.put(reqMatcher, clonedRes))
+			c.executionCtx.waitUntil(cache.put(reqMatcher, clonedRes))
 		}
 	}
 }
@@ -38,7 +38,7 @@ export function useCacheDefault<T extends HonoApp>(ttl: number) {
 		await next()
 		const clonedRes = c.res.clone()
 		clonedRes.headers.set('Cloudflare-CDN-Cache-Control', `max-age=${ttl}`)
-		c.get('txWaitUntil').push(cache.put(c.req.raw, clonedRes))
+		c.executionCtx.waitUntil(cache.put(c.req.raw, clonedRes))
 	}
 }
 
@@ -69,7 +69,7 @@ export function useCacheByStatus<T extends HonoApp>(options: useCacheByStatusOpt
 		if (opts) {
 			const clonedRes = c.res.clone()
 			clonedRes.headers.set('Cloudflare-CDN-Cache-Control', `max-age=${opts.ttl}`)
-			c.get('txWaitUntil').push(cache.put(reqMatcher, clonedRes))
+			c.executionCtx.waitUntil(cache.put(reqMatcher, clonedRes))
 		}
 	}
 }

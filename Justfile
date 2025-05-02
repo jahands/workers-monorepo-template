@@ -45,6 +45,3 @@ check *flags:
 update *flags:
   pnpm runx update {{flags}}
 
-# Run turbo generate
-gen:
-  pnpm run gen

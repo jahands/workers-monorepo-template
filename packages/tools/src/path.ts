@@ -22,7 +22,7 @@ export const getPackageName = memoizeOne(async (): Promise<string> => {
 	if (!pkgJsonPath) {
 		throw new Error(`unable to locate package.json from ${process.cwd()}`)
 	}
-	const pkgJson = z.object({ name: z.string() }).safeParse(await Bun.file(pkgJsonPath).json())
+	const pkgJson = z.object({ name: z.string() }).safeParse(await fs.readJson(pkgJsonPath))
 	if (!pkgJson.success) {
 		throw new Error(`unable to parse package.json: ${pkgJsonPath}`)
 	}
