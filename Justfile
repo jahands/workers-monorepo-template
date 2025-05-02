@@ -36,11 +36,11 @@ test *flags:
 
 # Run tests for all packages
 test-all *flags:
-  bun turbo test:ci --log-order=grouped {{flags}}
+  pnpm turbo test:ci --log-order=grouped {{flags}}
 
 [no-cd]
 build *flags:
-  bun turbo build {{flags}}
+  pnpm turbo build {{flags}}
 
 # Check for issues with deps/lint/types/format
 [no-cd]
