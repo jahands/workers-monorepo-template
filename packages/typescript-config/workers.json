@@ -6,7 +6,7 @@
 		"${configDir}/**/*.ts",
 		"${configDir}/**/*.tsx"
 	],
-	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/dist2/"],
+	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/"],
 	"compilerOptions": {
 		"target": "es2022",
 		"lib": ["es2022"],
