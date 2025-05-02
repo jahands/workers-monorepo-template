@@ -4,7 +4,7 @@ const project = resolve(process.cwd(), 'tsconfig.json')
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-	ignorePatterns: ['.*.{js,cjs}', '**/node_modules/**', '**/dist/**', '**/dist2/**'],
+	ignorePatterns: ['.*.{js,cjs}', '**/node_modules/**', '**/dist/**'],
 	plugins: ['@typescript-eslint', 'import', 'unused-imports'],
 	extends: ['turbo'],
 	settings: {
@@ -18,7 +18,7 @@ module.exports = {
 		// TypeScript
 		{
 			// enable the rule specifically for TypeScript files
-			files: ['**/*.{ts,tsx,mjs}'],
+			files: ['**/*.{ts,tsx,mts}'],
 			parser: '@typescript-eslint/parser',
 			parserOptions: {
 				ecmaVersion: 2022,

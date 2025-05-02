@@ -1,6 +1,6 @@
 {
 	"name": "@repo/hono-helpers",
-	"version": "1.7.3",
+	"version": "0.1.0",
 	"private": true,
 	"sideEffects": false,
 	"type": "module",
@@ -15,9 +15,6 @@
 		"@repo/zod": "workspace:*",
 		"hono": "4.7.8",
 		"http-codex": "0.5.4",
-		"itty-time": "2.0.1",
-		"ts-pattern": "5.7.0",
-		"ulidx": "2.4.1",
 		"workers-tagged-logger": "0.10.0"
 	},
 	"devDependencies": {

@@ -1,6 +1,6 @@
 {
 	"name": "@repo/tools",
-	"version": "0.31.1",
+	"version": "0.1.0",
 	"private": true,
 	"sideEffects": false,
 	"type": "module",
@@ -18,27 +18,19 @@
 	},
 	"dependencies": {
 		"@commander-js/extra-typings": "13.1.0",
-		"@dotenvx/dotenvx": "1.42.2",
 		"@jahands/cli-tools": "0.9.3",
 		"@repo/zod": "workspace:*",
 		"@types/node": "22.15.3",
 		"cli-table3": "0.6.5",
 		"commander": "13.1.0",
-		"dayjs": "1.11.13",
 		"empathic": "1.1.0",
 		"esbuild": "0.25.3",
-		"jsonc-parser": "3.3.1",
 		"memoize-one": "6.0.0",
-		"p-all": "5.0.0",
-		"p-queue": "8.1.0",
-		"p-retry": "6.2.1",
-		"smol-toml": "1.3.4",
 		"ts-pattern": "5.7.0",
 		"tsx": "4.19.4",
 		"zx": "8.5.3"
 	},
 	"devDependencies": {
-		"@sentry/bun": "9.15.0",
 		"vitest": "3.1.2"
 	}
 }
