@@ -3,6 +3,7 @@ import 'zx/globals'
 import { program } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools'
 
+import { buildCmd } from '../cmd/build'
 import { checkWorkersTypesCmd } from '../cmd/check-workers-types'
 import { fixCmd } from '../cmd/fix'
 
@@ -12,8 +13,10 @@ program
 
 	// While `packages/tools/bin` scripts work well for simple tasks,
 	// a typescript CLI is nicer for more complex things.
+
 	.addCommand(checkWorkersTypesCmd)
 	.addCommand(fixCmd)
+	.addCommand(buildCmd)
 
 	// Don't hang for unresolved promises
 	.hook('postAction', () => process.exit(0))

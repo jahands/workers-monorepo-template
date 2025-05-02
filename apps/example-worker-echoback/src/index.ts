@@ -4,9 +4,6 @@ import { useWorkersLogger } from 'workers-tagged-logger'
 import { logger, useNotFound, useOnError } from '@repo/hono-helpers'
 import { getRequestLogData } from '@repo/hono-helpers/src/helpers/request'
 
-import { isHostnameRedacted, redactHeaders, redactUrl } from './redact'
-import { getUrlHostname } from './url'
-
 import type { App } from './types'
 
 const app = new Hono<App>()
@@ -25,20 +22,17 @@ const app = new Hono<App>()
 
 	.all('*', async (c) => {
 		const url = new URL(c.req.url)
-		const shouldRedact = isHostnameRedacted(getUrlHostname(url))
 
 		let body: string | undefined
 		if (['PUT', 'POST'].includes(c.req.method) && c.req.raw.body !== null) {
 			body = await c.req.text()
 		}
 
-		const headers = shouldRedact
-			? redactHeaders(new Headers(c.req.raw.headers))
-			: new Headers(c.req.raw.headers)
+		const headers = new Headers(c.req.raw.headers)
 
 		const data = {
 			method: c.req.method,
-			url: shouldRedact ? redactUrl(c.req.url) : c.req.url,
+			url: c.req.url,
 			path: url.pathname,
 			host: url.host,
 			hostname: url.hostname,

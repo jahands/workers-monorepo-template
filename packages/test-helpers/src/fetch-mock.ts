@@ -1,17 +1,6 @@
 import { fetchMock } from 'cloudflare:test'
 
 /**
- * Removes interceptors for things we don't care about
- * and then ensures there are no other pending interceptors
- */
-export function assertNoPendingInterceptors(): void {
-	// Don't care about otel event mocks
-	resetFetchMocks('api-axiom-co.vitest.echoback.dev')
-
-	fetchMock.assertNoPendingInterceptors()
-}
-
-/**
  * Remove all pending and non-pending fetchMock interceptors
  */
 export function resetFetchMocks(hostnameFilter?: string | string[]): void {

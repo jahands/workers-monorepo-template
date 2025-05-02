@@ -23,8 +23,8 @@ export function parse<T extends z.ZodSchema>(schema: T, value: T['_input']): T['
  */
 export function safeParse<T extends z.ZodSchema>(
 	schema: T,
-	value: z.infer<T>
-): z.SafeParseReturnType<T['_input'], T['_output']> {
+	value: T['_input']
+): z.ZodSafeParseResult<T['_output']> {
 	return schema.safeParse(value)
 }
 
@@ -38,7 +38,7 @@ export function safeParse<T extends z.ZodSchema>(
  */
 export async function safeParseAsync<T extends z.ZodSchema>(
 	schema: T,
-	value: z.infer<T>
-): Promise<T['_output']> {
-	return schema.safeParse(value)
+	value: T['_input']
+): Promise<z.ZodSafeParseResult<T['_output']>> {
+	return schema.safeParseAsync(value)
 }

@@ -19,9 +19,8 @@
 	"dependencies": {
 		"@commander-js/extra-typings": "13.1.0",
 		"@dotenvx/dotenvx": "1.39.0",
-		"@jahands/cli-tools": "0.7.4",
+		"@jahands/cli-tools": "0.9.3",
 		"@repo/zod": "workspace:*",
-		"@types/bun": "1.2.8",
 		"@types/node": "22.14.0",
 		"cli-table3": "0.6.5",
 		"commander": "13.1.0",
@@ -33,10 +32,9 @@
 		"p-all": "5.0.0",
 		"p-queue": "8.1.0",
 		"p-retry": "6.2.1",
-		"rolldown": "1.0.0-beta.7",
 		"smol-toml": "1.3.1",
-		"ts-pattern": "5.6.2",
-		"tsx": "^4.19.4",
+		"ts-pattern": "5.7.0",
+		"tsx": "4.19.4",
 		"zx": "8.3.2"
 	},
 	"devDependencies": {

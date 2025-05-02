@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -eu
+
+script_path="$(realpath "$(dirname $0)/../src/bin/runx-bundle-lib-build-types.ts")"
+
+if command -v bun >/dev/null 2>&1; then
+	bun "$script_path" "$@"
+elif command -v tsx >/dev/null 2>&1; then
+	tsx "$script_path" "$@"
+else
+	echo "Could not find bun or tsx - unable to run runx-bundle-lib-build-types"
+	exit 1
+fi

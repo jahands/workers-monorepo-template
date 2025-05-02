@@ -1,0 +1,12 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@repo/typescript-config/base.json",
+	"include": ["${configDir}/**/*.ts", "${configDir}/**/*.tsx"],
+	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/"],
+	"compilerOptions": {
+		"module": "es2022",
+		"target": "es2022",
+		"sourceMap": true,
+		"moduleResolution": "bundler"
+	}
+}
