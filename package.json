@@ -11,7 +11,10 @@
 		"check:format": "prettier . --check --cache --ignore-unknown",
 		"check:turbo": "turbo check",
 		"fix": "runx fix",
+		"fix:deps": "run-fix-deps",
+		"fix:lint": "FIX_ESLINT=1 turbo check:lint",
 		"fix:format": "prettier . --write --cache --ignore-unknown",
+		"fix:workers-types": "turbo fix:workers-types",
 		"test:ci": "run-vitest-ci",
 		"test": "vitest",
 		"update-deps": "run-update-deps"

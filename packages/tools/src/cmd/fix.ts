@@ -39,7 +39,7 @@ export const fixCmd = new Command('fix')
 		] satisfies string[]
 
 		const fixes = {
-			deps: ['run-fix-deps'],
+			deps: ['pnpm', 'fix:deps'],
 			lint: ['FIX_ESLINT=1', 'turbo', turboFlags, 'check:lint'].flat(),
 			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
 			format: ['pnpm', 'fix:format'],
