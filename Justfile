@@ -17,6 +17,11 @@ install:
 dev *flags:
   pnpm run dev {{flags}}
 
+# Run preview script (usually only used in apps using Vite)
+[no-cd]
+preview:
+  pnpm run preview
+
 # Create changeset
 cs:
   pnpm run-changeset-new
