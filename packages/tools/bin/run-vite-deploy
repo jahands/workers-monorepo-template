@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -eu
+
+run-vite-build && run-wrangler-deploy
