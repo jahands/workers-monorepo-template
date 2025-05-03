@@ -32,6 +32,11 @@
 			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
 			"outputLogs": "new-only"
 		},
+		"dev": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
 		// build:wrangler isn't used much, but can be useful for debugging
 		"build:wrangler": {
 			"dependsOn": ["build", "topo"],
