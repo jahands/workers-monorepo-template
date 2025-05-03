@@ -18,6 +18,13 @@
 			"outputs": ["dist/**", ".wrangler/deploy/config.json"],
 			"outputLogs": "new-only"
 		},
+		"dev": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"interactive": true,
+			"persistent": true,
+			"outputLogs": "new-only"
+		},
 		// preview is used in Vite applications
 		"preview": {
 			"cache": false,
@@ -30,11 +37,6 @@
 			"cache": false,
 			"dependsOn": ["build", "topo"],
 			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
-			"outputLogs": "new-only"
-		},
-		"dev": {
-			"cache": false,
-			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only"
 		},
 		// build:wrangler isn't used much, but can be useful for debugging
