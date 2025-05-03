@@ -8,7 +8,7 @@
 		"enabled": false,
 		"signature": true
 	},
-	"ui": "stream",
+	"ui": "tui",
 	"tasks": {
 		"topo": {
 			"dependsOn": ["^topo"]
@@ -16,6 +16,20 @@
 		"build": {
 			"dependsOn": ["^build", "topo"],
 			"outputs": ["dist/**", ".wrangler/deploy/config.json"],
+			"outputLogs": "new-only"
+		},
+		// preview is used in Vite applications
+		"preview": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"interactive": true,
+			"persistent": true,
+			"outputLogs": "new-only"
+		},
+		"deploy": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
 			"outputLogs": "new-only"
 		},
 		// build:wrangler isn't used much, but can be useful for debugging
@@ -57,12 +71,6 @@
 		},
 		"fix:workers-types": {
 			"outputs": ["worker-configuration.d.ts", "topo"],
-			"outputLogs": "new-only"
-		},
-		"deploy": {
-			"cache": false,
-			"dependsOn": ["build", "topo"],
-			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
 			"outputLogs": "new-only"
 		}
 	}
