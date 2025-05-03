@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 set -eu
 
-run-vite-build && vite preview
+turbo build && vite preview
