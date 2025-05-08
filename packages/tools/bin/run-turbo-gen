@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 set -eu
 
-turbo build -F @repo/workspace-dependencies
+if ! TURBO_OUTPUT=$(
+	echo "Building workspace dependencies..."
+	FORCE_COLOR=1 \
+		turbo build -F @repo/workspace-dependencies --ui=stream --output-logs errors-only 2>&1
+); then
+	echo "$TURBO_OUTPUT" >&2
+	exit $?
+fi
 turbo gen "$@"
