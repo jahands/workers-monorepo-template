@@ -117,13 +117,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 				type: 'input',
 				name: 'name',
 				message: 'name of package',
-				validate: (value: string) => {
-					// must be a-z, 0-9, -, and start with a letter
-					if (!/^[a-z][a-z0-9-]*$/.test(value)) {
-						return 'Must start with a letter and contain only lowercase letters, numbers, and hyphens'
-					}
-					return true
-				},
+				validate: nameValidator,
 			},
 			{
 				type: 'confirm',
