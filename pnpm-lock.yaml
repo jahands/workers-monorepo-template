@@ -236,6 +236,18 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
 
+  packages/pkg14:
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
   packages/tools:
     dependencies:
       '@commander-js/extra-typings':
