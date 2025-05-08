@@ -1,5 +1,14 @@
 # @repo/workspace-dependencies
 
+## 0.1.2
+
+### Patch Changes
+
+- 1c1dfa7: chore: rename run-eslint-workers to run-eslint-default
+- Updated dependencies [1c1dfa7]
+  - @repo/tools@0.2.1
+  - @repo/zod@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes
