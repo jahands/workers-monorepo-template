@@ -14,7 +14,6 @@ export function pnpmInstall(data: PnpmInstallData, _config: any, _plop: PlopType
 		$({
 			cwd: data.turbo.paths.root,
 			nothrow: true,
-			verbose: true,
 		})`pnpm install --child-concurrency=10 -F ./${data.destination}`
 			.then(onProcSuccess('pnpm install', resolve, reject))
 			.catch(catchError(reject))
