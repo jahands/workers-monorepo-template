@@ -99,6 +99,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					],
 					data: answers,
 				},
+				{
+					type: 'pnpmInstall',
+					data: { ...answers, destination } satisfies PnpmInstallData,
+				},
 				{ type: 'fixAll' },
 				{
 					type: 'pnpmInstall',
