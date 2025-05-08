@@ -13,6 +13,7 @@ import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
 
 import type { PlopTypes } from '@turbo/gen'
+import type { PnpmInstallData } from './plugins/pnpm-install'
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
 	plop.setActionType('pnpmInstall', pnpmInstall as PlopTypes.CustomActionFunction)
@@ -42,21 +43,28 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
+			const destination = `packages/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
 					type: 'addMany',
 					base: 'templates/fetch-worker',
-					destination: `apps/{{ slug name }}`,
+					destination,
 					templateFiles: [
 						'templates/fetch-worker/**/**.hbs',
 						'templates/fetch-worker/.eslintrc.cjs.hbs',
 					],
 					data: answers,
 				},
-				{ type: 'pnpmInstall' },
+				{
+					type: 'pnpmInstall',
+					data: { ...answers, destination } satisfies PnpmInstallData,
+				},
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall' },
+				{
+					type: 'pnpmInstall',
+					data: { ...answers, destination } satisfies PnpmInstallData,
+				},
 			]
 
 			return actions
@@ -78,12 +86,13 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
+			const destination = `packages/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
 					type: 'addMany',
 					base: 'templates/fetch-worker-vite',
-					destination: `apps/{{ slug name }}`,
+					destination,
 					templateFiles: [
 						'templates/fetch-worker-vite/**/**.hbs',
 						'templates/fetch-worker-vite/.eslintrc.cjs.hbs',
@@ -91,7 +100,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					data: answers,
 				},
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall' },
+				{
+					type: 'pnpmInstall',
+					data: { ...answers, destination } satisfies PnpmInstallData,
+				},
 			]
 
 			return actions
@@ -124,12 +136,13 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 			NewPackageAnswers.parse(data)
 			const answers = NewPackageAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
+			const destination = `packages/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
 					type: 'addMany',
 					base: 'templates/package',
-					destination: `packages/{{ slug name }}`,
+					destination,
 					templateFiles: ['templates/package/**/**.hbs', 'templates/package/.eslintrc.cjs.hbs'],
 					data: {
 						...answers,
@@ -137,7 +150,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					},
 				},
 				{ type: 'fixDepsAndFormat' },
-				{ type: 'pnpmInstall' },
+				{
+					type: 'pnpmInstall',
+					data: { ...answers, destination } satisfies PnpmInstallData,
+				},
 			]
 
 			return actions

@@ -5,14 +5,17 @@ import { catchError, onProcSuccess } from '../helpers/proc'
 import type { PlopTypes } from '@turbo/gen'
 import type { Answers } from '../answers'
 
-export function pnpmInstall(answers: Answers, _config: any, _plop: PlopTypes.NodePlopAPI) {
+export type PnpmInstallData = Answers & { destination: string }
+
+export function pnpmInstall(data: PnpmInstallData, _config: any, _plop: PlopTypes.NodePlopAPI) {
 	return new Promise((resolve, reject) => {
 		console.log('🌀 running pnpm install')
 
 		$({
-			cwd: answers.turbo.paths.root,
+			cwd: data.turbo.paths.root,
 			nothrow: true,
-		})`pnpm install --child-concurrency=10`
+			verbose: true,
+		})`pnpm install --child-concurrency=10 -F ./${data.destination}`
 			.then(onProcSuccess('pnpm install', resolve, reject))
 			.catch(catchError(reject))
 	})
