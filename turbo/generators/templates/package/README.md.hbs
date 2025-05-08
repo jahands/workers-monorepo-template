@@ -1,0 +1,28 @@
+# @repo/{{ slug name }}
+
+A shared package that can be used from other apps / packages.
+
+To add it as as a dependency in another package, run:
+
+```sh
+cd apps/example-worker-echoback # or whatever app/package you want to add it to
+pnpm add '@repo/{{ slug name }}@workspace:*'
+```
+
+## Updating tsconfig.json
+
+By default, packages use this tsconfig.json:
+
+```json
+{
+	"extends": "@repo/typescript-config/workers-lib.json"
+}
+```
+
+If this package is not used within Workers, change it to:
+
+```json
+{
+	"extends": "@repo/typescript-config/lib.json"
+}
+```

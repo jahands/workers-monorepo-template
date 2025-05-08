@@ -1,6 +1,8 @@
 export interface Answers {
 	name: string
 	turbo: Turbo
+	usedInWorkers?: boolean
+	tsconfigType?: string
 }
 
 export interface WorkflowsAnswers {

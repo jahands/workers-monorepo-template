@@ -6,8 +6,6 @@
 @help:
   just --list
 
-alias gen := new-worker
-
 # Install dependencies
 install:
   pnpm install --child-concurrency=10
@@ -52,6 +50,11 @@ deploy *flags:
 update-deps:
   pnpm update-deps
 
-# Create a new Cloudflare Worker from a template (see `turbo/generators` for details)
-new-worker:
-  pnpm run-turbo-gen
+# Create a new Worker/package/etc. from a template (see `turbo/generators` for details)
+gen *flags:
+  pnpm run-turbo-gen {{flags}}
+alias new-worker := gen
+
+new-package *flags:
+  pnpm run-turbo-gen new-package {{flags}}
+alias new-pkg := new-package
