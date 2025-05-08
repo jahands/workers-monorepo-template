@@ -10,9 +10,9 @@ import { nameValidator } from './helpers/validate'
 import { fixAll } from './plugins/fix-all'
 import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
+import { NewPackageAnswers, NewWorkerAnswers } from './types'
 
 import type { PlopTypes } from '@turbo/gen'
-import type { Answers } from './types'
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
 	plop.setActionType('pnpmInstall', pnpmInstall as PlopTypes.CustomActionFunction)
@@ -39,8 +39,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 			},
 		],
 		// perform actions based on the prompts
-		actions: (data: any) => {
-			const answers = data as Answers
+		actions: (data: unknown) => {
+			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
 
 			const actions: PlopTypes.Actions = [
@@ -52,6 +52,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 						'templates/fetch-worker/**/**.hbs',
 						'templates/fetch-worker/.eslintrc.cjs.hbs',
 					],
+					data: answers,
 				},
 				{ type: 'pnpmInstall' },
 				{ type: 'fixAll' },
@@ -74,8 +75,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 			},
 		],
 		// perform actions based on the prompts
-		actions: (data: any) => {
-			const answers = data as Answers
+		actions: (data: unknown) => {
+			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
 
 			const actions: PlopTypes.Actions = [
@@ -87,6 +88,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 						'templates/fetch-worker-vite/**/**.hbs',
 						'templates/fetch-worker-vite/.eslintrc.cjs.hbs',
 					],
+					data: answers,
 				},
 				{ type: 'fixAll' },
 				{ type: 'pnpmInstall' },
@@ -103,7 +105,13 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 				type: 'input',
 				name: 'name',
 				message: 'name of package',
-				validate: nameValidator,
+				validate: (value: string) => {
+					// must be a-z, 0-9, -, and start with a letter
+					if (!/^[a-z][a-z0-9-]*$/.test(value)) {
+						return 'Must start with a letter and contain only lowercase letters, numbers, and hyphens'
+					}
+					return true
+				},
 			},
 			{
 				type: 'confirm',
@@ -112,12 +120,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 				default: true,
 			},
 		],
-		actions: (data: any) => {
-			const answers = data as Answers
+		actions: (data: unknown) => {
+			NewPackageAnswers.parse(data)
+			const answers = NewPackageAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-
-			// Determine tsconfigType based on usedInWorkers
-			answers.tsconfigType = answers.usedInWorkers ? 'workers-lib.json' : 'lib.json'
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -125,6 +131,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					base: 'templates/package',
 					destination: `packages/{{ slug name }}`,
 					templateFiles: ['templates/package/**/**.hbs', 'templates/package/.eslintrc.cjs.hbs'],
+					data: {
+						...answers,
+						tsconfigType: answers.usedInWorkers ? 'workers-lib.json' : 'lib.json',
+					},
 				},
 				{ type: 'fixDepsAndFormat' },
 				{ type: 'pnpmInstall' },

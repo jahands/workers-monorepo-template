@@ -1,21 +1,29 @@
-export interface Answers {
-	name: string
-	turbo: Turbo
-	usedInWorkers?: boolean
-	tsconfigType?: string
-}
+import { z } from '@repo/workspace-dependencies/zod'
 
-export interface WorkflowsAnswers {
-	name: string
-	turbo: Turbo
-}
+export type Paths = z.infer<typeof Paths>
+export const Paths = z.object({
+	cwd: z.string(),
+	root: z.string(),
+	workspace: z.string(),
+})
 
-export interface Turbo {
-	paths: Paths
-}
+export type Turbo = z.infer<typeof Turbo>
+export const Turbo = z.object({
+	paths: Paths,
+})
 
-export interface Paths {
-	cwd: string
-	root: string
-	workspace: string
-}
+export type NewWorkerAnswers = z.infer<typeof NewWorkerAnswers>
+export const NewWorkerAnswers = z.object({
+	name: z.string(),
+	turbo: Turbo,
+})
+
+export type NewPackageAnswers = z.infer<typeof NewPackageAnswers>
+export const NewPackageAnswers = z.object({
+	name: z.string(),
+	turbo: Turbo,
+	usedInWorkers: z.boolean().optional(),
+})
+
+export type Answers = z.infer<typeof Answers>
+export const Answers = z.union([NewWorkerAnswers, NewPackageAnswers])
