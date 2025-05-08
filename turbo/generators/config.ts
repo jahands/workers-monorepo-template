@@ -43,7 +43,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `packages/${slugifyText(answers.name)}`
+			const destination = `apps/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -86,7 +86,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `packages/${slugifyText(answers.name)}`
+			const destination = `apps/${slugifyText(answers.name)}`
 
 			const actions: PlopTypes.Actions = [
 				{
