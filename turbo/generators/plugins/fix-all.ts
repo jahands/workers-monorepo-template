@@ -4,7 +4,7 @@ import { catchError, onProcSuccess } from '../helpers/proc'
 import { slugifyText } from '../helpers/slugify'
 
 import type { PlopTypes } from '@turbo/gen'
-import type { Answers } from '../types'
+import type { Answers } from '../answers'
 
 export function fixAll(answers: Answers, _config: any, _plop: PlopTypes.NodePlopAPI) {
 	return new Promise((resolve, reject) => {

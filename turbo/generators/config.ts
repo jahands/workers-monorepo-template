@@ -1,3 +1,4 @@
+import { NewPackageAnswers, NewWorkerAnswers } from './answers'
 import {
 	pascalText,
 	pascalTextPlural,
@@ -10,7 +11,6 @@ import { nameValidator } from './helpers/validate'
 import { fixAll } from './plugins/fix-all'
 import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
-import { NewPackageAnswers, NewWorkerAnswers } from './types'
 
 import type { PlopTypes } from '@turbo/gen'
 
