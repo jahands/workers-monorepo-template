@@ -1,5 +1,20 @@
 # @repo/tools
 
+## 0.3.0
+
+### Minor Changes
+
+- 442c820: feat: dynamically import typescript instead of having separate entrypoint
+
+  also adds a command to build with tsc
+
+### Patch Changes
+
+- b1a6e35: chore: rename \_ts to #ts
+- 1c1dfa7: chore: rename run-eslint-workers to run-eslint-default
+- Updated dependencies [1c1dfa7]
+  - @repo/zod@0.1.1
+
 ## 0.2.0
 
 ### Minor Changes
