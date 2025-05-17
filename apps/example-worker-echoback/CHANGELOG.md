@@ -1,5 +1,12 @@
 # example-worker-echoback
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [4cd042e]
+  - @repo/hono-helpers@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes

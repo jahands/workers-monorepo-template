@@ -1,5 +1,13 @@
 # @repo/tools
 
+## 0.3.1
+
+### Patch Changes
+
+- 4cd042e: chore: remove custom Zod package
+
+  decided this was too complex for a template
+
 ## 0.3.0
 
 ### Minor Changes
