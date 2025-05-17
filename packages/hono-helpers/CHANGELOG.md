@@ -1,5 +1,13 @@
 # @repo/hono-helpers
 
+## 0.1.3
+
+### Patch Changes
+
+- 4cd042e: chore: remove custom Zod package
+
+  decided this was too complex for a template
+
 ## 0.1.2
 
 ### Patch Changes
