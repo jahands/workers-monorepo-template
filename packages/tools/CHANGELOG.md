@@ -1,5 +1,15 @@
 # @repo/tools
 
+## 0.3.1
+
+### Patch Changes
+
+- f5e4009: chore: update imports to use zod/v4
+- e3d132e: chore: update deps
+- 4cd042e: chore: remove custom Zod package
+
+  decided this was too complex for a template
+
 ## 0.3.0
 
 ### Minor Changes
