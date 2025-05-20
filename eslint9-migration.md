@@ -331,31 +331,44 @@
         - **Recommended Structure for the Shared Config Package (`@repo/eslint-config`):**
             1.  **Configuration Files:** Define different base configurations in separate files within the shared package (e.g., `packages/eslint-config/src/default.config.ts`, `packages/eslint-config/src/react.config.ts`).
             2.  **Exported Functions:** Each of these files should export a function that returns a flat config array. This function often takes `importMetaUrl` as an argument to help resolve paths for `tsconfigRootDir` or other relative resources correctly from the perspective of the *consuming* package's `eslint.config.ts`.
+
+                **LLM Note on `defineConfig` Usage:** It is crucial that the exported functions from the shared ESLint configuration package (like `getDefaultConfig` in the example below) return an array of configuration objects that is explicitly wrapped with `defineConfig` (imported from `eslint/config`). This ensures that the returned configuration array is correctly typed and structured as per ESLint 9's expectations, even before it's consumed by individual packages. This pattern, where the shared function itself handles the `defineConfig` wrapping for its output, is the standard approach this guide follows.
+
                 - Example (`packages/eslint-config/src/default.config.ts`):
                     ```typescript
                     import tseslint from 'typescript-eslint';
                     import js from '@eslint/js';
+                    import { defineConfig } from 'eslint/config';
                     // Import other necessary plugins, FlatCompat, helpers etc.
                     // import { getTsconfigRootDir, getDirname } from './helpers'; // Assuming helpers.ts
 
                     export function getDefaultConfig(importMetaUrl: string) {
-                        // const tsconfigRootDir = getTsconfigRootDir(importMetaUrl); // Use importMetaUrl from consuming package
-                        // const __dirname = getDirname(importMetaUrl); // For FlatCompat if used here
+                        // const tsconfigRootDir = getTsconfigRootDir(importMetaUrl);
+                        // const __dirname = getDirname(importMetaUrl);
 
-                        return tseslint.config(
+                        // Manually construct the array of Linter.FlatConfig objects
+                       return defineConfig([
                             js.configs.recommended,
-                            ...tseslint.configs.recommended,
-                            // ... more configuration objects for the default setup
+                            tseslint.configs.recommended,
                             {
+                                files: ["**/*.{ts,tsx,mts}"],
                                 languageOptions: {
+                                    parser: tseslint.parser,
                                     parserOptions: {
                                         project: true,
                                         // tsconfigRootDir, // Set based on the consuming package
+                                        sourceType: "module",
                                     },
                                 },
+                                plugins: {
+                                    // 'import': importPlugin, // if using eslint-plugin-import
+                                },
+                                rules: {
+                                    '@typescript-eslint/no-unused-vars': 'warn',
+                                },
                             },
-                            // ... other plugins, rules, ignores for the default config
-                        );
+                            // ... other specific config objects for plugins, ignores, etc.
+                        ]);
                     }
                     ```
             3.  **`package.json` Exports:** The `package.json` of `@repo/eslint-config` should use the `exports` field to define how these configurations are imported by consuming packages.
@@ -380,13 +393,17 @@
                 ```typescript
                 import tseslint from 'typescript-eslint';
                 import { getDefaultConfig } from '@repo/eslint-config/default';
-                // Or: import { getReactConfig } from '@repo/eslint-config/react';
+                // For .js files, you might import from 'eslint/config':
+                import { defineConfig } from 'eslint/config';
+                import type { Linter } from 'eslint'; // Needed for explicit typing if not inferred
 
-                // Get the base shared config, passing this file's import.meta.url
-                const baseConfig = getDefaultConfig(import.meta.url);
+                // Get the base shared config array (which is already wrapped by defineConfig)
+                const baseConfigArray = getDefaultConfig(import.meta.url);
 
-                export default tseslint.config(
-                    ...baseConfig, // Spread the shared configuration array
+                // Consuming packages construct their final array, potentially adding more configs,
+                // and wrap it with defineConfig from 'eslint/config' for type safety and explicitness.
+                const finalConfig: Linter.FlatConfig[] = [
+                    ...baseConfigArray, // Spread the shared configuration array
                     // Add any app-specific overrides or additional configs here
                     {
                         files: ["src/**/*.ts"],
@@ -394,7 +411,12 @@
                             "my-app-specific-rule": "warn"
                         }
                     }
-                );
+                ];
+
+                // For .ts files, the final export can be the raw array or wrapped in defineConfig from 'eslint/config'.
+                // For .js files, wrap with defineConfig from 'eslint/config'.
+                export default defineConfig(finalConfig);
+                // Or for .ts files, simply: export default finalConfig;
                 ```
 
     - 5.5. Examples:
@@ -447,7 +469,7 @@
 
             - **Rule Deprecated (no direct replacement / functionality removed):**
                 - *Symptom:* Deprecation warning or unknown rule; changelog indicates the rule was removed without a direct one-to-one replacement.
-                - *Action (Requires more careful handling):*
+                - *Action (Requires more careful handling):**
                     1.  **Understand Intent:** Try to understand *why* the rule was originally enabled. (This is hard for an LLM. It might need to look at comments near the rule in the old config or assume it was for general code quality/style).
                     2.  **Look for Alternatives:** Search ESLint core rules or other installed plugins for rules that achieve a similar stylistic or error-prevention goal.
                     3.  **Flag for Manual Review:** If no clear alternative is found, or if the intent is ambiguous, comment out the rule and add a specific `// TODO-LLM: Rule [old-rule-name] removed/deprecated. Please review and find alternative or confirm removal.` This flags it for human oversight.
@@ -532,7 +554,7 @@
 
         - **Symptom:** Plugin not found errors when using `compat.extends("plugin:some-plugin/config-name")` or `compat.plugins("some-plugin")`.
             - **Cause 1:** The `baseDirectory` for `FlatCompat` might not be set correctly to the directory containing the `eslint.config.js` and thus cannot resolve the plugin relative to it.
-            - **LLM Fix Action 1:** Ensure `baseDirectory: __dirname` (or equivalent for the current config file's directory) is set in the `FlatCompat` constructor.
+            - **LLM Fix Action 1:** Ensure `baseDirectory` is correctly set to the directory of the `eslint.config.js` file where `FlatCompat` is being used. If extending a file from an npm package, use the package name directly (e.g., `compat.extends("eslint-config-some-package")`).
             - **Cause 2:** The plugin itself might not be correctly installed or might have issues with its entry points for `FlatCompat`.
             - **LLM Action 2:** Verify the plugin is listed in the correct `package.json` and has been installed. Double-check the plugin name and config name. If issues persist, the plugin might have deeper incompatibility with `FlatCompat` or ESLint 9.
 
@@ -621,6 +643,7 @@
         - **LLM Task:** This example demonstrates what a *consuming package's* `eslint.config.ts` might look like. It assumes it's importing a configuration function (e.g., `getBaseConfigFromSharedPackage`) from a shared ESLint configuration package (structured as described in Section 5.4) and then composing it with other settings.
         ```javascript
         // eslint.config.ts (Illustrative Example for a CONSUMING package)
+        import { defineConfig } from 'eslint/config';
         import tseslint from 'typescript-eslint';
         import js from "@eslint/js";
         import { FlatCompat } from "@eslint/eslintrc";
@@ -638,7 +661,7 @@
         import reactPlugin from "eslint-plugin-react";
         import reactHooksPlugin from "eslint-plugin-react-hooks";
         import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
-        // @ts-ignore eslint-plugin-import has no types - this comment would be needed if this example were a .ts file and types were strictly checked for this import.
+        // @ts-expect-error eslint-plugin-import has no official types yet
         import * as importPlugin from 'eslint-plugin-import';
         import unusedImportsPlugin from 'eslint-plugin-unused-imports';
         import prettierConfig from 'eslint-config-prettier'; // Just the rules object
@@ -655,7 +678,7 @@
 
         // const baseSharedConfig = getBaseConfigFromSharedPackage(import.meta.url);
 
-        export default tseslint.config(
+        export default defineConfig(
             // Start by spreading the imported shared configuration
             // ...baseSharedConfig,
 
@@ -667,10 +690,10 @@
             { ignores: ["**/dist/", "**/node_modules/", "**/.turbo/", "**/.wrangler/"] },
 
             // ESLint Recommended (can also be part of shared config)
-            js.configs.recommended,
+            js.configs.recommended, // Single config object
 
             // TypeScript Base Config (can also be part of shared config)
-            ...tseslint.configs.recommended,
+            tseslint.configs.recommended, // Array of configs, defineConfig flattens
             {
                 languageOptions: {
                     parserOptions: {
@@ -764,5 +787,4 @@
         | `env`                    | `languageOptions: { globals: { ...globals.envName } }`, or `compat.env()` | Use `globals` package.                                                |
         | `globals`                | `languageOptions: { globals: { ... } }`                                    |                                                                       |
         | `overrides`              | Separate objects in the top-level config array, using `files` key.       | Each override block becomes a distinct config object.                 |
-        | `ignorePatterns`         | `ignores: [...]` array                                                     | Can be global (early in array) or per-config-object.                |
-        | `settings`               | `settings: { ... }`                                                        | Typically for plugin-specific settings, within a config object.       |
+        | `ignorePatterns`         | `ignores: [...]`                                                           |                                                                       |
