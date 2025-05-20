@@ -41,16 +41,23 @@
         - **LLM Action:** Determine if any of these configurations belong to a package that serves as a dedicated shared ESLint configuration hub for the monorepo (e.g., a package named `eslint-config`, `@repo/eslint-config`, `shared/eslint-config`, etc., often located in a `packages` or `tools` directory).
             - *Heuristic for LLM:* Look for packages whose primary purpose seems to be exporting ESLint configurations, and which are extended or imported by other packages in the monorepo.
     - 3.3. Identifying ESLint-related dependencies
-        - **LLM Action:** For each package (and the root `package.json`):
-            - Read its `package.json` file.
-            - Extract all dependencies and devDependencies starting with:
-                - `eslint` (the core library)
-                - `eslint-plugin-`
-                - `eslint-config-`
-                - `@eslint/`
-                - `@typescript-eslint/` (parser and plugin)
-                - Other known ESLint-related packages (e.g., `eslint-import-resolver-typescript`, `eslint-plugin-react`, etc. this list might need to be expanded based on common setups or user input).
-        - **LLM Action:** Compile a list of all unique ESLint-related packages and their current versions across the monorepo. This will be crucial for the update phase.
+        - **LLM Action:**
+            1.  **Primary Location (Shared ESLint Config Package):**
+                -   If a dedicated shared ESLint configuration package was identified in step 3.2 (e.g., `packages/eslint-config`):
+                    -   Read its `package.json` file.
+                    -   Extract all dependencies and devDependencies starting with the prefixes listed below.
+            2.  **Secondary Location (Monorepo Root):**
+                -   Read the root `package.json` file of the monorepo.
+                -   Extract all dependencies and devDependencies starting with the prefixes listed below.
+            3.  **Common Prefixes for ESLint-related packages:**
+                -   `eslint` (the core library)
+                -   `eslint-plugin-`
+                -   `eslint-config-`
+                -   `@eslint/`
+                -   `@typescript-eslint/` (parser and plugin)
+                -   Other known ESLint-related packages (e.g., `eslint-import-resolver-typescript`, `eslint-plugin-react`, etc. This list might need to be expanded based on common setups or user input).
+        - **LLM Action:** Compile a comprehensive list of all *unique* ESLint-related packages and their current versions by combining the findings from the shared config package's `package.json` (if applicable) and the root `package.json`. This list will be crucial for the update phase.
+        - **LLM Rationale:** ESLint dependencies are typically centralized in a shared `eslint-config` package or at the monorepo root. Focusing on these locations is more efficient for identifying the core set of ESLint dependencies to manage and update. Individual application packages typically consume these shared configurations rather than declaring their own primary ESLint dependencies.
     - 3.4. Creating a Migration Plan (conceptual for LLM)
         - **LLM Thought Process:**
             - **Shared Configs First:** Prioritize migrating shared ESLint configurations (e.g., in `packages/eslint-config`) before migrating the individual package configs that consume them.
