@@ -195,6 +195,21 @@
                         // or defined in a subsequent config object.
                     ];
                     ```
+                - **Special Note for `eslint-plugin-import`:** This plugin currently lacks official TypeScript types. If you are using it in an `eslint.config.ts` file, you may need to use a comment like `// @ts-ignore eslint-plugin-import has no types` (or `// @ts-expect-error`) and import it using the namespace import syntax:
+                    ```typescript
+                    // eslint.config.ts
+                    // @ts-ignore eslint-plugin-import has no types
+                    import * as importPlugin from 'eslint-plugin-import';
+                    // ...
+                    export default [
+                        {
+                            plugins: { 'import': importPlugin },
+                            // ... rules and settings for eslint-plugin-import, e.g.,
+                            // settings: { 'import/resolver': { typescript: {} } },
+                            // rules: { ...importPlugin.configs.recommended.rules }
+                        }
+                    ];
+                    ```
 
             - **`rules` (Legacy):**
                 - **Flat Config Approach:** Place directly in a config object's `rules` key. This is largely the same.
@@ -566,7 +581,8 @@
         import reactPlugin from "eslint-plugin-react";
         import reactHooksPlugin from "eslint-plugin-react-hooks";
         import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
-        import importPlugin from 'eslint-plugin-import'; // If it supports flat config
+        // @ts-ignore eslint-plugin-import has no types - this comment would be needed if this example were a .ts file and types were strictly checked for this import.
+        import * as importPlugin from 'eslint-plugin-import';
         import unusedImportsPlugin from 'eslint-plugin-unused-imports';
         import prettierConfig from 'eslint-config-prettier'; // Just the rules object
 
@@ -626,7 +642,7 @@
 
             // Import Plugin (Example - assuming it supports flat config or via FlatCompat)
             {
-                plugins: { import: importPlugin, 'unused-imports': unusedImportsPlugin },
+                plugins: { 'import': importPlugin, 'unused-imports': unusedImportsPlugin },
                 settings: {
                     'import/resolver': {
                         typescript: { project: './tsconfig.json' }, // Adjust path
