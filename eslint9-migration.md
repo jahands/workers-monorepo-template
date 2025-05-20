@@ -14,8 +14,11 @@
         - Package manager: pnpm, yarn, or npm (commands in this guide may assume pnpm, adjust as needed).
         - `jq`: Useful for parsing `package.json` files from the command line if needed (optional, direct file reads are preferred).
     - Initial workspace assessment commands (e.g., `eslint --version` globally and per package)
-        - **LLM Action:** Execute `pnpm exec eslint --version` (or equivalent for yarn/npm) in the root and in each detected package to understand the current ESLint version(s) in use.
-        - Store these versions for later comparison.
+        - **LLM Action:** Determine the primary ESLint version currently used in the monorepo.
+            - 1. **Check at Monorepo Root:** Execute `pnpm exec eslint --version` (or equivalent for yarn/npm) in the root of the monorepo. This is the primary indicator of the ESLint version being used for development and CLI tasks.
+            - 2. **(Optional) Check Shared ESLint Config Package:** If a dedicated shared ESLint configuration package is identified (e.g., `packages/eslint-config`, `shared/eslint-config`), examine its `package.json` to see which version of `eslint` it declares as a dependency or peerDependency. This can provide further context but the root execution is generally the most direct measure of the active version.
+            - *Note:* Avoid running `eslint --version` in every individual package, as this is usually unnecessary in a monorepo aiming for consistent tooling versions.
+        - **LLM Action:** Store this primary ESLint version for later comparison.
         - **LLM Action:** Identify the monorepo's package manager (pnpm, yarn, npm) by checking for lock files (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`) or workspace configuration files.
 
 ## 3. Phase 1: Discovery and Planning
@@ -34,7 +37,9 @@
             - `.eslintrc.yml`
             - `.eslintrc.json`
             - `eslintConfig` key in `package.json`
-        - **LLM Action:** Record the path and format of each found configuration file. Note which ones are likely "shared" configs (e.g., in a `packages/eslint-config` directory) vs. "consumer" configs in individual apps/services.
+        - **LLM Action:** Record the path and format of each found configuration file.
+        - **LLM Action:** Determine if any of these configurations belong to a package that serves as a dedicated shared ESLint configuration hub for the monorepo (e.g., a package named `eslint-config`, `@repo/eslint-config`, `shared/eslint-config`, etc., often located in a `packages` or `tools` directory).
+            - *Heuristic for LLM:* Look for packages whose primary purpose seems to be exporting ESLint configurations, and which are extended or imported by other packages in the monorepo.
     - 3.3. Identifying ESLint-related dependencies
         - **LLM Action:** For each package (and the root `package.json`):
             - Read its `package.json` file.
@@ -57,30 +62,45 @@
                 3. Update consuming packages' dependencies.
                 4. Migrate consuming packages' ESLint configs to flat format, importing the new shared flat configs.
                 5. Address root monorepo ESLint configuration.
+            - *LLM Guidance Note:* This "Order of Operations" is the master plan. The LLM will apply the dependency update techniques described in Phase 4 and the configuration migration techniques from Phase 5 according to this sequence and to the relevant packages (shared package first, then consuming packages).
+        - **LLM Critical Checkpoint:**
+            - **After steps 3.1, 3.2, and 3.3, verify if a dedicated shared ESLint configuration package was identified.**
+            - **If NO dedicated shared ESLint configuration package is found:**
+                - **LLM Action: ABORT MIGRATION.**
+                - Inform the user: "Migration aborted. This automated process is designed for monorepos that include a dedicated package for shared ESLint configurations (e.g., `@repo/eslint-config`). No such package was identified in this monorepo."
+            - **If YES, proceed with the migration plan.**
 
 ## 4. Phase 2: Updating Dependencies
 
     - **Goal:** Update ESLint, its core plugins, and all other ESLint-related packages to their latest versions to prepare for the flat config migration. `FlatCompat` will be used in Phase 5 for any plugins not yet supporting flat config directly.
+    - **LLM Action Guidance:** This Phase describes the *methods* for updating dependencies. The LLM must refer to the "Order of Operations" (defined in Phase 3.4) to determine *which specific* packages (the identified shared ESLint config package first, then consuming packages) these steps should be applied to and *when* in the overall migration sequence. When the Order of Operations indicates it's time to update dependencies for a package or group of packages, apply the following steps (4.1-4.4) to them:
     - **LLM Action:** For each unique ESLint-related package identified in Phase 1 (3.3):
         - **4.1. Determine Target Version:**
             - For `eslint`: Target the latest ESLint v9.x.x.
             - For all other ESLint plugins (`eslint-plugin-*`), shared configs (`eslint-config-*`), parsers (e.g., `@typescript-eslint/parser`), and related tools: Target their `latest` available version. The primary goal is to get the newest code, and compatibility with flat config will be addressed in Phase 5, using `FlatCompat` if necessary.
             - *Rationale*: Attempting to update to the absolute latest version first simplifies the process. If a plugin is not compatible with ESLint 9 even with `FlatCompat`, or if it causes significant issues, it can be flagged for manual review and potentially pinned to an older version or replaced later.
-        - **4.2. Update `package.json` files:**
-            - **LLM Action:** For every `package.json` file (monorepo root and each package) that lists an ESLint-related dependency:
-                - Update the version string to the determined target version (e.g., `eslint@^9.0.0`, `some-plugin@latest`).
-                - *Example command (conceptual, LLM would need to generate per package manager and dependency)*: `pnpm add -D eslint@^9.0.0 @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest some-other-plugin@latest --filter <package-name>` or modify `package.json` directly.
-        - **4.3. Install Updated Dependencies:**
-            - **LLM Action:** After all relevant `package.json` files have been updated, run the package manager's install command from the monorepo root to install all new versions and update the lock file.
-                - `pnpm install`
-                - `yarn install`
-                - `npm install`
+        - **4.2. Update Dependencies via Package Manager:**
+            - **LLM Action:** For each package identified in Phase 1 (including the monorepo root) and for each ESLint-related dependency within that package that needs updating (as determined in 4.1):
+                - Construct and execute the appropriate command for the detected package manager to update the dependency to its target version/tag (e.g., `eslint@^9.0.0`, `some-plugin@latest`).
+                - These commands will modify the respective `package.json` files by resolving tags like `@latest` to specific semantic versions.
+                - **Important:** The package manager, not the LLM directly editing the `package.json` text, must be responsible for resolving version tags (like `@latest`) and writing the final semantic version to the `package.json` file.
+                - *Example commands (LLM to adapt for detected package manager, specific packages, and dependencies to be updated):*
+                    - To update `eslint` to `^9.0.0` and `some-plugin` to its latest version in a specific package `my-app`:
+                        - `pnpm add -D eslint@^9.0.0 some-plugin@latest --filter my-app`
+                        - `yarn workspace my-app add -D eslint@^9.0.0 some-plugin@latest`
+                        - (For npm, navigate to the package directory: `cd packages/my-app && npm install -D eslint@^9.0.0 some-plugin@latest && cd -`)
+                    - If updating many dependencies within one package, they can often be grouped into a single command:
+                        - `pnpm add -D plugin1@latest plugin2@latest another-dep@^specific.version --filter my-app`
+                - **LLM Task:** Ensure these package manager commands are executed for all packages and all dependencies that require updates according to the plan from step 4.1.
+        - **4.3. Install Updated Dependencies (Consolidate & Update Lockfile):**
+            - **LLM Action:** After all individual dependencies have been updated in their respective `package.json` files using the package manager commands in step 4.2, run a general install command from the monorepo root. This ensures the lockfile (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`) is fully updated and all dependencies are correctly installed according to the modified `package.json` files.
         - **4.4. Initial Verification (Optional but Recommended):**
             - **LLM Action:** After installation, try running `eslint --version` in a few key packages or the root to ensure the core ESLint version has been updated as expected.
 
 ## 5. Phase 3: Migrating to Flat Config (`eslint.config.js`)
 
     - **Goal:** Convert all existing ESLint configurations (root and per-package `.eslintrc.*` files or `package.json#eslintConfig`) to the new `eslint.config.js` (or `.ts`/`.mjs`) flat configuration format.
+    - **LLM Action Guidance:** This Phase describes the *methods* for migrating ESLint configurations. The LLM must refer to the "Order of Operations" (defined in Phase 3.4) to determine *which specific* configurations (for the identified shared ESLint config package first, then for consuming packages) these steps should be applied to and *when* in the overall migration sequence. When the Order of Operations indicates it's time to migrate a configuration, apply the following steps (5.1-5.5) to it:
     - **Core Tooling:**
         - `eslint.config.js`: The new configuration file name.
         - `@eslint/eslintrc` package: Provides `FlatCompat` utility for using legacy configurations/plugins. (Reference: [https://github.com/eslint/eslintrc#readme](https://github.com/eslint/eslintrc#readme))
