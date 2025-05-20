@@ -2,9 +2,19 @@
 
 ## 1. Introduction & Goals
 
-    - Purpose of this guide (for LLM consumption)
-    - Overview of ESLint 9 changes (focus on flat config)
-    - Goals of the automated migration
+    - **Purpose of this guide:** This document serves as a comprehensive, step-by-step guide for a Large Language Model (LLM) to automate the migration of a TypeScript-based monorepo from ESLint version 8 to ESLint version 9. It focuses exclusively on projects using `eslint.config.ts` for their ESLint configuration (the "flat config" model).
+
+    - **Overview of ESLint 9 changes (focus on flat config):** The most significant change in ESLint 9 is the full adoption of the "flat config" system, using an `eslint.config.ts` (or `.js`/`.mjs`, though this guide standardizes on `.ts`) file that exports an array of configuration objects. This replaces the legacy `.eslintrc.*` file formats and the `eslintConfig` key in `package.json`. Key aspects include explicit plugin imports, a different way of handling `extends`, and more granular control over configuration application through `files` and `ignores` properties within config objects.
+
+    - **Goals of the automated migration:** The primary goal is for the LLM to successfully and accurately perform the following actions:
+        1.  **Prerequisite Checks:** Verify necessary tools and assess the initial ESLint setup.
+        2.  **Dependency Management:** Update ESLint, its core plugins (`@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser`), other ESLint-related plugins, and configuration packages (e.g., `eslint-config-prettier`) to their latest ESLint 9 compatible versions across the monorepo, primarily focusing on the shared ESLint configuration package and the root `package.json`.
+        3.  **Flat Config Migration:** Convert all existing ESLint configurations (root and per-package `.eslintrc.*` or `package.json#eslintConfig`) to the new `eslint.config.ts` flat configuration format.
+        4.  **Shared Configuration Handling:** Ensure that the dedicated shared ESLint configuration package (e.g., `packages/eslint-config`) is migrated correctly to export flat configurations, typically as functions returning `defineConfig([...])` arrays, for consumption by other packages in the monorepo using `eslint.config.ts`.
+        5.  **Rule Updates & Deprecations:** Identify and address rules that have been deprecated, removed, or had their options changed in ESLint 9 or updated plugins, making necessary modifications to the `eslint.config.ts` files.
+        6.  **Verification:** Execute ESLint with the new configuration to ensure it runs without errors (config errors, not linting violations) and apply auto-fixes where appropriate.
+        7.  **Maintainability:** Produce a clean, maintainable, and type-safe ESLint setup using `eslint.config.ts` and `defineConfig` from `eslint/config`.
+        8.  **TypeScript Focus:** The migration process outlined in this guide is specifically tailored for monorepos where TypeScript is the primary language and `eslint.config.ts` is the desired configuration file format.
 
 ## 2. Prerequisites & Setup
 
@@ -145,8 +155,8 @@
 
                     const compat = new FlatCompat({
                         baseDirectory: __dirname, // Essential for resolving plugins
-                        // recommendedConfig: js.configs.recommended, // Needed if using "eslint:recommended" via compat.extends
-                        // allConfig: js.configs.all // Needed if using "eslint:all" via compat.extends
+                        // recommendedConfig: js.configs.recommended, // Needed if using "eslint:recommended" via compat
+                        // allConfig: js.configs.all // Needed if using "eslint:all" via compat
                     });
                     ```
                 - For `eslint.config.ts`, `import.meta.url` can often be used directly if helper functions for `__dirname` are set up (as in `workers/packages/eslint-config/src/helpers.ts`).
@@ -373,6 +383,8 @@
                     // Import other necessary plugins, FlatCompat, helpers etc.
                     // import { getTsconfigRootDir, getDirname } from './helpers'; // Assuming helpers.ts
 
+                    // LLM Instruction: Avoid adding an explicit return type to this function (e.g., `: Linter.FlatConfig[]`).
+                    // The type will be correctly inferred from the `defineConfig(...)` call, which is preferred.
                     export function getDefaultConfig(importMetaUrl: string) {
                         // const tsconfigRootDir = getTsconfigRootDir(importMetaUrl);
                         // const __dirname = getDirname(importMetaUrl);
