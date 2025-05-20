@@ -325,23 +325,77 @@
                     ];
                     ```
 
-    - 5.4. Handling shared configurations in a flat config world.
-        - **LLM Guidance:** As seen in `workers/packages/eslint-config/`, shared configs should themselves be exported as flat config arrays.
-        - Consuming `eslint.config.js` files will import these arrays and spread them.
-        - Example (`workers/packages/eslint-config/src/default.config.ts`):
-            ```typescript
-            export function getConfig(importMetaUrl: string) {
-                return defineConfig([ // defineConfig is a helper, ultimately returns array
-                    // ... various config objects ...
-                ]);
-            }
-            ```
-        - Example (consuming package's `eslint.config.ts` like `workers/apps/axiom-flows/eslint.config.ts`):
-            ```typescript
-            import { defineConfig, getConfig } from '@repo/eslint-config';
-            const config = getConfig(import.meta.url);
-            export default defineConfig([...config]);
-            ```
+    - 5.4. Structuring and Exporting from the Shared ESLint Configuration Package
+        - **LLM Guidance:** The identified shared ESLint configuration package (e.g., `packages/eslint-config`, which we'll call `@repo/eslint-config` for examples) *must* be migrated to export its configurations as flat config arrays, typically via exported functions.
+
+        - **Recommended Structure for the Shared Config Package (`@repo/eslint-config`):**
+            1.  **Configuration Files:** Define different base configurations in separate files within the shared package (e.g., `packages/eslint-config/src/default.config.ts`, `packages/eslint-config/src/react.config.ts`).
+            2.  **Exported Functions:** Each of these files should export a function that returns a flat config array. This function often takes `importMetaUrl` as an argument to help resolve paths for `tsconfigRootDir` or other relative resources correctly from the perspective of the *consuming* package's `eslint.config.ts`.
+                - Example (`packages/eslint-config/src/default.config.ts`):
+                    ```typescript
+                    import tseslint from 'typescript-eslint';
+                    import js from '@eslint/js';
+                    // Import other necessary plugins, FlatCompat, helpers etc.
+                    // import { getTsconfigRootDir, getDirname } from './helpers'; // Assuming helpers.ts
+
+                    export function getDefaultConfig(importMetaUrl: string) {
+                        // const tsconfigRootDir = getTsconfigRootDir(importMetaUrl); // Use importMetaUrl from consuming package
+                        // const __dirname = getDirname(importMetaUrl); // For FlatCompat if used here
+
+                        return tseslint.config(
+                            js.configs.recommended,
+                            ...tseslint.configs.recommended,
+                            // ... more configuration objects for the default setup
+                            {
+                                languageOptions: {
+                                    parserOptions: {
+                                        project: true,
+                                        // tsconfigRootDir, // Set based on the consuming package
+                                    },
+                                },
+                            },
+                            // ... other plugins, rules, ignores for the default config
+                        );
+                    }
+                    ```
+            3.  **`package.json` Exports:** The `package.json` of `@repo/eslint-config` should use the `exports` field to define how these configurations are imported by consuming packages.
+                - Example (`packages/eslint-config/package.json`):
+                    ```json
+                    {
+                        "name": "@repo/eslint-config",
+                        "main": "./src/default.config.ts", // Or a CJS entry point if dual-publishing
+                        "exports": {
+                            ".": "./src/default.config.ts",
+                            "./default": "./src/default.config.ts",
+                            "./react": "./src/react.config.ts"
+                            // Potentially add ./base, ./typescript etc.
+                        },
+                        // ... other package.json fields
+                    }
+                    ```
+
+        - **Consuming Shared Configurations in Application Packages:**
+            - In an application package (e.g., `apps/my-app/eslint.config.ts`), import the desired config function from the shared package and call it, typically passing `import.meta.url` from the *consuming* config file.
+            - Example (consuming package's `eslint.config.ts`):
+                ```typescript
+                import tseslint from 'typescript-eslint';
+                import { getDefaultConfig } from '@repo/eslint-config/default';
+                // Or: import { getReactConfig } from '@repo/eslint-config/react';
+
+                // Get the base shared config, passing this file's import.meta.url
+                const baseConfig = getDefaultConfig(import.meta.url);
+
+                export default tseslint.config(
+                    ...baseConfig, // Spread the shared configuration array
+                    // Add any app-specific overrides or additional configs here
+                    {
+                        files: ["src/**/*.ts"],
+                        rules: {
+                            "my-app-specific-rule": "warn"
+                        }
+                    }
+                );
+                ```
 
     - 5.5. Examples:
         - **LLM Task:** Refer to the `workers-monorepo-template` (before) and `workers` (after) project structures as concrete examples for common patterns.
@@ -563,21 +617,24 @@
             - `eslint-plugin-unused-imports`: [https://github.com/sweepline/eslint-plugin-unused-imports#readme](https://github.com/sweepline/eslint-plugin-unused-imports#readme)
             - `eslint-config-prettier` (for disabling stylistic rules that conflict with Prettier): [https://github.com/prettier/eslint-config-prettier#readme](https://github.com/prettier/eslint-config-prettier#readme)
 
-    - **9.2. Example `eslint.config.js` (Complex Scenario):**
-        - **LLM Task:** This example demonstrates a more complex setup, incorporating TypeScript, React, `FlatCompat` for a legacy plugin, and specific overrides. Use as a reference for constructing new configs.
+    - **9.2. Example of a Consuming Package's `eslint.config.ts` (Complex Scenario):**
+        - **LLM Task:** This example demonstrates what a *consuming package's* `eslint.config.ts` might look like. It assumes it's importing a configuration function (e.g., `getBaseConfigFromSharedPackage`) from a shared ESLint configuration package (structured as described in Section 5.4) and then composing it with other settings.
         ```javascript
-        // eslint.config.js (Illustrative Example)
+        // eslint.config.ts (Illustrative Example for a CONSUMING package)
+        import tseslint from 'typescript-eslint';
         import js from "@eslint/js";
         import { FlatCompat } from "@eslint/eslintrc";
         import path from "path";
         import { fileURLToPath } from "url";
 
-        // Core TS plugins
-        import tseslint from 'typescript-eslint'; // Combined package for parser & plugin
+        // Assume this function is imported from your shared eslint-config package
+        // import { getBaseConfigFromSharedPackage } from "@repo/eslint-config";
+
+        // Core TS plugins (can also be part of the shared config)
         // import tsParser from '@typescript-eslint/parser'; // Or individual imports
         // import tsPlugin from '@typescript-eslint/eslint-plugin';
 
-        // Other plugins
+        // Other plugins (can also be part of the shared config, or app-specific)
         import reactPlugin from "eslint-plugin-react";
         import reactHooksPlugin from "eslint-plugin-react-hooks";
         import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
@@ -588,37 +645,42 @@
 
         import globals from "globals";
 
-        // Setup for FlatCompat
+        // Setup for FlatCompat (might be needed for app-specific legacy plugins)
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
         const compat = new FlatCompat({
             baseDirectory: __dirname,
             recommendedConfig: js.configs.recommended,
-            // allConfig: js.configs.all, // if needed
         });
 
+        // const baseSharedConfig = getBaseConfigFromSharedPackage(import.meta.url);
+
         export default tseslint.config(
-            // Global ignores
+            // Start by spreading the imported shared configuration
+            // ...baseSharedConfig,
+
+            // --- The rest of this example shows configurations that *could* be in a shared config
+            // --- or could be app-specific additions/overrides.
+            // --- If getBaseConfigFromSharedPackage() already provides these, they might not be repeated here.
+
+            // Global ignores (can also be part of shared config)
             { ignores: ["**/dist/", "**/node_modules/", "**/.turbo/", "**/.wrangler/"] },
 
-            // ESLint Recommended
+            // ESLint Recommended (can also be part of shared config)
             js.configs.recommended,
 
-            // TypeScript Base Config (using tseslint.configs.recommended as an example)
-            // You can also use tseslint.configs.stylistic, or tseslint.configs.strict
+            // TypeScript Base Config (can also be part of shared config)
             ...tseslint.configs.recommended,
-            // If you need type-aware linting (more powerful but slower):
-            // ...tseslint.configs.recommendedTypeChecked,
             {
                 languageOptions: {
                     parserOptions: {
-                        project: true, // Assumes tsconfig.json in root or per-package
-                        tsconfigRootDir: __dirname, // Adjust if tsconfig is elsewhere
+                        project: true,
+                        tsconfigRootDir: __dirname, // For app-specific tsconfig, if not covered by shared config's `importMetaUrl` handling
                     },
                 },
             },
 
-            // React Specific Config
+            // React Specific Config (can also be part of shared config, or app-specific)
             {
                 files: ["**/*.{ts,tsx,js,jsx}"],
                 plugins: {
