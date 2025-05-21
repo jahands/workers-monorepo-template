@@ -18,18 +18,24 @@
 
 ## 2. Prerequisites & Setup
 
-    - Required tools (Node.js, pnpm/yarn/npm, jq for JSON processing, etc.)
+    - **2.1. Pre-migration Checks:**
+        - **LLM Action:** Verify the user has a clean git working tree before starting the migration.
+            - Run `git status` to ensure no uncommitted changes.
+            - If there are uncommitted changes, instruct the user to commit or stash them before proceeding.
+            - Recommend creating a backup branch: `git checkout -b eslint9-migration`
+    - **2.2. Required tools (Node.js, pnpm/yarn/npm, jq for JSON processing, etc.)**
         - **LLM Action:** Verify these tools are available or guide the user on how to install them.
         - Node.js: v18.18.0, v20.9.0 or later (required by ESLint v9).
         - Package manager: pnpm, yarn, or npm (commands in this guide may assume pnpm, adjust as needed).
         - `jq`: Useful for parsing `package.json` files from the command line if needed (optional, direct file reads are preferred).
-    - Initial workspace assessment commands (e.g., `eslint --version` globally and per package)
+    - **2.3. Initial workspace assessment commands (e.g., `eslint --version` globally and per package)**
         - **LLM Action:** Determine the primary ESLint version currently used in the monorepo.
             - 1. **Check at Monorepo Root:** Execute `pnpm exec eslint --version` (or equivalent for yarn/npm) in the root of the monorepo. This is the primary indicator of the ESLint version being used for development and CLI tasks.
             - 2. **(Optional) Check Shared ESLint Config Package:** If a dedicated shared ESLint configuration package is identified (e.g., `packages/eslint-config`, `shared/eslint-config`), examine its `package.json` to see which version of `eslint` it declares as a dependency or peerDependency. This can provide further context but the root execution is generally the most direct measure of the active version.
             - *Note:* Avoid running `eslint --version` in every individual package, as this is usually unnecessary in a monorepo aiming for consistent tooling versions.
         - **LLM Action:** Store this primary ESLint version for later comparison.
         - **LLM Action:** Identify the monorepo's package manager (pnpm, yarn, npm) by checking for lock files (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`) or workspace configuration files.
+        - **LLM Action:** If workspace detection fails or returns unexpected results, provide error handling guidance and ask user to manually specify workspace packages.
 
 ## 3. Phase 1: Discovery and Planning
 
@@ -94,6 +100,11 @@
     - **LLM Action:** For each unique ESLint-related package identified in Phase 1 (3.3):
         - **4.1. Determine Target Version:**
             - For `eslint`: Target the latest ESLint v9.x.x.
+            - **Essential Dependencies to Install/Update:**
+                - `@eslint/eslintrc`: Required for `FlatCompat` utility.
+                - `@eslint/compat`: Required for `includeIgnoreFile` and other compatibility utilities.
+                - `globals`: Required for environment globals in flat config.
+                - `typescript-eslint`: Meta-package for TypeScript ESLint integration.
             - For all other ESLint plugins (`eslint-plugin-*`), shared configs (`eslint-config-*`), parsers (e.g., `@typescript-eslint/parser`), and related tools: Target their `latest` available version. The primary goal is to get the newest code, and compatibility with flat config will be addressed in Phase 5, using `FlatCompat` if necessary.
             - *Rationale*: Attempting to update to the absolute latest version first simplifies the process. If a plugin is not compatible with ESLint 9 even with `FlatCompat`, or if it causes significant issues, it can be flagged for manual review and potentially pinned to an older version or replaced later.
         - **4.2. Update Dependencies via Package Manager:**
@@ -102,15 +113,26 @@
                 - These commands will modify the respective `package.json` files by resolving tags like `@latest` to specific semantic versions.
                 - **Important:** The package manager, not the LLM directly editing the `package.json` text, must be responsible for resolving version tags (like `@latest`) and writing the final semantic version to the `package.json` file.
                 - *Example commands (LLM to adapt for detected package manager, specific packages, and dependencies to be updated):*
+                    - To update essential dependencies in the shared ESLint config package:
+                        - `pnpm add -D eslint@^9.0.0 @eslint/eslintrc@latest @eslint/compat@latest globals@latest typescript-eslint@latest --filter @repo/eslint-config`
+                        - `yarn workspace @repo/eslint-config add -D eslint@^9.0.0 @eslint/eslintrc@latest @eslint/compat@latest globals@latest typescript-eslint@latest`
                     - To update `eslint` to `^9.0.0` and `some-plugin` to its latest version in a specific package `my-app`:
                         - `pnpm add -D eslint@^9.0.0 some-plugin@latest --filter my-app`
                         - `yarn workspace my-app add -D eslint@^9.0.0 some-plugin@latest`
                         - (For npm, navigate to the package directory: `cd packages/my-app && npm install -D eslint@^9.0.0 some-plugin@latest && cd -`)
                     - If updating many dependencies within one package, they can often be grouped into a single command:
                         - `pnpm add -D plugin1@latest plugin2@latest another-dep@^specific.version --filter my-app`
+                - **LLM Error Handling:** If package manager commands fail:
+                    - Check for version conflicts and dependency resolution issues.
+                    - Try updating dependencies one at a time to isolate problematic packages.
+                    - If a specific plugin version is incompatible with ESLint 9, note it for manual review and continue with other updates.
                 - **LLM Task:** Ensure these package manager commands are executed for all packages and all dependencies that require updates according to the plan from step 4.1.
         - **4.3. Install Updated Dependencies (Consolidate & Update Lockfile):**
             - **LLM Action:** After all individual dependencies have been updated in their respective `package.json` files using the package manager commands in step 4.2, run a general install command from the monorepo root. This ensures the lockfile (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`) is fully updated and all dependencies are correctly installed according to the modified `package.json` files.
+            - **LLM Error Handling:** If installation fails:
+                - Check for peer dependency conflicts.
+                - Verify all packages can be resolved at their target versions.
+                - If conflicts occur, try resolving with package manager specific commands (e.g., `pnpm install --resolution-mode=highest` for pnpm).
         - **4.4. Initial Verification (Optional but Recommended):**
             - **LLM Action:** After installation, try running `eslint --version` in a few key packages or the root to ensure the core ESLint version has been updated as expected.
 
@@ -140,26 +162,34 @@
         - **LLM Action (Repeat for each config identified in Phase 1.2, starting with shared configs):**
             1.  **Create `eslint.config.ts`:**
                 - In the same directory as the old ESLint config file, create a new `eslint.config.ts`.
-                - Ensure it is excluded from the project's main `tsconfig.json` to avoid conflicts (as discussed, e.g., adding `"${configDir}/eslint.config.ts"` to `exclude` array in `tsconfig.json`).
+                - **Exclude from TypeScript compilation:** Add `eslint.config.ts` to the `exclude` array in the relevant `tsconfig.json` files:
+                    - For application packages: Add `"eslint.config.ts"` to the package's `tsconfig.json` exclude array.
+                    - For the root monorepo: Add `"**/eslint.config.ts"` to the root `tsconfig.json` exclude array.
+                    - Example: `"exclude": ["eslint.config.ts", "dist", "node_modules"]`
             2.  **Initialize `FlatCompat` (if needed):**
                 - **LLM Action:** If the old config uses plugins or extends configs that might not be flat-config-ready, import `FlatCompat` from `@eslint/eslintrc`.
+                - **Use helper functions for path resolution:** Create or import helper functions for consistent path handling:
+                    ```typescript
+                    import { fileURLToPath } from 'url';
+                    import path from 'path';
+
+                    export function getDirname(importMetaUrl: string) {
+                        const __filename = fileURLToPath(importMetaUrl);
+                        return path.dirname(__filename);
+                    }
+                    ```
                 - Example (`eslint.config.ts`):
                     ```typescript
                     import { FlatCompat } from "@eslint/eslintrc";
-                    import path from "path";
-                    import { fileURLToPath } from "url";
                     import js from '@eslint/js'; // Required if using recommendedConfig or allConfig through compat
-
-                    const __filename = fileURLToPath(import.meta.url);
-                    const __dirname = path.dirname(__filename);
+                    import { getDirname } from './helpers'; // Use helper function
 
                     const compat = new FlatCompat({
-                        baseDirectory: __dirname, // Essential for resolving plugins
+                        baseDirectory: getDirname(import.meta.url), // Use helper for consistent path resolution
                         // recommendedConfig: js.configs.recommended, // Needed if using "eslint:recommended" via compat
                         // allConfig: js.configs.all // Needed if using "eslint:all" via compat
                     });
                     ```
-                - For `eslint.config.ts`, `import.meta.url` can often be used directly if helper functions for `__dirname` are set up (as in `workers/packages/eslint-config/src/helpers.ts`).
             3.  **Translate Configuration Sections:** (Detailed in 5.3)
             4.  **Delete Old Config File:** After successful migration and verification, delete the old `.eslintrc.*` file and remove `eslintConfig` from `package.json` if present.
 
@@ -232,18 +262,19 @@
                         // or defined in a subsequent config object.
                     ]);
                     ```
-                - **Special Note for `eslint-plugin-import`:** This plugin currently lacks official TypeScript types. If you are using it in an `eslint.config.ts` file, you may need to use a comment like `// @ts-expect-error eslint-plugin-import has no types` (or similar) and import it using the namespace import syntax:
+                - **Special Note for `eslint-plugin-import`:** This plugin currently lacks official TypeScript types. If you are using it in an `eslint.config.ts` file, you may need to use a comment like `// @ts-ignore eslint-plugin-import has no types` and import it using the namespace import syntax:
                     ```typescript
                     // eslint.config.ts
-                    // @ts-expect-error eslint-plugin-import has no types
+                    // @ts-ignore eslint-plugin-import has no types
                     import * as importPlugin from 'eslint-plugin-import';
                     // ...
                     export default defineConfig([
                         {
                             plugins: { 'import': importPlugin },
+                            // Use flat config syntax for modern plugins:
+                            ...importPlugin.flatConfigs?.recommended,
                             // ... rules and settings for eslint-plugin-import, e.g.,
-                            // settings: { 'import/resolver': { typescript: {} } },
-                            // rules: { ...importPlugin.configs.recommended.rules }
+                            settings: { 'import/resolver': { typescript: { project: './tsconfig.json' } } },
                         }
                     ]);
                     ```
@@ -289,10 +320,11 @@
 
             - **`env` & `globals` (Legacy):**
                 - **Flat Config Approach:** `env` is mapped to `languageOptions.globals` using helper objects (e.g., from the `globals` package). Direct `globals` are also placed in `languageOptions.globals`.
+                - **Note:** Import from `globals/index.js` for compatibility:
                 - Example:
                     ```typescript
                     // eslint.config.ts
-                    import globals from 'globals';
+                    import globals from 'globals/index.js';
                     import { defineConfig } from 'eslint/config';
 
                     export default defineConfig([
@@ -369,96 +401,153 @@
     - 5.4. Structuring and Exporting from the Shared ESLint Configuration Package
         - **LLM Guidance:** The identified shared ESLint configuration package (e.g., `packages/eslint-config`, which we'll call `@repo/eslint-config` for examples) *must* be migrated to export its configurations as flat config arrays, typically via exported functions.
 
-        - **Recommended Structure for the Shared Config Package (`@repo/eslint-config`):**
-            1.  **Configuration Files:** Define different base configurations in separate files within the shared package (e.g., `packages/eslint-config/src/default.config.ts`, `packages/eslint-config/src/react.config.ts`).
-            2.  **Exported Functions:** Each of these files should export a function that returns a flat config array. This function often takes `importMetaUrl` as an argument to help resolve paths for `tsconfigRootDir` or other relative resources correctly from the perspective of the *consuming* package's `eslint.config.ts`.
+        - **Step-by-Step Migration of Shared Config Package:**
+            1.  **Install Required Dependencies:** Ensure the shared config package has all necessary dependencies:
+                ```bash
+                pnpm add -D @eslint/eslintrc @eslint/compat @eslint/js globals typescript-eslint eslint-config-prettier --filter @repo/eslint-config
+                ```
+            2.  **Create Helper Functions:** Create a `helpers.ts` file with utility functions:
+                ```typescript
+                // packages/eslint-config/src/helpers.ts
+                import { existsSync } from 'node:fs';
+                import path from 'node:path';
+                import { fileURLToPath } from 'node:url';
+                import { includeIgnoreFile } from '@eslint/compat';
 
-                **LLM Note on `defineConfig` Usage:** It is crucial that the exported functions from the shared ESLint configuration package (like `getDefaultConfig` in the example below) return an array of configuration objects that is explicitly wrapped with `defineConfig` (imported from `eslint/config`). This ensures that the returned configuration array is correctly typed and structured as per ESLint 9's expectations, even before it's consumed by individual packages. This pattern, where the shared function itself handles the `defineConfig` wrapping for its output, is the standard approach this guide follows.
+                export function getDirname(importMetaUrl: string) {
+                    const __filename = fileURLToPath(importMetaUrl);
+                    return path.dirname(__filename);
+                }
 
-                - Example (`packages/eslint-config/src/default.config.ts`):
-                    ```typescript
-                    import tseslint from 'typescript-eslint';
-                    import js from '@eslint/js';
-                    import { defineConfig } from 'eslint/config';
-                    // Import other necessary plugins, FlatCompat, helpers etc.
-                    // import { getTsconfigRootDir, getDirname } from './helpers'; // Assuming helpers.ts
+                export function getTsconfigRootDir(importMetaUrl: string) {
+                    const tsconfigRootDir = getDirname(importMetaUrl);
+                    return existsSync(path.join(tsconfigRootDir, 'tsconfig.json')) ? tsconfigRootDir : undefined;
+                }
 
-                    // LLM Instruction: Avoid adding an explicit return type to this function (e.g., `: Linter.FlatConfig[]`).
-                    // The type will be correctly inferred from the `defineConfig(...)` call, which is preferred.
-                    export function getDefaultConfig(importMetaUrl: string) {
-                        // const tsconfigRootDir = getTsconfigRootDir(importMetaUrl);
-                        // const __dirname = getDirname(importMetaUrl);
+                export function getGitIgnoreFiles(importMetaUrl: string) {
+                    const rootGitignorePath = fileURLToPath(new URL('../../../.gitignore', import.meta.url));
+                    const ignoreFiles = [includeIgnoreFile(rootGitignorePath)];
 
-                        // Manually construct the array of Linter.FlatConfig objects
-                       return defineConfig([
-                            js.configs.recommended,
-                            tseslint.configs.recommended,
-                            {
-                                files: ["**/*.{ts,tsx,mts}"],
-                                languageOptions: {
-                                    parser: tseslint.parser,
-                                    parserOptions: {
-                                        project: true,
-                                        // tsconfigRootDir, // Set based on the consuming package
-                                        sourceType: "module",
-                                    },
-                                },
-                                plugins: {
-                                    // 'import': importPlugin, // if using eslint-plugin-import
-                                },
-                                rules: {
-                                    '@typescript-eslint/no-unused-vars': 'warn',
+                    const packageDir = getDirname(importMetaUrl);
+                    const packageGitignorePath = path.join(packageDir, '.gitignore');
+                    if (existsSync(packageGitignorePath)) {
+                        ignoreFiles.push(includeIgnoreFile(packageGitignorePath));
+                    }
+
+                    return ignoreFiles;
+                }
+                ```
+            3.  **Migrate Main Configuration File:** Update the main config file (e.g., `src/default.config.ts`):
+                ```typescript
+                // packages/eslint-config/src/default.config.ts
+                import { FlatCompat } from '@eslint/eslintrc';
+                import eslint from '@eslint/js';
+                import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
+                import tsEslintParser from '@typescript-eslint/parser';
+                import eslintConfigPrettier from 'eslint-config-prettier';
+                // @ts-ignore eslint-plugin-import has no types
+                import * as importPlugin from 'eslint-plugin-import';
+                import unusedImportsPlugin from 'eslint-plugin-unused-imports';
+                import { defineConfig } from 'eslint/config';
+                import globals from 'globals/index.js';
+                import tseslint from 'typescript-eslint';
+
+                import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers';
+
+                export { defineConfig };
+
+                const compat = new FlatCompat({
+                    baseDirectory: getDirname(import.meta.url),
+                });
+
+                export function getConfig(importMetaUrl: string) {
+                    return defineConfig([
+                        // Global ignores
+                        {
+                            ignores: [
+                                'eslint.config.ts',
+                                '**/eslint.config.ts',
+                                '**/node_modules/**',
+                                '**/dist/**',
+                                // Add other common ignore patterns
+                            ],
+                        },
+
+                        ...getGitIgnoreFiles(importMetaUrl),
+
+                        eslint.configs.recommended,
+                        ...tseslint.configs.recommended,
+                        importPlugin.flatConfigs?.recommended,
+
+                        // TypeScript Configuration
+                        {
+                            files: ['**/*.{ts,tsx,mts}'],
+                            languageOptions: {
+                                parser: tsEslintParser,
+                                parserOptions: {
+                                    project: true,
+                                    tsconfigRootDir: getTsconfigRootDir(importMetaUrl),
+                                    sourceType: 'module',
                                 },
                             },
-                            // ... other specific config objects for plugins, ignores, etc.
-                        ]);
-                    }
-                    ```
-            3.  **`package.json` Exports:** The `package.json` of `@repo/eslint-config` should use the `exports` field to define how these configurations are imported by consuming packages.
-                - Example (`packages/eslint-config/package.json`):
-                    ```json
-                    {
-                        "name": "@repo/eslint-config",
-                        "main": "./src/default.config.ts", // Or a CJS entry point if dual-publishing
-                        "exports": {
-                            ".": "./src/default.config.ts",
-                            "./default": "./src/default.config.ts",
-                            "./react": "./src/react.config.ts"
-                            // Potentially add ./base, ./typescript etc.
+                            plugins: {
+                                'unused-imports': unusedImportsPlugin,
+                            },
+                            settings: {
+                                'import/resolver': {
+                                    typescript: {
+                                        project: './tsconfig.json',
+                                    },
+                                },
+                            },
+                            rules: {
+                                ...tsEslintPlugin.configs.recommended.rules,
+                                ...importPlugin.configs?.typescript.rules,
+                                '@typescript-eslint/no-unused-vars': ['warn', {
+                                    argsIgnorePattern: '^_',
+                                    varsIgnorePattern: '^_',
+                                }],
+                                'unused-imports/no-unused-imports': 'warn',
+                                // Add other custom rules
+                                ...eslintConfigPrettier.rules,
+                            },
                         },
-                        // ... other package.json fields
+
+                        // Prettier (should be last)
+                        { rules: eslintConfigPrettier.rules },
+                    ]);
+                }
+                ```
+            4.  **Update package.json exports:** Ensure the package.json has proper exports:
+                ```json
+                {
+                    "name": "@repo/eslint-config",
+                    "exports": {
+                        ".": "./src/default.config.ts",
+                        "./react": "./src/react.config.ts"
                     }
-                    ```
-                - *Note:* The `"main"` field and CJS considerations in the `package.json` example above are less relevant if the monorepo and all consuming packages exclusively use ESM and `eslint.config.ts`. The `exports` map becomes the primary way to define entry points.
+                }
+                ```
 
         - **Consuming Shared Configurations in Application Packages:**
             - In an application package (e.g., `apps/my-app/eslint.config.ts`), import the desired config function from the shared package and call it, typically passing `import.meta.url` from the *consuming* config file.
             - Example (consuming package's `eslint.config.ts`):
                 ```typescript
-                import tseslint from 'typescript-eslint';
-                import { getDefaultConfig } from '@repo/eslint-config/default';
-                import { defineConfig } from 'eslint/config';
-                import type { Linter } from 'eslint'; // Needed for explicit typing if not inferred
+                import { defineConfig } from '@repo/eslint-config';
+                import { getConfig } from '@repo/eslint-config'; // or getReactConfig for React apps
 
-                // Get the base shared config array (which is already wrapped by defineConfig)
-                const baseConfigArray = getDefaultConfig(import.meta.url);
+                const config = getConfig(import.meta.url);
 
-                // Consuming packages construct their final array, potentially adding more configs,
-                // and wrap it with defineConfig from 'eslint/config' for type safety and explicitness.
-                const finalConfig: Linter.FlatConfig[] = [
-                    ...baseConfigArray, // Spread the shared configuration array
-                    // Add any app-specific overrides or additional configs here
+                export default defineConfig([
+                    ...config,
+                    // Add any app-specific overrides here
                     {
                         files: ["src/**/*.ts"],
                         rules: {
                             "my-app-specific-rule": "warn"
                         }
                     }
-                ];
-
-                // The final configuration array should be wrapped with defineConfig from 'eslint/config'
-                // for type safety and explicitness when creating an eslint.config.ts file.
-                export default defineConfig(finalConfig);
+                ]);
                 ```
 
     - 5.5. Examples:
