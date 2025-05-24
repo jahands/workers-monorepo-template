@@ -146,3 +146,20 @@ Always use `pnpm` instead of `npm` or `yarn` to maintain workspace consistency.
 - **Use `pnpm turbo -F <package>`** for build, test, and deploy tasks
 - **Use `pnpm -F <package>`** for dependency management (add/remove packages)
 - **Use `just <command>`** for common development tasks (shortcuts to turbo commands)
+
+## Code Style Guidelines
+
+- **Tabs**: Use tabs for indentation, spaces for alignment
+- **Imports**: Type imports use `import type`, workspace imports via `@repo/`
+- **Import order**: Built-ins → Third-party → `@repo/` → Relative (enforced by Prettier)
+- **Variables**: Prefix unused with `_`, prefer `const` over `let`
+- **Types**: Use `array-simple` notation, explicit function return types optional
+- **Framework**: Hono for workers, Vitest with `@cloudflare/vitest-pool-workers` for testing
+- **Config**: Use `wrangler.jsonc`, place integration tests in `src/test/integration/`
+
+## Important Notes
+
+- **TypeScript Configs**: When extending configs, always use fully qualified paths (e.g., `@repo/typescript-config/base.json`) instead of relative paths
+- **Worker Types**: Don't add 'WebWorker' to TypeScript config for Workers - these types are included in worker-configuration.d.ts or @cloudflare/workers-types
+- **Lint Checking**: First `cd` to the package directory, then run: `pnpm turbo check:types check:lint`
+- **Dependencies**: Use `workspace:*` protocol for internal dependencies

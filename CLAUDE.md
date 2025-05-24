@@ -98,7 +98,18 @@ This is a **Cloudflare Workers monorepo** using pnpm workspaces and Turborepo fo
 3. Deployment happens automatically on merge to main, not from PR branches
 4. Each worker can be deployed independently using its `deploy` script
 
-## Memories
+## Code Style Guidelines
 
-- Don't add 'WebWorker' to typescript config for Workers - these types are already included in worker-configuration.d.ts or @cloudflare/workers-types
-- When checking for lint issues, first cd to the package directory containing the file you're working on, then run: `pnpm turbo check:types check:lint`
+- **Tabs**: Use tabs for indentation, spaces for alignment
+- **Imports**: Type imports use `import type`, workspace imports via `@repo/`
+- **Import order**: Built-ins → Third-party → `@repo/` → Relative (enforced by Prettier)
+- **Variables**: Prefix unused with `_`, prefer `const` over `let`
+- **Types**: Use `array-simple` notation, explicit function return types optional
+
+## Important Notes & Memories
+
+- **TypeScript Configs**: When extending configs, always use fully qualified paths (e.g., `@repo/typescript-config/base.json`) instead of relative paths (e.g., `./base.json`)
+- **Worker Types**: Don't add 'WebWorker' to TypeScript config for Workers - these types are already included in worker-configuration.d.ts or @cloudflare/workers-types
+- **Lint Checking**: First `cd` to the package directory containing the file you're working on, then run: `pnpm turbo check:types check:lint`
+- **Dependencies**: Use `workspace:*` protocol for internal dependencies
+- **Commands**: Use `pnpm turbo -F` for build/test/deploy tasks, `pnpm -F` for dependency management
