@@ -1,0 +1,229 @@
+---
+trigger: manual
+description:
+globs:
+---
+
+# Package and Dependency Management
+
+This guide covers how to manage packages and dependencies in the Workers monorepo using pnpm workspaces and syncpack.
+
+## Workspace Structure
+
+### Package Naming Convention
+
+All internal packages use the `@repo/` namespace:
+
+- `@repo/eslint-config` - Shared ESLint configuration
+- `@repo/typescript-config` - Shared TypeScript configuration
+- `@repo/hono-helpers` - Hono framework utilities
+- `@repo/tools` - Development tools and scripts
+- `@repo/workspace-dependencies` - Dependency management
+
+### Workspace Definition
+
+[pnpm-workspace.yaml](mdc:pnpm-workspace.yaml) defines package locations:
+
+```yaml
+packages:
+  - 'apps/*'
+  - 'packages/*'
+```
+
+## Adding Dependencies
+
+### To Root Workspace
+
+```bash
+# Development dependencies (tools, configs)
+pnpm add -D dependency-name
+
+# Production dependencies (shared across all packages)
+pnpm add dependency-name
+```
+
+### To Specific Package
+
+```bash
+# Add to specific workspace package
+pnpm -F @repo/package-name add dependency-name
+
+# Add to worker app
+pnpm -F worker-name add dependency-name
+
+# Add dev dependency
+pnpm -F @repo/package-name add -D dependency-name
+```
+
+### Cross-Package Dependencies
+
+```bash
+# Reference another workspace package
+pnpm -F worker-name add @repo/hono-helpers
+
+# Uses workspace:* protocol in package.json
+```
+
+## Dependency Synchronization
+
+### Syncpack Configuration
+
+[.syncpackrc.cjs](mdc:.syncpackrc.cjs) ensures version consistency:
+
+- Pinned versions for security and reproducibility
+- Consistent versions across all packages
+- Automatic dependency grouping
+
+### Syncpack Commands
+
+```bash
+# Check for version mismatches
+just check
+# or
+pnpm run check:deps
+
+# Fix dependency versions
+just fix
+# or
+pnpm run fix:deps
+
+# Update all dependencies
+just update-deps
+```
+
+## Package Scripts Pattern
+
+### Shared Scripts via Tools Package
+
+Most packages reference scripts from [packages/tools/](mdc:packages/tools):
+
+```json
+{
+	"scripts": {
+		"build": "run-build-package",
+		"check": "run-check-package",
+		"dev": "run-dev-worker",
+		"deploy": "run-deploy-worker"
+	}
+}
+```
+
+### Benefits
+
+- Consistent tooling across all packages
+- Single place to update build processes
+- Reduced duplication in package.json files
+
+## Creating Shared Packages
+
+### Generate New Package
+
+```bash
+# Interactive package generator
+just new-package
+
+# Uses template from turbo/generators/templates/package/
+```
+
+### Package Structure
+
+```
+packages/new-package/
+├── src/
+│   └── index.ts
+├── package.json
+├── tsconfig.json
+└── vitest.config.ts
+```
+
+### Export Patterns
+
+```typescript
+// src/index.ts - main entry point
+export * from './module1'
+export * from './module2'
+export type { SomeType } from './types'
+```
+
+## TypeScript Configuration
+
+### Shared Config
+
+[packages/typescript-config/](mdc:packages/typescript-config) provides base configurations:
+
+- `base.json` - General TypeScript config
+- `tools.json` - Tools and CLI specific config
+- `nextjs.json` - Next.js specific config
+- `vite.json` - Vite specific config
+
+### Usage in Packages
+
+```json
+{
+	"extends": "@repo/typescript-config/base.json",
+	"compilerOptions": {
+		"outDir": "dist"
+	},
+	"include": ["src/**/*"]
+}
+```
+
+### ⚠️ Important: Use Fully-Qualified Names
+
+When extending TypeScript configs, always use the full package name instead of relative paths:
+
+✅ **Correct:**
+
+```json
+{
+	"extends": "@repo/typescript-config/base.json"
+}
+```
+
+❌ **Incorrect:**
+
+```json
+{
+	"extends": "./base.json"
+}
+```
+
+**Why:** Relative paths can fail to resolve when the consuming package is in a different directory structure. Fully-qualified names ensure proper resolution across the entire monorepo.
+
+## Build Dependencies
+
+### Turborepo Pipeline
+
+[turbo.json](mdc:turbo.json) defines build order:
+
+```json
+{
+	"build": {
+		"dependsOn": ["^build", "topo"]
+	}
+}
+```
+
+- `^build` - Build dependencies first
+- `topo` - Topological sorting of packages
+
+### Internal Dependencies
+
+```json
+{
+	"dependencies": {
+		"@repo/hono-helpers": "workspace:*",
+		"@repo/typescript-config": "workspace:*"
+	}
+}
+```
+
+## Best Practices
+
+1. **Use Workspace Protocol**: Always use `workspace:*` for internal dependencies
+2. **Pin Versions**: Syncpack ensures all external dependencies are pinned
+3. **Consistent Tooling**: Leverage shared configs and tools packages
+4. **Dependency Hygiene**: Regularly run `just check` to catch version mismatches
+5. **Atomic Updates**: Use `just update-deps` to update all dependencies together
+6. **Package Scope**: Use `@repo/` namespace for all internal packages
+7. **TypeScript Extends**: Use fully-qualified package names (e.g., `@repo/typescript-config/base.json`) instead of relative paths in `tsconfig.json` extends

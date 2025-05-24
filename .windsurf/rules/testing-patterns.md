@@ -1,0 +1,334 @@
+---
+trigger: manual
+description:
+globs:
+---
+
+# Testing Patterns and Practices
+
+This guide covers testing strategies, patterns, and tools used across the Workers monorepo.
+
+## Testing Stack
+
+### Core Testing Tools
+
+- **[Vitest](https://vitest.dev/)** - Fast unit testing framework
+- **[@cloudflare/vitest-pool-workers](https://github.com/cloudflare/workers-sdk/tree/main/packages/vitest-pool-workers)** - Worker runtime testing
+- **[Cloudflare Test Environment](https://developers.cloudflare.com/workers/testing/)** - Integration testing utilities
+
+### Configuration
+
+- **Root**: [vitest.workspace.ts](mdc:vitest.workspace.ts) - Workspace test configuration
+- **Packages**: Individual `vitest.config.ts` files for package-specific settings
+
+## Test Structure
+
+### Worker Testing Pattern
+
+```
+apps/worker-name/
+└── src/
+    ├── index.ts
+    └── test/
+        └── integration/
+            └── worker.test.ts
+```
+
+### Package Testing Pattern
+
+```
+packages/package-name/
+└── src/
+    ├── index.ts
+    ├── module.ts
+    └── test/
+        ├── module.test.ts
+        └── integration/
+            └── integration.test.ts
+```
+
+## Worker Integration Tests
+
+### Basic Worker Test
+
+```typescript
+// src/test/integration/worker.test.ts
+import { createExecutionContext, env, SELF, waitOnExecutionContext } from 'cloudflare:test'
+import { describe, expect, it } from 'vitest'
+
+import worker from '../../index'
+
+describe('Worker Integration Tests', () => {
+	it('handles GET request', async () => {
+		const request = new Request('http://example.com/', {
+			method: 'GET',
+		})
+		const ctx = createExecutionContext()
+
+		const response = await worker.fetch(request, env, ctx)
+		await waitOnExecutionContext(ctx)
+
+		expect(response.status).toBe(200)
+		expect(await response.text()).toBe('Hello World!')
+	})
+
+	it('handles POST request with JSON', async () => {
+		const request = new Request('http://example.com/api', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ message: 'test' }),
+		})
+		const ctx = createExecutionContext()
+
+		const response = await worker.fetch(request, env, ctx)
+		await waitOnExecutionContext(ctx)
+
+		expect(response.status).toBe(200)
+		const data = await response.json()
+		expect(data).toHaveProperty('message', 'test')
+	})
+})
+```
+
+### Testing with Environment Variables
+
+```typescript
+// Mock environment variables
+describe('Worker with Environment', () => {
+	it('uses environment variables', async () => {
+		// env object is automatically populated from .dev.vars
+		expect(env.SOME_SECRET).toBeDefined()
+
+		const request = new Request('http://example.com/config')
+		const ctx = createExecutionContext()
+		const response = await worker.fetch(request, env, ctx)
+
+		expect(response.status).toBe(200)
+	})
+})
+```
+
+## Unit Testing Shared Packages
+
+### Testing Utilities and Helpers
+
+```typescript
+// packages/hono-helpers/src/test/middleware.test.ts
+import { Hono } from 'hono'
+import { describe, expect, it } from 'vitest'
+
+import { cors, logger } from '../middleware'
+
+describe('Middleware Tests', () => {
+	it('applies CORS headers', async () => {
+		const app = new Hono()
+		app.use('*', cors())
+		app.get('/', (c) => c.text('OK'))
+
+		const request = new Request('http://localhost/')
+		const response = await app.request(request)
+
+		expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*')
+	})
+
+	it('logs requests', async () => {
+		const app = new Hono()
+		app.use('*', logger())
+		app.get('/', (c) => c.text('OK'))
+
+		const request = new Request('http://localhost/')
+		const response = await app.request(request)
+
+		expect(response.status).toBe(200)
+		// Logger middleware should not affect response
+	})
+})
+```
+
+### Testing TypeScript Types
+
+```typescript
+// packages/package-name/src/test/types.test.ts
+import { describe, expectTypeOf, it } from 'vitest'
+
+import type { SomeFunction, SomeType } from '../types'
+
+describe('Type Tests', () => {
+	it('has correct type signature', () => {
+		expectTypeOf<SomeFunction>().toEqualTypeOf<(input: string) => number>()
+	})
+
+	it('exports expected types', () => {
+		expectTypeOf<SomeType>().toHaveProperty('id')
+		expectTypeOf<SomeType>().toHaveProperty('name')
+	})
+})
+```
+
+## Test Commands
+
+### Running Tests
+
+```bash
+# Run all tests
+just test
+# or
+pnpm test
+
+# Run tests in CI mode
+pnpm test:ci
+
+# Run tests for specific package
+pnpm turbo -F @repo/package-name test
+
+# Run tests for specific worker
+pnpm turbo -F worker-name test
+
+# Watch mode for development (use pnpm filter for watch mode)
+pnpm -F worker-name test --watch
+```
+
+### Turbo Test Pipeline
+
+```bash
+# Run tests with dependency awareness
+pnpm turbo test
+
+# Run only integration tests
+pnpm turbo test:integration
+
+# Run tests in CI mode across all packages
+pnpm turbo test:ci
+```
+
+## Vitest Configuration
+
+### Workspace Configuration
+
+[vitest.workspace.ts](mdc:vitest.workspace.ts) defines:
+
+```typescript
+import { defineWorkspace } from 'vitest/config'
+
+export default defineWorkspace([
+	// Worker applications
+	'apps/*/vitest.config.{ts,js}',
+	// Shared packages
+	'packages/*/vitest.config.{ts,js}',
+])
+```
+
+### Worker Vitest Config
+
+```typescript
+// apps/worker-name/vitest.config.ts
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+	test: {
+		environment: 'node',
+		pool: '@cloudflare/vitest-pool-workers',
+		poolOptions: {
+			workers: {
+				wrangler: { configPath: './wrangler.jsonc' },
+				miniflare: {
+					// Miniflare options
+					compatibilityDate: '2024-01-01',
+				},
+			},
+		},
+	},
+})
+```
+
+### Package Vitest Config
+
+```typescript
+// packages/package-name/vitest.config.ts
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+	test: {
+		environment: 'node',
+		globals: true,
+	},
+})
+```
+
+## Testing Best Practices
+
+### 1. Test Structure
+
+- **Integration tests** for workers (`src/test/integration/`)
+- **Unit tests** for packages (`src/test/` or alongside source files)
+- **Consistent naming**: `*.test.ts` pattern
+
+### 2. Environment Setup
+
+- Use `.dev.vars` for test environment variables
+- Mock external services appropriately
+- Test both success and error cases
+
+### 3. Coverage and Quality
+
+```bash
+# Run tests with coverage
+pnpm test --coverage
+
+# Type check tests
+pnpm turbo check:types
+```
+
+### 4. CI Integration
+
+Tests run automatically in:
+
+- **Branch workflow** - All PRs and feature branches
+- **Release workflow** - Before deployment to production
+
+### 5. Debugging Tests
+
+```bash
+# Debug specific test
+pnpm turbo -F worker-name test -- --reporter=verbose worker.test.ts
+
+# Run with debug output
+DEBUG=* pnpm test
+```
+
+## Common Testing Patterns
+
+### Mock External APIs
+
+```typescript
+// Mock fetch for external API calls
+global.fetch = vi.fn().mockResolvedValue({
+	ok: true,
+	json: () => Promise.resolve({ data: 'mocked' }),
+})
+```
+
+### Test Error Handling
+
+```typescript
+it('handles errors gracefully', async () => {
+	const request = new Request('http://example.com/error')
+	const ctx = createExecutionContext()
+
+	const response = await worker.fetch(request, env, ctx)
+
+	expect(response.status).toBe(500)
+	expect(await response.text()).toContain('Error')
+})
+```
+
+### Test Worker Bindings
+
+```typescript
+it('uses KV storage', async () => {
+	// env.TEST_KV is available from wrangler.jsonc bindings
+	await env.TEST_KV.put('key', 'value')
+	const value = await env.TEST_KV.get('key')
+	expect(value).toBe('value')
+})
+```
