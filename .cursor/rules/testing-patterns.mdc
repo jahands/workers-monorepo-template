@@ -179,13 +179,13 @@ pnpm test
 pnpm test:ci
 
 # Run tests for specific package
-pnpm turbo -F @repo/package-name test
+pnpm turbo -F @repo/package-name test run
 
 # Run tests for specific worker
-pnpm turbo -F worker-name test
+pnpm turbo -F worker-name test run
 
-# Watch mode for development (use pnpm filter for watch mode)
-pnpm -F worker-name test --watch
+# Watch mode for development
+pnpm -F worker-name test
 ```
 
 ### Turbo Test Pipeline
@@ -193,12 +193,6 @@ pnpm -F worker-name test --watch
 ```bash
 # Run tests with dependency awareness
 pnpm turbo test
-
-# Run only integration tests
-pnpm turbo test:integration
-
-# Run tests in CI mode across all packages
-pnpm turbo test:ci
 ```
 
 ## Vitest Configuration

@@ -59,7 +59,7 @@ pnpm -F @repo/package-name add -D dependency-name
 
 ```bash
 # Reference another workspace package
-pnpm -F worker-name add @repo/hono-helpers
+pnpm -F worker-name add '@repo/hono-helpers@workspace:*'
 
 # Uses workspace:* protocol in package.json
 ```
@@ -100,10 +100,13 @@ Most packages reference scripts from [packages/tools/](mdc:packages/tools):
 ```json
 {
 	"scripts": {
-		"build": "run-build-package",
-		"check": "run-check-package",
-		"dev": "run-dev-worker",
-		"deploy": "run-deploy-worker"
+		"build:wrangler": "run-wrangler-build",
+		"check:lint": "run-eslint-default",
+		"check:types": "run-tsc",
+		"deploy": "run-wrangler-deploy",
+		"dev": "run-wrangler-dev",
+		"fix:workers-types": "run-wrangler-types",
+		"test": "run-vitest"
 	}
 }
 ```
