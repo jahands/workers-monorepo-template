@@ -1,5 +1,11 @@
 # @repo/hono-helpers
 
+## 0.1.4
+
+### Patch Changes
+
+- 50d429b: chore: update deps
+
 ## 0.1.3
 
 ### Patch Changes

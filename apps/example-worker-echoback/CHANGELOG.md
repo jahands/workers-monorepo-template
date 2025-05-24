@@ -1,5 +1,13 @@
 # example-worker-echoback
 
+## 0.1.4
+
+### Patch Changes
+
+- 50d429b: chore: update deps
+- Updated dependencies [50d429b]
+  - @repo/hono-helpers@0.1.4
+
 ## 0.1.3
 
 ### Patch Changes
