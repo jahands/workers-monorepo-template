@@ -12,7 +12,7 @@
 		"bin": "bin"
 	},
 	"scripts": {
-		"check:lint": "run-eslint-default",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},

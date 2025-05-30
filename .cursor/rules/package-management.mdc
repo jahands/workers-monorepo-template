@@ -101,7 +101,7 @@ Most packages reference scripts from [packages/tools/](mdc:packages/tools):
 {
 	"scripts": {
 		"build:wrangler": "run-wrangler-build",
-		"check:lint": "run-eslint-default",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"deploy": "run-wrangler-deploy",
 		"dev": "run-wrangler-dev",

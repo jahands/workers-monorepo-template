@@ -45,7 +45,8 @@ export const checkCmd = new Command('check')
 
 		const checks = {
 			deps: ['pnpm', 'check:deps'],
-			lint: ['turbo', turboFlags, 'check:lint'].flat(),
+			// eslint can be run from anywhere and it'll automatically only lint the current dir and children
+			lint: ['run-eslint'],
 			types: ['turbo', turboFlags, 'check:types'].flat(),
 			format: ['pnpm', 'check:format'],
 		} as const satisfies { [key: string]: string[] }

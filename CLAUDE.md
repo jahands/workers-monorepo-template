@@ -72,7 +72,7 @@ This is a **Cloudflare Workers monorepo** using pnpm workspaces and Turborepo fo
 
 ### Key Architectural Decisions
 
-1. **Script Centralization**: All package.json scripts in worker apps delegate to commands in `@repo/tools` (e.g., `run-wrangler-dev`, `run-eslint-default`). This ensures consistency across workers and simplifies maintenance.
+1. **Script Centralization**: All package.json scripts in worker apps delegate to commands in `@repo/tools` (e.g., `run-wrangler-dev`, `run-eslint`). This ensures consistency across workers and simplifies maintenance.
 
 2. **Shared Configuration**: TypeScript, ESLint, and other tool configurations are centralized in the `packages/` directory and referenced by workers, avoiding duplication. When TypeScript configs in `@packages/typescript-config/` extend other configs, they must use fully qualified paths (e.g., `@repo/typescript-config/base.json`) instead of relative paths (e.g., `./base.json`) to prevent resolution issues.
 

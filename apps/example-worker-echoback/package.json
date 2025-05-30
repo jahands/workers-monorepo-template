@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build:wrangler": "run-wrangler-build",
-		"check:lint": "run-eslint-default",
+		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"deploy": "run-wrangler-deploy",
 		"dev": "run-wrangler-dev",
