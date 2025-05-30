@@ -53,7 +53,7 @@
 				"//#check:format",
 				"//#check:deps",
 				"check:types",
-				"check:lint",
+				"//#check:lint:all",
 				"//#test:ci",
 				"test:ci",
 				"topo"

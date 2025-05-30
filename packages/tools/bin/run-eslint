@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+# store cache under node_modules when available to reduce clutter
+cache_location=".eslintcache" # default
+if [[ -d "node_modules" ]]; then
+	cache_location="node_modules/.cache/eslint/.eslintcache"
+fi
+
+args=(
+	--cache
+	--cache-strategy content
+	--cache-location "$cache_location"
+	--max-warnings 1000
+	--flag unstable_config_lookup_from_file
+	.
+)
+
+if [[ -n "${FIX_ESLINT:-}" ]]; then
+	args+=("--fix")
+fi
+
+if [[ -n "${GITHUB_ACTIONS:-}" ]] || [[ -n "${CI:-}" ]]; then
+	args+=("--max-warnings=0")
+fi
+
+# get additional args
+while [[ $# -gt 0 ]]; do
+	args+=("$1")
+	shift
+done
+
+if command -v bun >/dev/null 2>&1; then
+	# bun is much faster, so use it when available
+	bun --bun eslint "${args[@]}"
+else
+	eslint "${args[@]}"
+fi
