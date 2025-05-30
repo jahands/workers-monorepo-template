@@ -29,11 +29,8 @@ export function getConfig(importMetaUrl: string) {
 				'**/*.{js,cjs}',
 				'**/node_modules/**',
 				'**/dist/**',
-				'**/dist2/**',
-				'**/dagger/sdk/**',
 				'eslint.config.ts',
 				'**/eslint.config.ts',
-				'**/eslint.*.config.ts',
 				'**/worker-configuration.d.ts',
 			],
 		},
@@ -121,20 +118,16 @@ export function getConfig(importMetaUrl: string) {
 			},
 		},
 		{
-			files: ['**/dagger/*.ts', '**/dagger/**/*.ts'],
-			rules: {
-				'@typescript-eslint/no-unused-vars': 'off',
-			},
-		},
-		{
 			files: ['**/*.spec.ts', '**/*.test.ts', '**/test/**/*.ts', '**/mocks.ts'],
 			rules: {
+				// this is having issues with @cloudflare/vitest-pool-workers types
 				'import/no-unresolved': 'off',
 			},
 		},
 		{
 			files: ['**/*.ts'],
 			rules: {
+				// ignoring fully for now due to issues
 				'import/no-unresolved': 'off',
 			},
 		},
