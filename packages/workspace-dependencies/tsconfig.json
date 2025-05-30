@@ -1,6 +1,6 @@
 {
 	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules/"],
+	"exclude": ["eslint.config.ts", "node_modules/"],
 	"compilerOptions": {
 		"lib": ["ESNext"],
 		"target": "ESNext",

@@ -1,24 +1,34 @@
 {
 	"name": "@repo/eslint-config",
-	"version": "0.1.1",
+	"version": "0.2.3",
 	"private": true,
 	"sideEffects": false,
-	"files": [
-		"default.cjs"
-	],
+	"exports": {
+		".": "./src/default.config.ts",
+		"./react": "./src/react.config.ts"
+	},
 	"devDependencies": {
-		"@types/eslint": "8.56.10",
-		"@typescript-eslint/eslint-plugin": "7.18.0",
-		"@typescript-eslint/parser": "7.18.0",
-		"eslint": "8.57.0",
-		"eslint-config-prettier": "9.1.0",
+		"@eslint/compat": "1.2.9",
+		"@eslint/js": "9.27.0",
+		"@types/eslint": "9.6.1",
+		"@types/node": "22.15.21",
+		"@typescript-eslint/eslint-plugin": "8.32.1",
+		"@typescript-eslint/parser": "8.32.1",
+		"eslint": "9.27.0",
+		"eslint-config-prettier": "10.1.5",
 		"eslint-config-turbo": "2.5.3",
-		"eslint-import-resolver-typescript": "4.3.4",
+		"eslint-import-resolver-typescript": "4.3.5",
+		"eslint-plugin-astro": "1.3.1",
 		"eslint-plugin-import": "2.31.0",
+		"eslint-plugin-jsx-a11y": "6.10.2",
 		"eslint-plugin-only-warn": "1.1.0",
-		"eslint-plugin-react-hooks": "4.6.2",
-		"eslint-plugin-unused-imports": "3.2.0",
+		"eslint-plugin-react": "7.37.5",
+		"eslint-plugin-react-hooks": "5.2.0",
+		"eslint-plugin-unused-imports": "4.1.4",
+		"globals": "16.1.0",
+		"jiti": "2.4.0",
 		"typescript": "5.5.4",
-		"vitest": "3.1.3"
+		"typescript-eslint": "8.32.1",
+		"vitest": "3.1.4"
 	}
 }
