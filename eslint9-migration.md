@@ -361,9 +361,39 @@ const config = getReactConfig(import.meta.url)
 export default defineConfig([...config])
 ```
 
-### Step 4: Update Scripts and Dependencies
+### Step 4: Update TypeScript Configuration
 
-#### 4.1 Dependencies
+Since we're introducing `eslint.config.ts` files throughout the monorepo, we need to exclude them from TypeScript compilation.
+
+#### 4.1 Update shared TypeScript configs
+
+**For LLMs:** 
+
+1. **Find the TypeScript config package** - Look for a package like `packages/typescript-config/` or similar that contains shared TypeScript configurations
+
+2. **Identify all TypeScript config files** - List all `.json` files in that package
+
+3. **For each config file that contains an `exclude` array:**
+   - Add `"${configDir}/eslint.config.ts"` to the exclude array
+   - Preserve all existing excludes
+   - Keep the same JSON formatting and structure
+
+4. **Also check individual package `tsconfig.json` files** - If any package has custom `exclude` arrays in their `tsconfig.json`, add the eslint config exclusion there as well
+
+**Example transformation:**
+```json
+// Before
+"exclude": ["${configDir}/node_modules/", "${configDir}/dist/"]
+
+// After  
+"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/eslint.config.ts"]
+```
+
+This prevents TypeScript from trying to compile the new ESLint configuration files.
+
+### Step 5: Update Scripts and Dependencies
+
+#### 5.1 Dependencies
 
 **For monorepos with pnpm workspaces:** No additional ESLint dependencies needed! The `eslint` package in `@repo/eslint-config` will be hoisted and available workspace-wide.
 
@@ -390,7 +420,7 @@ If you have lint scripts, ensure they work with the new config:
 }
 ```
 
-### Step 5: Migration Checklist
+### Step 6: Migration Checklist
 
 Use this checklist to ensure complete migration:
 
@@ -401,13 +431,14 @@ Use this checklist to ensure complete migration:
 - [ ] Created `packages/eslint-config/src/react.config.ts`
 - [ ] Created `packages/eslint-config/eslint.config.ts`
 - [ ] Deleted old `packages/eslint-config/default.cjs`
+- [ ] Updated all TypeScript configs in `packages/typescript-config/` to exclude `eslint.config.ts`
 - [ ] Replaced root `.eslintrc.cjs` with `eslint.config.ts`
 - [ ] Replaced all package `.eslintrc.cjs` files with `eslint.config.ts`
 - [ ] Verified ESLint dependencies are properly hoisted (no additional dependencies needed)
-- [ ] Tested linting works: `pnpm lint` or `just check`
-- [ ] Verified auto-fix works: `pnpm lint:fix` or `just fix`
+- [ ] Tested linting works using repository's existing commands
+- [ ] Verified auto-fix works using repository's existing commands
 
-### Step 6: Common Issues and Solutions
+### Step 7: Common Issues and Solutions
 
 #### Issue: Import errors for @repo/eslint-config
 
@@ -434,11 +465,11 @@ With proper dependency hoisting via `.npmrc` (specifically `auto-install-peers=t
 
 **Solution:** Ensure all required ESLint plugins are installed in the `packages/eslint-config` package, not in individual packages.
 
-### Step 7: Testing the Migration
+### Step 8: Testing the Migration
 
 After migration, test the new ESLint configuration:
 
-#### 7.1 Analyze repository tooling
+#### 8.1 Analyze repository tooling
 
 **For LLMs:** Use the available tools to analyze the repository structure and determine the appropriate linting commands:
 
@@ -457,14 +488,14 @@ After migration, test the new ESLint configuration:
    - If turbo.json has lint tasks → use `<package-manager> turbo <task>`
    - Otherwise → use direct ESLint commands
 
-#### 7.2 Install dependencies and test
+#### 8.2 Install dependencies and test
 
 1. **Install dependencies** using the repository's package manager
 2. **Run the linting commands** you identified above
 3. **Test auto-fix** if available
 4. **Verify individual packages** can be linted if needed
 
-#### 7.4 Verify migration success
+#### 8.3 Verify migration success
 
 Ensure these work without errors:
 - [ ] ESLint runs without configuration errors
