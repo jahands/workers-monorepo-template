@@ -5,12 +5,14 @@ This guide provides step-by-step instructions for migrating a TypeScript monorep
 ## Overview
 
 **Before (ESLint 8):**
+
 - Uses `.eslintrc.cjs` files throughout the monorepo
 - Single shared config: `packages/eslint-config/default.cjs`
 - Simple package.json exports
 - Legacy configuration format
 
 **After (ESLint 9):**
+
 - Uses `eslint.config.ts` files throughout the monorepo
 - Multiple shared configs with TypeScript support
 - Enhanced package.json exports
@@ -113,7 +115,6 @@ import turboConfig from 'eslint-config-turbo/flat'
 import * as importPlugin from 'eslint-plugin-import'
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 import { defineConfig } from 'eslint/config'
-import globals from 'globals/index.js'
 import tseslint from 'typescript-eslint'
 
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
@@ -134,11 +135,8 @@ export function getConfig(importMetaUrl: string) {
 				'**/*.{js,cjs}',
 				'**/node_modules/**',
 				'**/dist/**',
-				'**/dist2/**',
-				'**/dagger/sdk/**',
 				'eslint.config.ts',
 				'**/eslint.config.ts',
-				'**/eslint.*.config.ts',
 				'**/worker-configuration.d.ts',
 			],
 		},
@@ -213,24 +211,6 @@ export function getConfig(importMetaUrl: string) {
 			files: ['**/*.{ts,tsx,mjs}'],
 		})),
 
-		// Configuration for Node files
-		{
-			files: ['eslint.config.ts', 'eslint.*.config.mts'],
-			languageOptions: {
-				parserOptions: {
-					ecmaVersion: 2022,
-					sourceType: 'module',
-					project: true,
-				},
-				globals: globals.node,
-			},
-		},
-		{
-			files: ['**/dagger/*.ts', '**/dagger/**/*.ts'],
-			rules: {
-				'@typescript-eslint/no-unused-vars': 'off',
-			},
-		},
 		{
 			files: ['**/*.spec.ts', '**/*.test.ts', '**/test/**/*.ts', '**/mocks.ts'],
 			rules: {
@@ -367,13 +347,14 @@ Since we're introducing `eslint.config.ts` files throughout the monorepo, we nee
 
 #### 4.1 Update shared TypeScript configs
 
-**For LLMs:** 
+**For LLMs:**
 
 1. **Find the TypeScript config package** - Look for a package like `packages/typescript-config/` or similar that contains shared TypeScript configurations
 
 2. **Identify all TypeScript config files** - List all `.json` files in that package
 
 3. **For each config file that contains an `exclude` array:**
+
    - Add `"${configDir}/eslint.config.ts"` to the exclude array
    - Preserve all existing excludes
    - Keep the same JSON formatting and structure
@@ -381,11 +362,12 @@ Since we're introducing `eslint.config.ts` files throughout the monorepo, we nee
 4. **Also check individual package `tsconfig.json` files** - If any package has custom `exclude` arrays in their `tsconfig.json`, add the eslint config exclusion there as well
 
 **Example transformation:**
+
 ```json
 // Before
 "exclude": ["${configDir}/node_modules/", "${configDir}/dist/"]
 
-// After  
+// After
 "exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/eslint.config.ts"]
 ```
 
@@ -398,6 +380,7 @@ This prevents TypeScript from trying to compile the new ESLint configuration fil
 **For monorepos with pnpm workspaces:** No additional ESLint dependencies needed! The `eslint` package in `@repo/eslint-config` will be hoisted and available workspace-wide.
 
 **Required `.npmrc` configuration:**
+
 ```
 auto-install-peers=true
 public-hoist-pattern[]=*eslint*
@@ -443,6 +426,7 @@ Use this checklist to ensure complete migration:
 #### Issue: Import errors for @repo/eslint-config
 
 **Solution:** Ensure the package.json exports are correct and rebuild workspace dependencies:
+
 ```bash
 pnpm install
 ```
@@ -450,6 +434,7 @@ pnpm install
 #### Issue: "eslint: command not found" in pnpm workspaces
 
 **Solution:** This is a known pnpm issue where `.bin` symlinks don't get updated properly. Remove all node_modules and reinstall:
+
 ```bash
 find . -type d -name node_modules -delete
 pnpm install
@@ -474,10 +459,12 @@ After migration, test the new ESLint configuration:
 **For LLMs:** Use the available tools to analyze the repository structure and determine the appropriate linting commands:
 
 1. **Check package.json scripts** to identify lint-related commands:
-   - Look for scripts containing "lint", "check", "eslint" 
+
+   - Look for scripts containing "lint", "check", "eslint"
    - Note the package manager (pnpm, npm, yarn)
 
 2. **Check for build tools**:
+
    - Look for `Justfile`, `Makefile`, or similar in the root
    - Check `turbo.json` or `turbo.jsonc` for lint tasks
    - Look for other monorepo tools (Lerna, Nx, etc.)
@@ -498,6 +485,7 @@ After migration, test the new ESLint configuration:
 #### 8.3 Verify migration success
 
 Ensure these work without errors:
+
 - [ ] ESLint runs without configuration errors
 - [ ] TypeScript files are properly linted
 - [ ] Import/export rules work correctly

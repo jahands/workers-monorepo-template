@@ -8,7 +8,6 @@ import turboConfig from 'eslint-config-turbo/flat'
 import * as importPlugin from 'eslint-plugin-import'
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 import { defineConfig } from 'eslint/config'
-import globals from 'globals/index.js'
 import tseslint from 'typescript-eslint'
 
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
@@ -106,17 +105,6 @@ export function getConfig(importMetaUrl: string) {
 		})),
 
 		// Configuration for Node files
-		{
-			files: ['eslint.config.ts', 'eslint.*.config.mts'],
-			languageOptions: {
-				parserOptions: {
-					ecmaVersion: 2022,
-					sourceType: 'module',
-					project: true,
-				},
-				globals: globals.node,
-			},
-		},
 		{
 			files: ['**/*.spec.ts', '**/*.test.ts', '**/test/**/*.ts', '**/mocks.ts'],
 			rules: {
