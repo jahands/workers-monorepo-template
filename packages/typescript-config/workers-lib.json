@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@repo/typescript-config/workers.json",
 	"include": ["${configDir}/**/*.ts", "${configDir}/**/*.tsx"],
-	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/"],
+	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/eslint.config.ts"],
 	"compilerOptions": {
 		"types": ["@cloudflare/workers-types", "@cloudflare/vitest-pool-workers"]
 	}

@@ -1,4 +1,3 @@
 {
-	"extends": "@repo/typescript-config/workers-lib.json",
-	"exclude": ["eslint.config.ts", "node_modules", "dist"]
+	"extends": "@repo/typescript-config/workers-lib.json"
 }

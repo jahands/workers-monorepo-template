@@ -1,4 +1,3 @@
 {
-	"extends": "@repo/typescript-config/tools.json",
-	"exclude": ["eslint.config.ts", "node_modules", "dist"]
+	"extends": "@repo/typescript-config/tools.json"
 }
