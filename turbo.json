@@ -68,8 +68,15 @@
 			"outputLogs": "new-only"
 		},
 		"check:lint": {
-			"dependsOn": ["build", "^check:lint", "topo"],
+			// does not depend on ^check:lint because it's better to run it
+			// from the root when needing to lint multiple packages
+			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only",
+			"env": ["FIX_ESLINT"]
+		},
+		"//#check:lint:all": {
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/run-eslint/.eslintcache"],
 			"env": ["FIX_ESLINT"]
 		},
 		"//#check:format": {
