@@ -367,6 +367,14 @@ export default defineConfig([...config])
 
 **For monorepos with pnpm workspaces:** No additional ESLint dependencies needed! The `eslint` package in `@repo/eslint-config` will be hoisted and available workspace-wide.
 
+**Required `.npmrc` configuration:**
+```
+auto-install-peers=true
+public-hoist-pattern[]=*eslint*
+```
+
+The `public-hoist-pattern[]=*eslint*` setting is what specifically allows ESLint packages to be hoisted and their binaries to be available workspace-wide.
+
 **Note:** If you encounter "eslint: command not found" errors, this is due to a pnpm `.bin` symlink issue. See the troubleshooting section below for the solution.
 
 #### 4.2 Update lint scripts
@@ -416,7 +424,7 @@ find . -type d -name node_modules -delete
 pnpm install
 ```
 
-With proper dependency hoisting via `.npmrc`, the eslint binary from `@repo/eslint-config` should be available workspace-wide without adding to root package.json.
+With proper dependency hoisting via `.npmrc` (specifically `auto-install-peers=true` and `public-hoist-pattern[]=*eslint*`), the eslint binary from `@repo/eslint-config` should be available workspace-wide without adding to root package.json.
 
 #### Issue: TypeScript parser errors
 
