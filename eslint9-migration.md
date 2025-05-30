@@ -54,7 +54,6 @@ Replace the existing `packages/eslint-config/package.json` with updated exports 
 		"eslint-plugin-react": "7.37.5",
 		"eslint-plugin-react-hooks": "5.2.0",
 		"eslint-plugin-unused-imports": "4.1.4",
-		"globals": "16.1.0",
 		"typescript": "5.8.2",
 		"typescript-eslint": "8.32.1",
 		"vitest": "3.1.4"
