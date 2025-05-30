@@ -363,19 +363,11 @@ export default defineConfig([...config])
 
 ### Step 4: Update Scripts and Dependencies
 
-#### 4.1 Update root package.json
+#### 4.1 Dependencies
 
-Update ESLint-related dependencies in the root `package.json`:
+**For monorepos with pnpm workspaces:** No additional ESLint dependencies needed! The `eslint` package in `@repo/eslint-config` will be hoisted and available workspace-wide.
 
-```json
-{
-	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"eslint": "9.27.0",
-		"globals": "16.1.0"
-	}
-}
-```
+**Note:** If you encounter "eslint: command not found" errors, this is due to a pnpm `.bin` symlink issue. See the troubleshooting section below for the solution.
 
 #### 4.2 Update lint scripts
 
@@ -403,7 +395,7 @@ Use this checklist to ensure complete migration:
 - [ ] Deleted old `packages/eslint-config/default.cjs`
 - [ ] Replaced root `.eslintrc.cjs` with `eslint.config.ts`
 - [ ] Replaced all package `.eslintrc.cjs` files with `eslint.config.ts`
-- [ ] Updated root package.json dependencies
+- [ ] Verified ESLint dependencies are properly hoisted (no additional dependencies needed)
 - [ ] Tested linting works: `pnpm lint` or `just check`
 - [ ] Verified auto-fix works: `pnpm lint:fix` or `just fix`
 
@@ -415,6 +407,16 @@ Use this checklist to ensure complete migration:
 ```bash
 pnpm install
 ```
+
+#### Issue: "eslint: command not found" in pnpm workspaces
+
+**Solution:** This is a known pnpm issue where `.bin` symlinks don't get updated properly. Remove all node_modules and reinstall:
+```bash
+find . -type d -name node_modules -delete
+pnpm install
+```
+
+With proper dependency hoisting via `.npmrc`, the eslint binary from `@repo/eslint-config` should be available workspace-wide without adding to root package.json.
 
 #### Issue: TypeScript parser errors
 
@@ -453,9 +455,11 @@ When automating this migration:
 1. **Always backup** existing ESLint configurations before starting
 2. **Check for custom rules** in existing `.eslintrc.cjs` files and port them to the new config
 3. **Verify package structure** matches the expected monorepo layout
-4. **Test thoroughly** after migration by running lint commands
-5. **Handle React packages** separately using the React config
-6. **Update any CI/CD scripts** that reference the old ESLint configuration paths
-7. **Check for additional ignore patterns** that may need to be added to the global ignores
+4. **Verify pnpm workspace setup** - ensure `.npmrc` has proper hoisting configuration
+5. **If "eslint: command not found"** - remove all node_modules (`find . -type d -name node_modules -delete`) and reinstall to fix pnpm .bin symlink issues
+6. **Test thoroughly** after migration by running lint commands
+7. **Handle React packages** separately using the React config
+8. **Update any CI/CD scripts** that reference the old ESLint configuration paths
+9. **Check for additional ignore patterns** that may need to be added to the global ignores
 
 The migration preserves all existing functionality while providing better TypeScript integration and modern ESLint 9 features.
