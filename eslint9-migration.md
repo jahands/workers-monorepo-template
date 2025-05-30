@@ -436,25 +436,42 @@ With proper dependency hoisting via `.npmrc` (specifically `auto-install-peers=t
 
 ### Step 7: Testing the Migration
 
-After migration, run these commands to verify everything works:
+After migration, test the new ESLint configuration:
 
-```bash
-# Install dependencies
-pnpm install
+#### 7.1 Analyze repository tooling
 
-# Run linting
-just check
-# or
-pnpm lint
+**For LLMs:** Use the available tools to analyze the repository structure and determine the appropriate linting commands:
 
-# Test auto-fix
-just fix
-# or
-pnpm lint:fix
+1. **Check package.json scripts** to identify lint-related commands:
+   - Look for scripts containing "lint", "check", "eslint" 
+   - Note the package manager (pnpm, npm, yarn)
 
-# Run full checks
-just check
-```
+2. **Check for build tools**:
+   - Look for `Justfile`, `Makefile`, or similar in the root
+   - Check `turbo.json` or `turbo.jsonc` for lint tasks
+   - Look for other monorepo tools (Lerna, Nx, etc.)
+
+3. **Determine the correct commands** based on what you find:
+   - If Justfile exists with lint/check commands → use `just <command>`
+   - If package.json has lint scripts → use `<package-manager> run <script>`
+   - If turbo.json has lint tasks → use `<package-manager> turbo <task>`
+   - Otherwise → use direct ESLint commands
+
+#### 7.2 Install dependencies and test
+
+1. **Install dependencies** using the repository's package manager
+2. **Run the linting commands** you identified above
+3. **Test auto-fix** if available
+4. **Verify individual packages** can be linted if needed
+
+#### 7.4 Verify migration success
+
+Ensure these work without errors:
+- [ ] ESLint runs without configuration errors
+- [ ] TypeScript files are properly linted
+- [ ] Import/export rules work correctly
+- [ ] Auto-fix functionality works
+- [ ] All packages can be linted individually
 
 ## Notes for LLMs
 
