@@ -1,5 +1,12 @@
 # @repo/tools
 
+## 0.3.3
+
+### Patch Changes
+
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+
 ## 0.3.2
 
 ### Patch Changes
