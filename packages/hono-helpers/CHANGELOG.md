@@ -1,5 +1,12 @@
 # @repo/hono-helpers
 
+## 0.1.5
+
+### Patch Changes
+
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+
 ## 0.1.4
 
 ### Patch Changes
