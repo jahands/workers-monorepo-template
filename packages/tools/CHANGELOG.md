@@ -1,5 +1,17 @@
 # @repo/tools
 
+## 0.4.0
+
+### Minor Changes
+
+- d0bf900: feat: improve scripts based on shellcheck lint suggestions
+
+### Patch Changes
+
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 54d11ee: chore: update deps
+
 ## 0.3.2
 
 ### Patch Changes
