@@ -65,4 +65,9 @@
 - NEVER proactively create documentation files unless explicitly requested
 </critical-notes>
 
+<context-specific-rules>
+- When user asks to auto commit changes: Read @.cursor/rules/auto-commit.mdc
+- When working with Zod: Read @.cursor/rules/zod-v4.mdc
+</context-specific-rules>
+
 </cloudflare-workers-monorepo>
