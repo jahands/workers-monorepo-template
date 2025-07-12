@@ -282,9 +282,13 @@ After running all tests, evaluate each result against these criteria:
 3. Review all generated files after completion
 4. Score against evaluation criteria
 5. Identify patterns in rule violations
-6. Use results to improve Zod v4 guidelines if needed
+6. **Write results analysis to** `.docs/prompts/zod-rule-test-results.md`
+7. **Auto-commit all changes** including test files and results
+8. Use results to improve Zod v4 guidelines if needed
 
 **Important**: Run all subagents simultaneously for efficiency - use 10 Task tool calls in one message, not sequentially.
+
+**Results Output**: After analysis, create/overwrite the results file with the latest test results using the template below.
 
 ### 9. Analysis Template
 
