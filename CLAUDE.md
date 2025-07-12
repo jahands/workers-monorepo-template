@@ -23,8 +23,13 @@
 
 <architecture>
 - Cloudflare Workers monorepo using pnpm workspaces and Turborepo
-- Worker apps in `apps/` directory delegate scripts to `@repo/tools` for consistency
-- Shared configs and utilities in `packages/` directory
+- `apps/` - Individual Cloudflare Worker applications
+- `packages/` - Shared libraries and configurations
+  - `@repo/eslint-config` - Shared ESLint configuration
+  - `@repo/typescript-config` - Shared TypeScript configuration
+  - `@repo/hono-helpers` - Hono framework utilities
+  - `@repo/tools` - Development tools and scripts
+- Worker apps delegate scripts to `@repo/tools` for consistency
 - Hono web framework with helpers in `@repo/hono-helpers`
 - Vitest with `@cloudflare/vitest-pool-workers` for testing
 - Syncpack ensures dependency version consistency
