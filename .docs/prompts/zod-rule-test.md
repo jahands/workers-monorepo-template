@@ -75,23 +75,32 @@ Write your complete schema to: /Users/jh/src/workers-monorepo-template/packages/
 
 **Test 1: Basic Schema**
 ```
-Create a User schema with:
-- email (must be valid email)
-- name (string, minimum 2 characters)
-- age (number, minimum 18)
+Create a Zod schema for this User JSON:
 
-Focus on proper imports and type inference patterns.
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "age": 25
+}
+
+Requirements:
+- Email must be valid
+- Name minimum 2 characters
+- Age minimum 18
 ```
 
 **Test 2: String Validation**
 ```
-Create a SocialProfile schema with:
-- email (email validation)
-- website (URL validation)
-- userId (UUID validation)
-- profileUrl (URL validation)
+Create a Zod schema for this SocialProfile JSON:
 
-Use the correct Zod v4 string validation methods.
+{
+  "email": "user@example.com",
+  "website": "https://example.com",
+  "userId": "123e4567-e89b-12d3-a456-426614174000",
+  "profileUrl": "https://profile.example.com/user123"
+}
+
+All string fields should use appropriate validation methods.
 ```
 
 **Test 3: Error Messages**
@@ -107,23 +116,33 @@ Only use custom error messages where Zod's defaults aren't sufficient.
 
 **Test 4: Number Types**
 ```
-Create a GameStats schema with:
-- score (general number)
-- lives (integer only)
-- precision (32-bit integer)
-- accuracy (64-bit float)
+Create a Zod schema for this GameStats JSON:
 
-Use appropriate number type methods for each field.
+{
+  "score": 1250.5,
+  "lives": 3,
+  "precision": 1000000,
+  "accuracy": 0.9876543210123456
+}
+
+Requirements:
+- score: any number
+- lives: integers only
+- precision: 32-bit integer
+- accuracy: 64-bit float
 ```
 
 **Test 5: Object Validation**
 ```
-Create a Configuration schema that:
-- Accepts only known properties
-- Has apiKey, timeout, retries fields
-- Should reject any extra properties
+Create a Zod schema for this Configuration JSON that rejects extra properties:
 
-Choose the correct object validation method.
+{
+  "apiKey": "sk-1234567890abcdef",
+  "timeout": 5000,
+  "retries": 3
+}
+
+Must reject any properties not defined in the schema.
 ```
 
 **Test 6: Custom Validation**
@@ -146,32 +165,73 @@ Create a validation schema for a function that:
 
 **Test 8: Date/Time**
 ```
-Create an Event schema with:
-- startDate (ISO date only)
-- createdAt (full ISO datetime)
-- updatedAt (full ISO datetime, optional)
+Create a Zod schema for this Event JSON:
 
-Use correct Zod v4 ISO format methods.
+{
+  "startDate": "2024-03-15",
+  "createdAt": "2024-03-10T14:30:00.000Z",
+  "updatedAt": "2024-03-12T09:15:30.123Z"
+}
+
+Requirements:
+- startDate: ISO date only
+- createdAt: full ISO datetime
+- updatedAt: full ISO datetime, optional
 ```
 
 **Test 9: Advanced Features**
 ```
-Create a FileUpload schema with:
-- files (array of file objects with size/type validation)
-- metadata (optional object)
-- tags (array of strings, nullable)
-- Use .default() for some fields
+Create a Zod schema for this FileUpload JSON with file validation:
 
-Include file size limits and MIME type restrictions.
+{
+  "files": [
+    {
+      "name": "image.jpg",
+      "size": 1024000,
+      "type": "image/jpeg"
+    }
+  ],
+  "metadata": {
+    "uploadedBy": "user123"
+  },
+  "tags": ["profile", "avatar"],
+  "maxRetries": 3
+}
+
+Requirements:
+- File size limits and MIME type validation
+- metadata is optional
+- tags can be null
+- maxRetries defaults to 3
 ```
 
 **Test 10: Real-World API**
 ```
-Create complete API schemas for a blog post endpoint:
-- CreatePostRequest (title, content, tags, publishAt)
-- PostResponse (id, title, content, author, createdAt, updatedAt)
-- Include proper type inference for both schemas
-- Use appropriate validation for each field type
+Create Zod schemas for these blog post API JSONs:
+
+CreatePostRequest:
+{
+  "title": "My Blog Post",
+  "content": "This is the post content...",
+  "tags": ["tech", "coding"],
+  "publishAt": "2024-03-20T10:00:00.000Z"
+}
+
+PostResponse:
+{
+  "id": "post_123456",
+  "title": "My Blog Post", 
+  "content": "This is the post content...",
+  "author": {
+    "id": "user_789",
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "createdAt": "2024-03-15T14:30:00.000Z",
+  "updatedAt": "2024-03-15T14:30:00.000Z"
+}
+
+Create both schemas with proper validation for all field types.
 ```
 
 ### 5. Evaluation Criteria
