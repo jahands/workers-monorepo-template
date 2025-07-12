@@ -1,5 +1,17 @@
 # example-worker-echoback
 
+## 0.1.5
+
+### Patch Changes
+
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 54d11ee: chore: update deps
+- Updated dependencies [ce16c92]
+- Updated dependencies [ce16c92]
+- Updated dependencies [54d11ee]
+  - @repo/hono-helpers@0.1.5
+
 ## 0.1.4
 
 ### Patch Changes
