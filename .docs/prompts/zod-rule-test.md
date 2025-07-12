@@ -11,8 +11,8 @@ This test uses 10 subagents to create Zod schemas covering different rule aspect
 ### 1. Clean Test Directory
 ```bash
 # Remove any existing test files to prevent contamination
-rm -rf .cursor/rules/test-zod/
-mkdir -p .cursor/rules/test-zod/
+rm -rf packages/amp-test/src/schemas/
+mkdir -p packages/amp-test/src/schemas/
 ```
 
 ### 2. Test Cases
@@ -68,7 +68,7 @@ Create Zod schemas for the following requirements:
 
 [INSERT TEST CASE DESCRIPTION]
 
-Write your complete schema to: /Users/jh/src/workers-monorepo-template/.cursor/rules/test-zod/[test-name].ts
+Write your complete schema to: /Users/jh/src/workers-monorepo-template/packages/amp-test/src/schemas/[test-name].ts
 ```
 
 ### 4. Specific Test Descriptions
