@@ -1,6 +1,6 @@
 import { z } from 'zod/v4'
 
-/** Password validation with security requirements */
+/** Password with security requirements */
 export type Password = z.infer<typeof Password>
 export const Password = z
 	.string()
@@ -11,6 +11,6 @@ export const Password = z
 	.check((val) => /\d/.test(val), {
 		error: 'Must contain number',
 	})
-	.check((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), {
+	.check((val) => /[^a-zA-Z0-9]/.test(val), {
 		error: 'Must contain special character',
 	})

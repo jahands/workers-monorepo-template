@@ -1,6 +1,6 @@
 import { z } from 'zod/v4'
 
-/** Social profile with contact and identification information */
+/** Social profile data */
 export type SocialProfile = z.infer<typeof SocialProfile>
 export const SocialProfile = z.object({
 	email: z.email(),
