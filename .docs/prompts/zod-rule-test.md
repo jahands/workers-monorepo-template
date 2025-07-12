@@ -278,11 +278,13 @@ After running all tests, evaluate each result against these criteria:
 ### 8. Running the Test
 
 1. Clean test directory
-2. Launch 10 Task subagents in parallel with the template above
-3. Review all generated files
+2. **Launch all 10 Task subagents concurrently** using multiple Task tool calls in a single message
+3. Review all generated files after completion
 4. Score against evaluation criteria
 5. Identify patterns in rule violations
 6. Use results to improve Zod v4 guidelines if needed
+
+**Important**: Run all subagents simultaneously for efficiency - use 10 Task tool calls in one message, not sequentially.
 
 ### 9. Analysis Template
 
