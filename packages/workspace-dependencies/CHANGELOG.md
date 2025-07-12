@@ -1,5 +1,13 @@
 # @repo/workspace-dependencies
 
+## 0.1.4
+
+### Patch Changes
+
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 54d11ee: chore: update deps
+
 ## 0.1.3
 
 ### Patch Changes
