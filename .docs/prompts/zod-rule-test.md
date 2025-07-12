@@ -15,51 +15,7 @@ rm -rf packages/amp-test/src/schemas/
 mkdir -p packages/amp-test/src/schemas/
 ```
 
-### 2. Test Cases
-
-Run these 10 test prompts using the Task tool, each creating a different Zod schema:
-
-1. **Basic Import & Type Inference** (Critical Rule)
-   - Create a simple User schema with email, name, age
-   - Tests: Import from 'zod/v4', type inference above schema
-
-2. **String Validation Methods** (Core Rule)
-   - Create schema with email, URL, UUID fields
-   - Tests: Using z.email(), z.url(), z.uuid() vs z.string().email()
-
-3. **Error Message Usage** (Core Rule)
-   - Create password validation schema with custom business logic
-   - Tests: When to use custom error messages vs defaults
-
-4. **Number Types** (Core Rule)
-   - Create schema with various number types (general, integer, specific)
-   - Tests: z.number() vs z.int() vs z.int32()
-
-5. **Object Type Variations** (Core Rule)
-   - Create config schema that needs strict validation
-   - Tests: z.object() vs z.strictObject() vs z.looseObject()
-
-6. **Custom Validation with .check()** (Core Rule)
-   - Create complex validation with multiple constraints
-   - Tests: Using .check() instead of .superRefine()
-
-7. **Function Schema Definition** (Core Rule)
-   - Create API endpoint validation function
-   - Tests: Function schema with input/output types
-
-8. **ISO Date/Time Handling** (Core Rule)
-   - Create event schema with timestamps
-   - Tests: z.iso.datetime() vs z.iso.date()
-
-9. **Advanced Features** (Core Rule)
-   - Create file upload schema with arrays and optional fields
-   - Tests: File validation, arrays, optional/nullable
-
-10. **Complete Real-World Example** (Integration Test)
-    - Create comprehensive API request/response schemas
-    - Tests: All rules together in realistic scenario
-
-### 3. Subagent Template
+### 2. Subagent Template
 
 For each test case, use this exact template with the Task tool:
 
@@ -71,9 +27,29 @@ Create Zod schemas for the following requirements:
 Write your complete schema to: /Users/jh/src/workers-monorepo-template/packages/amp-test/src/schemas/[test-name].ts
 ```
 
-### 4. Specific Test Descriptions
+### 3. Execution Checklist
 
-**Test 1: Basic Schema**
+Complete process checklist (check off each step):
+
+- [ ] Clean test directory: `rm -rf packages/amp-test/src/schemas/ && mkdir -p packages/amp-test/src/schemas/`
+- [ ] Launch all 10 Task subagents concurrently in one message
+- [ ] Wait for all subagents to complete
+- [ ] Read and review all generated schema files
+- [ ] Score each file against critical requirements (imports, type inference, naming)
+- [ ] Score each file against core rule compliance
+- [ ] Calculate overall compliance percentages
+- [ ] Identify common violation patterns
+- [ ] **Write results to** `.docs/prompts/zod-rule-test-results.md` **using analysis template**
+- [ ] **Auto-commit all changes** with descriptive message
+- [ ] Review results for potential guideline improvements
+
+**Important**: Run all subagents simultaneously for efficiency - use 10 Task tool calls in one message, not sequentially.
+
+### 4. Test Cases
+
+Run these 10 test prompts using the Task tool, each creating a different Zod schema:
+
+**Test 1: Basic Schema (user.ts)**
 ```
 Create a Zod schema for this User JSON:
 
@@ -89,7 +65,7 @@ Requirements:
 - Age minimum 18
 ```
 
-**Test 2: String Validation**
+**Test 2: String Validation (social-profile.ts)**
 ```
 Create a Zod schema for this SocialProfile JSON:
 
@@ -103,7 +79,7 @@ Create a Zod schema for this SocialProfile JSON:
 All string fields should use appropriate validation methods.
 ```
 
-**Test 3: Error Messages**
+**Test 3: Error Messages (password.ts)**
 ```
 Create a Password schema with:
 - Must be at least 8 characters
@@ -114,7 +90,7 @@ Create a Password schema with:
 Only use custom error messages where Zod's defaults aren't sufficient.
 ```
 
-**Test 4: Number Types**
+**Test 4: Number Types (game-stats.ts)**
 ```
 Create a Zod schema for this GameStats JSON:
 
@@ -132,12 +108,12 @@ Requirements:
 - accuracy: 64-bit float
 ```
 
-**Test 5: Object Validation**
+**Test 5: Object Validation (configuration.ts)**
 ```
 Create a Zod schema for this Configuration JSON that rejects extra properties:
 
 {
-  "apiKey": "sk-1234567890abcdef",
+  "apiKey": "[REDACTED:sk-secret]",
   "timeout": 5000,
   "retries": 3
 }
@@ -145,7 +121,7 @@ Create a Zod schema for this Configuration JSON that rejects extra properties:
 Must reject any properties not defined in the schema.
 ```
 
-**Test 6: Custom Validation**
+**Test 6: Custom Validation (product-code.ts)**
 ```
 Create a ProductCode schema that validates:
 - Must start with 'PROD-'
@@ -155,7 +131,7 @@ Create a ProductCode schema that validates:
 Use modern Zod v4 validation methods.
 ```
 
-**Test 7: Function Schema**
+**Test 7: Function Schema (api-function.ts)**
 ```
 Create a validation schema for a function that:
 - Takes a user ID (string) and options object as input
@@ -163,7 +139,7 @@ Create a validation schema for a function that:
 - Use proper Zod v4 function schema syntax
 ```
 
-**Test 8: Date/Time**
+**Test 8: Date/Time (event.ts)**
 ```
 Create a Zod schema for this Event JSON:
 
@@ -179,7 +155,7 @@ Requirements:
 - updatedAt: full ISO datetime, optional
 ```
 
-**Test 9: Advanced Features**
+**Test 9: Advanced Features (file-upload.ts)**
 ```
 Create a Zod schema for this FileUpload JSON with file validation:
 
@@ -205,7 +181,7 @@ Requirements:
 - maxRetries defaults to 3
 ```
 
-**Test 10: Real-World API**
+**Test 10: Real-World API (blog-post.ts)**
 ```
 Create Zod schemas for these blog post API JSONs:
 
@@ -258,54 +234,7 @@ After running all tests, evaluate each result against these criteria:
 - ✅ Appropriate use of optional/nullable
 - ✅ Proper array handling (.array() vs z.array())
 
-### 6. Success Metrics
-
-- **90%+ Critical Rule Compliance**: All imports, type inference, naming correct
-- **80%+ Core Rule Compliance**: Proper method usage across all rule categories
-- **0 Redundant Error Messages**: No custom errors where defaults suffice
-- **Consistent Patterns**: Similar approaches across all test schemas
-
-### 7. Common Issues to Watch For
-
-- Using 'zod' import instead of 'zod/v4'
-- Missing type inference or placing it below schema
-- Using z.string().email() instead of z.email()
-- Adding unnecessary custom error messages
-- Using .superRefine() instead of .check()
-- Incorrect function schema syntax
-- Using "Schema" suffix in names
-
-### 8. Running the Test
-
-1. Clean test directory
-2. **Launch all 10 Task subagents concurrently** using multiple Task tool calls in a single message
-3. Review all generated files after completion
-4. Score against evaluation criteria
-5. Identify patterns in rule violations
-6. **Write results analysis to** `.docs/prompts/zod-rule-test-results.md`
-7. **Auto-commit all changes** including test files and results
-8. Use results to improve Zod v4 guidelines if needed
-
-**Important**: Run all subagents simultaneously for efficiency - use 10 Task tool calls in one message, not sequentially.
-
-**Results Output**: After analysis, create/overwrite the results file with the latest test results using the template below.
-
-### EXECUTION CHECKLIST
-Complete process checklist (check off each step):
-
-- [ ] Clean test directory: `rm -rf packages/amp-test/src/schemas/ && mkdir -p packages/amp-test/src/schemas/`
-- [ ] Launch all 10 Task subagents concurrently in one message
-- [ ] Wait for all subagents to complete
-- [ ] Read and review all generated schema files
-- [ ] Score each file against critical requirements (imports, type inference, naming)
-- [ ] Score each file against core rule compliance
-- [ ] Calculate overall compliance percentages
-- [ ] Identify common violation patterns
-- [ ] **Write results to** `.docs/prompts/zod-rule-test-results.md` **using analysis template**
-- [ ] **Auto-commit all changes** with descriptive message
-- [ ] Review results for potential guideline improvements
-
-### 9. Analysis Template
+### 6. Analysis Template
 
 After completion, analyze results:
 
@@ -336,5 +265,22 @@ After completion, analyze results:
 - [Areas needing better examples]
 - [Rules that need clearer explanations]
 ```
+
+### 7. Success Metrics
+
+- **90%+ Critical Rule Compliance**: All imports, type inference, naming correct
+- **80%+ Core Rule Compliance**: Proper method usage across all rule categories
+- **0 Redundant Error Messages**: No custom errors where defaults suffice
+- **Consistent Patterns**: Similar approaches across all test schemas
+
+### 8. Common Issues to Watch For
+
+- Using 'zod' import instead of 'zod/v4'
+- Missing type inference or placing it below schema
+- Using z.string().email() instead of z.email()
+- Adding unnecessary custom error messages
+- Using .superRefine() instead of .check()
+- Incorrect function schema syntax
+- Using "Schema" suffix in names
 
 This comprehensive test will reveal how well LLMs follow the Zod v4 guidelines and where improvements are needed.
