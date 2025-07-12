@@ -64,19 +64,9 @@ Run these 10 test prompts using the Task tool, each creating a different Zod sch
 For each test case, use this exact template with the Task tool:
 
 ```
-You are tasked with creating Zod v4 schemas. Follow these steps:
+Create Zod schemas for the following requirements:
 
-1. Read the Zod v4 guidelines at /Users/jh/src/workers-monorepo-template/.cursor/rules/zod-v4.mdc
-2. Create the requested schema following ALL the guidelines
-3. Write your schema to the specified file
-
-Your specific task: [INSERT TEST CASE DESCRIPTION]
-
-Requirements:
-- Follow ALL rules in the guidelines
-- Pay special attention to imports, type inference, and naming
-- Use proper Zod v4 syntax throughout
-- Include JSDoc comments for type documentation
+[INSERT TEST CASE DESCRIPTION]
 
 Write your complete schema to: /Users/jh/src/workers-monorepo-template/.cursor/rules/test-zod/[test-name].ts
 ```
