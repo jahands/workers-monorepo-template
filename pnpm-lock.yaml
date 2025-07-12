@@ -85,25 +85,6 @@ importers:
         specifier: 4.22.0
         version: 4.22.0(@cloudflare/workers-types@4.20250628.0)
 
-  packages/amp-test:
-    dependencies:
-      zod:
-        specifier: 3.25.67
-        version: 3.25.67
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@repo/tools':
-        specifier: workspace:*
-        version: link:../tools
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      vitest:
-        specifier: 3.2.4
-        version: 3.2.4(@types/node@22.15.27)(jiti@2.4.2)(lightningcss@1.29.2)(tsx@4.20.3)(yaml@2.8.0)
-
   packages/eslint-config:
     devDependencies:
       '@eslint/compat':
