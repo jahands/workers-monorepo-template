@@ -290,6 +290,21 @@ After running all tests, evaluate each result against these criteria:
 
 **Results Output**: After analysis, create/overwrite the results file with the latest test results using the template below.
 
+### EXECUTION CHECKLIST
+Complete process checklist (check off each step):
+
+- [ ] Clean test directory: `rm -rf packages/amp-test/src/schemas/ && mkdir -p packages/amp-test/src/schemas/`
+- [ ] Launch all 10 Task subagents concurrently in one message
+- [ ] Wait for all subagents to complete
+- [ ] Read and review all generated schema files
+- [ ] Score each file against critical requirements (imports, type inference, naming)
+- [ ] Score each file against core rule compliance
+- [ ] Calculate overall compliance percentages
+- [ ] Identify common violation patterns
+- [ ] **Write results to** `.docs/prompts/zod-rule-test-results.md` **using analysis template**
+- [ ] **Auto-commit all changes** with descriptive message
+- [ ] Review results for potential guideline improvements
+
 ### 9. Analysis Template
 
 After completion, analyze results:
