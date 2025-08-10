@@ -26,9 +26,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Check & Test
-        run: pnpm turbo check:ci
+        run: bun turbo check:ci
       - name: Deploy
-        run: pnpm turbo deploy
+        run: bun turbo deploy
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
