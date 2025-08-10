@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-script_path="$(realpath "$(dirname "$0")/../src/bin/runx.ts")"
+script_path="$(realpath "$(dirname "$0")/../src/bin/runx.cmd.ts")"
 
 bin_dir="$(realpath "$(dirname "$0")")"
 tsx_path="$(realpath "$bin_dir/../node_modules/.bin/tsx")"
