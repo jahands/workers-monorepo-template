@@ -4,6 +4,8 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
+		"check:deps": "runx check --deps",
+		"check:format": "runx check --format",
 		"check:lint:all": "run-eslint",
 		"test": "vitest",
 		"test:ci": "run-vitest-ci"
