@@ -19,12 +19,12 @@
 		"workers-tagged-logger": "0.13.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.47",
+		"@cloudflare/vitest-pool-workers": "0.8.61",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "22.15.27",
 		"vitest": "3.2.4",
-		"wrangler": "4.22.0"
+		"wrangler": "4.28.1"
 	}
 }
