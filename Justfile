@@ -49,7 +49,7 @@ deploy *flags:
 
 # Update dependencies using syncpack
 update-deps:
-  pnpm update-deps
+  pnpm run-update-deps
 
 # Create a new Worker/package/etc. from a template (see `turbo/generators` for details)
 gen *flags:
