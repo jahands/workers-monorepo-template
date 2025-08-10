@@ -23,8 +23,10 @@ npm create workers-monorepo@latest
 
 ## Prerequisites
 
-- Node.js v22 or later
+- node.js v22 or later
 - pnpm v10 or later
+- bun 1.2 or later
+- mise (optional, but recommended for tool management)
 
 ## Getting Started
 
