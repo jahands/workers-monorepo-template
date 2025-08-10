@@ -16,7 +16,15 @@ updateCmd
 	.command('deps')
 	.description('Update dependencies via syncpack')
 	.action(async () => {
-		await $`run-update-deps`
+		await $`syncpack update`
+
+		// Run fix if there are any changes
+		const status = await $({
+			stdio: 'pipe',
+		})`git status --porcelain`.text()
+		if (status.includes('package.json') || status.includes('pnpm-lock.yaml')) {
+			await $`just fix --deps`
+		}
 	})
 
 updateCmd
