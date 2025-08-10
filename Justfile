@@ -10,56 +10,57 @@
 alias new-pkg := new-package
 alias new-worker := gen
 alias up := update
+alias i := install
 
 # =============================== #
 #         DEV COMMANDS            #
 # =============================== #
 
 # Install dependencies
-[group('dev')]
+[group('1. dev')]
 install:
   pnpm install --child-concurrency=10
 
 # Check for issues with deps, lint, types, format, etc.
-[group('dev')]
+[group('1. dev')]
 [no-cd]
 check *flags:
   bun runx check {{flags}}
 
 # Fix issues with deps, lint, format, etc.
-[group('dev')]
+[group('1. dev')]
 [no-cd]
 fix *flags:
   bun runx fix {{flags}}
 
-[group('dev')]
+[group('1. dev')]
 [no-cd]
 test *flags:
   bun vitest {{flags}}
 
-[group('dev')]
+[group('1. dev')]
 [no-cd]
 build *flags:
   bun turbo build {{flags}}
 
 # =============================== #
-#        RUNNER COMMANDS          #
+#       LOCAL DEV COMMANDS        #
 # =============================== #
 
 # Run dev script. Runs turbo dev if not in a specific project directory.
-[group('runner')]
+[group('2. local dev')]
 [no-cd]
 dev *flags:
   bun runx dev {{flags}}
 
 # Run Workers in preview mode (if available)
-[group('runner')]
+[group('2. local dev')]
 [no-cd]
 preview:
   bun run preview
 
 # Deploy Workers
-[group('runner')]
+[group('2. local dev')]
 [no-cd]
 deploy *flags:
   bun turbo deploy {{flags}}
@@ -69,15 +70,15 @@ deploy *flags:
 # =============================== #
 
 # Create changeset
-[group('generator')]
+[group('3. generator')]
 cs:
   bun run-changeset-new
 
-[group('generator')]
+[group('3. generator')]
 gen *flags:
   bun run-turbo-gen {{flags}}
 
-[group('generator')]
+[group('3. generator')]
 new-package *flags:
   bun run-turbo-gen new-package {{flags}}
 
@@ -86,11 +87,11 @@ new-package *flags:
 # =============================== #
 
 # CLI in packages/tools for updating deps, pnpm, etc.
-[group('utility')]
+[group('4. utility')]
 update *flags:
   bun runx update {{flags}}
 
 # CLI in packages/tools for running commands in the repo.
-[group('utility')]
+[group('4. utility')]
 runx *flags:
   bun runx {{flags}}
