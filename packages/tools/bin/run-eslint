@@ -30,9 +30,4 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-if command -v bun >/dev/null 2>&1; then
-	# bun is much faster, so use it when available
-	bun --bun eslint "${args[@]}"
-else
-	eslint "${args[@]}"
-fi
+bun --bun eslint "${args[@]}"
