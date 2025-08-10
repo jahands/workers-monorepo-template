@@ -42,7 +42,7 @@ export const fixCmd = new Command('fix')
 			deps: ['pnpm', 'fix:deps'],
 			lint: ['FIX_ESLINT=1', 'turbo', turboFlags, 'check:lint'].flat(),
 			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
-			format: ['pnpm', 'fix:format'],
+			format: ['prettier', '.', '--cache', '--write'],
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]

@@ -4,8 +4,8 @@ import { program } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools/proc'
 
 import { buildCmd } from '../cmd/build.cmd'
-import { checkCmd } from '../cmd/check.cmd'
 import { checkWorkersTypesCmd } from '../cmd/check-workers-types.cmd'
+import { checkCmd } from '../cmd/check.cmd'
 import { devCmd } from '../cmd/dev.cmd'
 import { fixCmd } from '../cmd/fix.cmd'
 

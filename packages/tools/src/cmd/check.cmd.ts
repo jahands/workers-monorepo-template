@@ -48,7 +48,7 @@ export const checkCmd = new Command('check')
 			// eslint can be run from anywhere and it'll automatically only lint the current dir and children
 			lint: ['run-eslint'],
 			types: ['turbo', turboFlags, 'check:types'].flat(),
-			format: ['pnpm', 'check:format'],
+			format: ['prettier', '.', '--cache', '--check'],
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]
