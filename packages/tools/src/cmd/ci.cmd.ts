@@ -20,10 +20,3 @@ ciCmd
 	.action(async () => {
 		await $(opts())`bun turbo check:ci`
 	})
-
-ciCmd
-	.command('install-deps')
-	.description('Install dependencies')
-	.action(async () => {
-		await $(opts())`pnpm install --frozen-lockfile --child-concurrency=10`
-	})

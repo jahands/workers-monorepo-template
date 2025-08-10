@@ -24,7 +24,7 @@ jobs:
           node-version: lts/*
           cache: 'pnpm'
       - name: Install Dependencies
-        run: bun runx ci install-deps
+        run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Check & Test
         run: bun turbo check:ci
       - name: Deploy
@@ -54,7 +54,7 @@ jobs:
           node-version: lts/*
           cache: 'pnpm'
       - name: Install Dependencies
-        run: bun runx ci install-deps
+        run: pnpm install --frozen-lockfile --child-concurrency=10
       - name: Create Release PR
         uses: changesets/action@v1
         env:
