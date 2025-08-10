@@ -17,7 +17,7 @@ This guide covers the continuous integration, deployment, and release processes 
 **Pipeline**:
 
 1. Install dependencies with pnpm
-2. Run CI checks/tests (`pnpm turbo check:ci`)
+2. Run CI checks/tests (`bun runx ci check`)
    - Dependency version checks
    - Code formatting validation
    - TypeScript type checking
@@ -36,7 +36,7 @@ This guide covers the continuous integration, deployment, and release processes 
 - Install dependencies
 - Run full CI checks
 - Run test suite
-- **Deploy all workers** (`pnpm turbo deploy`)
+- **Deploy all workers** (`bun turbo deploy`)
 - Requires secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
 #### 2. Create Release PR
@@ -86,10 +86,10 @@ Each worker needs [wrangler.jsonc](mdc:apps/example-worker-echoback/wrangler.jso
 
 ```bash
 # Deploy specific worker
-pnpm turbo -F worker-name deploy
+bun turbo -F worker-name deploy
 
 # Deploy to specific environment
-pnpm turbo -F worker-name deploy -- -e production
+bun turbo -F worker-name deploy -- -e production
 ```
 
 ### All Workers
@@ -192,10 +192,10 @@ Currently focused on internal packages:
 
 ```bash
 # Clear Turborepo cache
-pnpm turbo clean
+bun turbo clean
 
 # Rebuild all packages
-pnpm turbo build --force
+bun turbo build --force
 ```
 
 ### Debug Deployment

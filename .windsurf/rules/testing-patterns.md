@@ -177,26 +177,26 @@ just test
 pnpm test:ci
 
 # Run tests for specific package
-pnpm turbo -F @repo/package-name test
+bun turbo -F @repo/package-name test
 
 # Run tests for specific worker
-pnpm turbo -F worker-name test
+bun turbo -F worker-name test
 
-# Watch mode for development (use pnpm filter for watch mode)
-pnpm -F worker-name test --watch
+# Watch mode for development
+bun vitest --watch
 ```
 
 ### Turbo Test Pipeline
 
 ```bash
 # Run tests with dependency awareness
-pnpm turbo test
+bun turbo test
 
 # Run only integration tests
-pnpm turbo test:integration
+bun turbo test:integration
 
 # Run tests in CI mode across all packages
-pnpm turbo test:ci
+bun turbo test:ci
 ```
 
 ## Vitest Configuration
@@ -271,10 +271,10 @@ export default defineConfig({
 
 ```bash
 # Run tests with coverage
-pnpm test --coverage
+bun vitest --coverage
 
 # Type check tests
-pnpm turbo check:types
+bun turbo check:types
 ```
 
 ### 4. CI Integration
@@ -288,10 +288,10 @@ Tests run automatically in:
 
 ```bash
 # Debug specific test
-pnpm turbo -F worker-name test -- --reporter=verbose worker.test.ts
+bun turbo -F worker-name test -- --reporter=verbose worker.test.ts
 
 # Run with debug output
-DEBUG=* pnpm test
+DEBUG=* bun vitest
 ```
 
 ## Common Testing Patterns

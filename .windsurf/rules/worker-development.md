@@ -135,7 +135,7 @@ just test
 pnpm -F worker-name test
 
 # Run integration tests only
-pnpm turbo test:integration
+bun turbo test:integration
 ```
 
 ## Development Workflow
@@ -147,7 +147,7 @@ pnpm turbo test:integration
 just dev
 
 # Start specific worker
-pnpm turbo -F worker-name dev
+bun turbo -F worker-name dev
 ```
 
 ### Build Process
@@ -165,7 +165,7 @@ Turborepo handles the build pipeline as defined in [turbo.json](mdc:turbo.json):
 just deploy
 
 # Deploy specific worker
-pnpm turbo -F worker-name deploy
+bun turbo -F worker-name deploy
 ```
 
 ## Best Practices

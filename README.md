@@ -84,18 +84,21 @@ This repository uses a `Justfile` to provide easy access to common commands. You
 
 Here are some key commands:
 
-- `just` - Show a list of available scripts.
+- `just` - Show a list of available commands.
 - `just install` - Install all dependencies.
-- `just dev` - Start the development server for all workers.
-- `just build` - Build all workers.
-- `just test` - Run tests for all workers.
-- `just check` - Run linting, type checking, and formatting checks.
-- `just fix` - Automatically fix linting and formatting issues.
-- `just deploy` - Deploy workers (requires configuration).
+- `just dev` - Start development server (context-aware: runs `bun runx dev`).
+- `just build` - Build all workers (runs `bun turbo build`).
+- `just test` - Run tests (runs `bun vitest`).
+- `just check` - Check code quality: deps, lint, types, format (runs `bun runx check`).
+- `just fix` - Fix code issues: deps, lint, format, workers-types (runs `bun runx fix`).
+- `just preview` - Run Workers in preview mode.
+- `just deploy` - Deploy workers (runs `bun turbo deploy`).
 - `just cs` - Create a new changeset for versioning.
-- `just up -d` - Update dependencies across the monorepo.
-- `just new-worker` - Generate a new worker service using the template.
-- `just new-package` - Generate a new package for sharing code between other apps/packages.
+- `just update deps` - Update dependencies across the monorepo with syncpack.
+- `just update pnpm` - Update pnpm version.
+- `just update turbo` - Update turbo version.
+- `just new-worker` (alias: `just gen`) - Generate a new Cloudflare Worker.
+- `just new-package` - Generate a new package for sharing code.
 
 For a complete list of available commands, run `just` or see the [Justfile](./Justfile) for more details.
 
@@ -105,11 +108,11 @@ This repository includes GitHub Actions workflows defined in the `.github/workfl
 
 - **`branches.yml` (Branches Workflow):**
   - Triggered on pushes to any branch _except_ `main`.
-  - Installs dependencies.
-  - Runs checks/tests (`pnpm turbo check:ci`)
+  - Installs dependencies with pnpm.
+  - Runs checks/tests (`bun runx ci check`)
 
 - **`release.yml` (Release Workflow):**
   - Triggered on pushes to the `main` branch.
   - Contains two jobs:
-    - `test-and-deploy`: Installs dependencies, runs checks, tests, and then deploys all workers (`pnpm turbo deploy`). This step requires the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets to be configured in your repository's GitHub secrets.
+    - `test-and-deploy`: Installs dependencies, runs checks/tests (`bun turbo check:ci`), and then deploys all workers (`bun turbo deploy`). This step requires the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets to be configured in your repository's GitHub secrets.
     - `create-release-pr`: Uses [Changesets](https://github.com/changesets/changesets) to create a pull request that compiles changelogs and bumps package versions. This PR is primarily for documentation and versioning, as deployment happens directly on merge to `main`.

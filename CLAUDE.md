@@ -4,20 +4,23 @@
 
 <commands>
 - `just install` - Install dependencies
-- `just dev` - Run development servers for all workers
-- `just test` - Run all tests
-- `just build` - Build all workers
-- `just check` - Check code quality (lint, types, format)
-- `just fix` - Fix code issues automatically
-- `just deploy` - Deploy all workers (requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID)
-- `just new-worker` - Create a new Cloudflare Worker
+- `just dev` - Run development servers (uses `bun runx dev` - context-aware)
+- `just test` - Run tests with vitest (uses `bun vitest`)
+- `just build` - Build all workers (uses `bun turbo build`)
+- `just check` - Check code quality - deps, lint, types, format (uses `bun runx check`)
+- `just fix` - Fix code issues - deps, lint, format, workers-types (uses `bun runx fix`)
+- `just deploy` - Deploy all workers (uses `bun turbo deploy`)
+- `just preview` - Run Workers in preview mode
+- `just new-worker` (alias: `just gen`) - Create a new Cloudflare Worker
 - `just new-package` - Create a new shared package
-- `just up -d` - Update dependencies across the monorepo
+- `just update deps` (alias: `just up deps`) - Update dependencies across the monorepo
+- `just update pnpm` - Update pnpm version
+- `just update turbo` - Update turbo version
 - `just cs` - Create a changeset for versioning
-- `pnpm turbo -F worker-name dev` - Start specific worker
-- `pnpm turbo -F worker-name test` - Test specific worker
-- `pnpm turbo -F worker-name deploy` - Deploy specific worker
-- `pnpm vitest path/to/test.test.ts` - Run a single test file
+- `bun turbo -F worker-name dev` - Start specific worker
+- `bun turbo -F worker-name test` - Test specific worker
+- `bun turbo -F worker-name deploy` - Deploy specific worker
+- `bun vitest path/to/test.test.ts` - Run a single test file
 - `pnpm -F @repo/package-name add dependency` - Add dependency to specific package
 </commands>
 
@@ -56,10 +59,12 @@
 <critical-notes>
 - TypeScript configs MUST use fully qualified paths: `@repo/typescript-config/base.json` not `./base.json`
 - Do NOT add 'WebWorker' to TypeScript config - types are in worker-configuration.d.ts or @cloudflare/workers-types
-- For lint checking: First `cd` to the package directory, then run `pnpm turbo check:types check:lint`
+- For lint checking: First `cd` to the package directory, then run `bun turbo check:types check:lint`
 - Use `workspace:*` protocol for internal dependencies
-- Use `pnpm turbo -F` for build/test/deploy tasks
-- Use `pnpm -F` for dependency management
+- Use `bun turbo -F` for build/test/deploy tasks
+- Use `pnpm -F` for dependency management (pnpm is still used for package management)
+- Commands delegate to `bun runx` which provides context-aware behavior
+- Test commands use `bun vitest` directly, not through turbo
 - NEVER create files unless absolutely necessary
 - ALWAYS prefer editing existing files over creating new ones
 - NEVER proactively create documentation files unless explicitly requested
