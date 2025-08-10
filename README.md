@@ -2,14 +2,6 @@
 
 This template provides a fully featured monorepo for managing multiple Cloudflare Workers.
 
-## Quick Start
-
-You can bootstrap a new monorepo using this template by running:
-
-```bash
-npm create workers-monorepo@latest
-```
-
 ## Why a Monorepo?
 
 Managing multiple related services (like Cloudflare Workers) in separate repositories can become complex. A monorepo approach offers several advantages:
@@ -20,6 +12,14 @@ Managing multiple related services (like Cloudflare Workers) in separate reposit
 - **Consistent tooling** - Apply the same build, test, linting, and formatting configurations (e.g., via Turborepo in `turbo.json` and shared configs in `packages/`) across all projects, ensuring consistent tooling and code quality across Workers.
 - **Streamlined CI/CD** - A single pipeline (like the ones in `.github/workflows/`) can build, test, and deploy all Workers, simplifying the release process.
 - **Easier refactoring** - Refactoring code that spans multiple workers or shared packages is significantly easier within a single repository.
+
+## Quick Start
+
+You can bootstrap a new monorepo using this template by running:
+
+```bash
+npm create workers-monorepo@latest
+```
 
 ## Prerequisites
 
