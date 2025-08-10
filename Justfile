@@ -11,58 +11,86 @@ alias new-pkg := new-package
 alias new-worker := gen
 alias up := update
 
+# =============================== #
+#         DEV COMMANDS            #
+# =============================== #
+
 # Install dependencies
+[group('dev')]
 install:
   pnpm install --child-concurrency=10
 
-# Run dev script. Runs turbo dev if not in a specific project directory.
-[no-cd]
-dev *flags:
-  pnpm runx dev {{flags}}
-
-# Run preview script (usually only used in apps using Vite)
-[no-cd]
-preview:
-  pnpm run preview
-
-# Create changeset
-cs:
-  pnpm run-changeset-new
-
-# Check for issues with deps/lint/types/format
+# Check for issues with deps, lint, types, format, etc.
+[group('dev')]
 [no-cd]
 check *flags:
-  pnpm runx check {{flags}}
+  bun runx check {{flags}}
 
-# Fix deps, lint, format, etc.
+# Fix issues with deps, lint, format, etc.
+[group('dev')]
 [no-cd]
 fix *flags:
-  pnpm runx fix {{flags}}
+  bun runx fix {{flags}}
 
+[group('dev')]
 [no-cd]
 test *flags:
-  pnpm vitest {{flags}}
+  bun vitest {{flags}}
 
+[group('dev')]
 [no-cd]
 build *flags:
-  pnpm turbo build {{flags}}
+  bun turbo build {{flags}}
 
-# Deploy Workers, etc.
+# =============================== #
+#        RUNNER COMMANDS          #
+# =============================== #
+
+# Run dev script. Runs turbo dev if not in a specific project directory.
+[group('runner')]
+[no-cd]
+dev *flags:
+  bun runx dev {{flags}}
+
+# Run Workers in preview mode (if available)
+[group('runner')]
+[no-cd]
+preview:
+  bun run preview
+
+# Deploy Workers
+[group('runner')]
 [no-cd]
 deploy *flags:
-  pnpm turbo deploy {{flags}}
+  bun turbo deploy {{flags}}
 
-# Update things in the repo (deps, pnpm, turbo, etc.)
+# =============================== #
+#       GENERATOR COMMANDS        #
+# =============================== #
+
+# Create changeset
+[group('generator')]
+cs:
+  bun run-changeset-new
+
+[group('generator')]
+gen *flags:
+  bun run-turbo-gen {{flags}}
+
+[group('generator')]
+new-package *flags:
+  bun run-turbo-gen new-package {{flags}}
+
+# =============================== #
+#        UTILITY COMMANDS         #
+# =============================== #
+
+# CLI in packages/tools for updating deps, pnpm, etc.
+[group('utility')]
 update *flags:
   bun runx update {{flags}}
 
-# Create a new Worker/package/etc. from a template (see `turbo/generators` for details)
-gen *flags:
-  pnpm run-turbo-gen {{flags}}
-
-new-package *flags:
-  pnpm run-turbo-gen new-package {{flags}}
-
-# The runx CLI in packages/tools
+# CLI in packages/tools for running commands in the repo.
+[group('utility')]
 runx *flags:
   bun runx {{flags}}
