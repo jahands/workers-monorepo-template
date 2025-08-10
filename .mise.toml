@@ -1,0 +1,10 @@
+[tools]
+pnpm = "10.13.1"
+node = "22"
+bun = "1.2.20"
+just = "1.42.4"
+rg = "latest"
+shfmt = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = []
