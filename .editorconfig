@@ -16,3 +16,15 @@ indent_style = space
 
 [Justfile]
 indent_style = space
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[*.rs]
+indent_style = space
+indent_size = 4
+
+[*.sh]
+# https://manpages.debian.org/testing/shfmt/shfmt.1.en.html#EXAMPLES
+switch_case_indent = true
