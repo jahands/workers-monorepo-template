@@ -84,7 +84,7 @@ just check -d
 just fix -d
 
 # Update all dependencies
-just update-deps
+just up -d
 ```
 
 ## Package Scripts Pattern
@@ -223,6 +223,6 @@ When extending TypeScript configs, always use the full package name instead of r
 2. **Pin Versions**: Syncpack ensures all external dependencies are pinned
 3. **Consistent Tooling**: Leverage shared configs and tools packages
 4. **Dependency Hygiene**: Regularly run `just check` to catch version mismatches
-5. **Atomic Updates**: Use `just update-deps` to update all dependencies together
+5. **Atomic Updates**: Use `just up -d` to update all dependencies together
 6. **Package Scope**: Use `@repo/` namespace for all internal packages
 7. **TypeScript Extends**: Use fully-qualified package names (e.g., `@repo/typescript-config/base.json`) instead of relative paths in `tsconfig.json` extends

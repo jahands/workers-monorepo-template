@@ -93,7 +93,7 @@ Here are some key commands:
 - `just fix` - Automatically fix linting and formatting issues.
 - `just deploy` - Deploy workers (requires configuration).
 - `just cs` - Create a new changeset for versioning.
-- `just update-deps` - Update dependencies across the monorepo.
+- `just up -d` - Update dependencies across the monorepo.
 - `just new-worker` - Generate a new worker service using the template.
 - `just new-package` - Generate a new package for sharing code between other apps/packages.
 

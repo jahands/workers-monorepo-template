@@ -12,7 +12,7 @@
 - `just deploy` - Deploy all workers (requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID)
 - `just new-worker` - Create a new Cloudflare Worker
 - `just new-package` - Create a new shared package
-- `just update-deps` - Update dependencies across the monorepo
+- `just up -d` - Update dependencies across the monorepo
 - `just cs` - Create a changeset for versioning
 - `pnpm turbo -F worker-name dev` - Start specific worker
 - `pnpm turbo -F worker-name test` - Test specific worker
