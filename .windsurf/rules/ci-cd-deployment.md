@@ -97,8 +97,6 @@ pnpm turbo -F worker-name deploy -- -e production
 ```bash
 # Deploy all workers
 just deploy
-# or
-pnpm turbo deploy
 ```
 
 ### Environment Variables
@@ -142,8 +140,6 @@ pnpm turbo deploy
 ```bash
 # Interactive changeset creation
 just cs
-# or
-pnpm changeset
 
 # Describe changes for each package
 ```

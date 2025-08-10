@@ -172,8 +172,6 @@ describe('Type Tests', () => {
 ```bash
 # Run all tests
 just test
-# or
-pnpm test
 
 # Run tests in CI mode
 pnpm test:ci

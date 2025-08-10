@@ -20,21 +20,17 @@ This guide covers the common development workflows and commands for working with
 ```bash
 # Install all dependencies
 just install
-# or
-pnpm install
 ```
 
 ### Development Commands
 
-All commands can be run using either the [Justfile](mdc:Justfile) shortcuts or direct pnpm/turbo commands:
+All primary commands should be run through [Justfile](mdc:Justfile):
 
 #### Start Development
 
 ```bash
 # Start dev servers for all workers
 just dev
-# or
-pnpm run dev
 ```
 
 #### Create New Worker
@@ -57,18 +53,12 @@ just new-package
 ```bash
 # Build all projects
 just build
-# or
-pnpm turbo build
 
 # Run tests
 just test
-# or
-pnpm test
 
 # Run CI checks (linting, types, formatting)
 just check
-# or
-pnpm run check
 ```
 
 #### Code Quality
@@ -76,8 +66,6 @@ pnpm run check
 ```bash
 # Auto-fix issues
 just fix
-# or
-pnpm run fix
 
 # Check code formatting
 pnpm run check:format

@@ -78,14 +78,10 @@ pnpm -F worker-name add '@repo/hono-helpers@workspace:*'
 
 ```bash
 # Check for version mismatches
-just check
-# or
-pnpm run check:deps
+just check -d
 
 # Fix dependency versions
-just fix
-# or
-pnpm run fix:deps
+just fix -d
 
 # Update all dependencies
 just update-deps

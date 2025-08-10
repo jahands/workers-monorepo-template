@@ -32,16 +32,12 @@ Managing multiple related services (like Cloudflare Workers) in separate reposit
 
 ```bash
 just install
-# or
-pnpm install
 ```
 
 **Run Development Server:**
 
 ```bash
 just dev
-# or
-pnpm run dev
 ```
 
 **Create a New Worker:**
@@ -58,8 +54,6 @@ This will guide you throught he setup process of creating a new application with
 
 ```bash
 just deploy
-# or
-pnpm turbo deploy
 ```
 
 Note: This will also deploy the example application in `apps/example-worker-echoback`. If you don't want to deploy that Worker, simply remove the deploy script from [apps/example/workers/echoback/package.json](apps/example-worker-echoback/package.json).
@@ -101,7 +95,7 @@ Here are some key commands:
 - `just new-worker` - Generate a new worker service using the template.
 - `just new-package` - Generate a new package for sharing code between other apps/packages.
 
-You can also run most commands directly using `pnpm` and `turbo` if you prefer (e.g., `pnpm install`, `pnpm turbo build`). See the `Justfile` and `package.json` files for more details.
+For a complete list of available commands, run `just` or see the [Justfile](./Justfile) for more details.
 
 ## GitHub Actions
 
