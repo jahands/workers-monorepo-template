@@ -4,7 +4,7 @@ set -euo pipefail
 # store cache under node_modules when available to reduce clutter
 cache_location=".eslintcache" # default
 if [[ -d "node_modules" ]]; then
-	cache_location="node_modules/.cache/run-eslint/.eslintcache"
+	cache_location="node_modules/.cache/.eslintcache"
 fi
 
 args=(
