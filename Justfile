@@ -6,6 +6,11 @@
 @help:
   just --list
 
+# Aliases
+alias new-pkg := new-package
+alias new-worker := gen
+alias up := update
+
 # Install dependencies
 install:
   pnpm install --child-concurrency=10
@@ -47,18 +52,16 @@ build *flags:
 deploy *flags:
   pnpm turbo deploy {{flags}}
 
-# Update dependencies using syncpack
-update-deps:
-  pnpm run-update-deps
+# Update things in the repo (deps, pnpm, turbo, etc.)
+update *flags:
+  bun runx update {{flags}}
 
 # Create a new Worker/package/etc. from a template (see `turbo/generators` for details)
 gen *flags:
   pnpm run-turbo-gen {{flags}}
-alias new-worker := gen
 
 new-package *flags:
   pnpm run-turbo-gen new-package {{flags}}
-alias new-pkg := new-package
 
 # The runx CLI in packages/tools
 runx *flags:

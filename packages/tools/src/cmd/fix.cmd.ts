@@ -39,7 +39,7 @@ export const fixCmd = new Command('fix')
 		] satisfies string[]
 
 		const fixes = {
-			deps: ['pnpm', 'fix:deps'],
+			deps: ['run-fix-deps'],
 			lint: ['FIX_ESLINT=1', 'turbo', turboFlags, 'check:lint'].flat(),
 			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
 			format: ['prettier', '.', '--cache', '--write'],
@@ -68,16 +68,15 @@ export const fixCmd = new Command('fix')
 		}
 
 		if (deps) {
-			await within(async () => {
-				cd(repoRoot) // Must be run from root
-				const exitCode = await $`${fixes.deps}`.exitCode
-				table.push([
-					'deps',
-					fixes.deps.join(' '),
-					getAndCheckOutcome(exitCode),
-					'Root',
-				] satisfies TableRow)
-			})
+			const exitCode = await $({
+				cwd: repoRoot, // Must be run from root
+			})`${fixes.deps}`.exitCode
+			table.push([
+				'deps',
+				fixes.deps.join(' '),
+				getAndCheckOutcome(exitCode),
+				'Root',
+			] satisfies TableRow)
 		}
 
 		if (lint) {
@@ -91,28 +90,27 @@ export const fixCmd = new Command('fix')
 		}
 
 		if (workersTypes) {
-			await within(async () => {
-				const exitCode = await $`${fixes.workersTypes}`.exitCode
-				table.push([
-					'workers types',
-					fixes.workersTypes.join(' '),
-					getAndCheckOutcome(exitCode),
-					runFromRoot ? 'Root' : `cwd (${cwdName})`,
-				] satisfies TableRow)
-			})
+			const exitCode = await $({
+				cwd: repoRoot, // Must be run from root
+			})`${fixes.workersTypes}`.exitCode
+			table.push([
+				'workers types',
+				fixes.workersTypes.join(' '),
+				getAndCheckOutcome(exitCode),
+				runFromRoot ? 'Root' : `cwd (${cwdName})`,
+			] satisfies TableRow)
 		}
 
 		if (format) {
-			await within(async () => {
-				cd(repoRoot) // Must be run from root
-				const exitCode = await $`${fixes.format}`.exitCode
-				table.push([
-					'format',
-					fixes.format.join(' '),
-					getAndCheckOutcome(exitCode),
-					'Root',
-				] satisfies TableRow)
-			})
+			const exitCode = await $({
+				cwd: repoRoot, // Must be run from root
+			})`${fixes.format}`.exitCode
+			table.push([
+				'format',
+				fixes.format.join(' '),
+				getAndCheckOutcome(exitCode),
+				'Root',
+			] satisfies TableRow)
 		}
 
 		echo(table.toString())

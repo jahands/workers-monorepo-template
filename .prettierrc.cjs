@@ -30,7 +30,11 @@ const config = {
 	semi: false,
 	singleQuote: true,
 	printWidth: 100,
-	plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-packagejson'],
+	plugins: [
+		'@ianvs/prettier-plugin-sort-imports',
+		'prettier-plugin-packagejson',
+		'prettier-plugin-toml',
+	],
 	importOrder: [...codeImports, ...typeImports],
 	importOrderTypeScriptVersion: '5.5.4',
 	overrides: [
@@ -50,6 +54,13 @@ const config = {
 			files: '*.md',
 			options: {
 				useTabs: false,
+			},
+		},
+		{
+			files: ['mise.toml', '.mise.toml'],
+			options: {
+				singleQuote: false,
+				alignEntries: true,
 			},
 		},
 	],

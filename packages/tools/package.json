@@ -26,6 +26,7 @@
 		"empathic": "2.0.0",
 		"esbuild": "0.25.5",
 		"memoize-one": "6.0.0",
+		"smol-toml": "1.4.2",
 		"ts-pattern": "5.7.1",
 		"tsx": "4.20.3",
 		"zod": "3.25.67",
@@ -33,6 +34,7 @@
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",
+		"@types/bun": "1.2.20",
 		"vitest": "3.2.4"
 	}
 }

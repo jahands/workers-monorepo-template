@@ -1,9 +1,9 @@
 [tools]
-pnpm = "10.13.1"
-node = "22"
-bun = "1.2.20"
-just = "1.42.4"
-rg = "latest"
+pnpm  = "10.14.0"
+node  = "22"
+bun   = "1.2.20"
+just  = "1.42.4"
+rg    = "latest"
 shfmt = "latest"
 
 [settings]

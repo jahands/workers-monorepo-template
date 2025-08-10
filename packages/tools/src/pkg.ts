@@ -16,6 +16,7 @@ export const PackageJson = z.object({
 	devDependencies: z.record(z.string(), z.string()).optional(),
 	peerDependencies: z.record(z.string(), z.string()).optional(),
 	optionalDependencies: z.record(z.string(), z.string()).optional(),
+	packageManager: z.string().optional(),
 	engines: z
 		.object({
 			node: z.string().optional(),
