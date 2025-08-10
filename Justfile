@@ -59,3 +59,7 @@ alias new-worker := gen
 new-package *flags:
   pnpm run-turbo-gen new-package {{flags}}
 alias new-pkg := new-package
+
+# The runx CLI in packages/tools
+runx *flags:
+  bun runx {{flags}}

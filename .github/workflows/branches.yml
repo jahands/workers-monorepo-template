@@ -23,6 +23,6 @@ jobs:
           node-version: lts/*
           cache: 'pnpm'
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile --child-concurrency=10
+        run: bun runx ci install-deps
       - name: Check & Test
-        run: bun turbo check:ci
+        run: bun runx ci check
