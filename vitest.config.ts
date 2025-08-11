@@ -8,7 +8,6 @@ export default defineConfig(async () => {
 
 	return {
 		test: {
-			include: [],
 			projects: projectConfigPaths,
 		},
 	}
