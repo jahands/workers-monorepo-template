@@ -1,10 +1,15 @@
-import { defineWorkspace } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
 import { glob } from '@repo/workspace-dependencies/zx'
 
-const projects = await glob([
+export default defineConfig(async () => {
 	// All vitest projects
-	'{apps,packages}/*/vitest.config{,.node}.ts',
-])
+	const projectConfigPaths = await glob(['{apps,packages}/*/vitest.config{,.node}.ts'])
 
-export default defineWorkspace(projects)
+	return {
+		test: {
+			include: [],
+			projects: projectConfigPaths,
+		},
+	}
+})
