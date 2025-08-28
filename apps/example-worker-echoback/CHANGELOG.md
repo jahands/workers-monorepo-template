@@ -1,5 +1,26 @@
 # example-worker-echoback
 
+## 0.1.5
+
+### Patch Changes
+
+- 3174e54: chore: remove unnecessary object spreading in eslint configs
+
+  resolves #17
+
+- ce16c92: chore: update deps
+- 7fa27f6: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 54d11ee: chore: update deps
+- f6665a2: chore: update deps
+- Updated dependencies [3174e54]
+- Updated dependencies [ce16c92]
+- Updated dependencies [7fa27f6]
+- Updated dependencies [ce16c92]
+- Updated dependencies [54d11ee]
+- Updated dependencies [f6665a2]
+  - @repo/hono-helpers@0.1.5
+
 ## 0.1.4
 
 ### Patch Changes
