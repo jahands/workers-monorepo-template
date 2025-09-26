@@ -1,5 +1,44 @@
 # @repo/tools
 
+## 0.4.0
+
+### Minor Changes
+
+- d0bf900: feat: improve scripts based on shellcheck lint suggestions
+- a946b57: feat(runx): add shfmt for shell script formatting
+
+  Integrates shfmt with check --format and fix --format commands.
+  Adds a dedicated shfmt command that can skip if tools are missing.
+
+  resolves #16
+
+### Patch Changes
+
+- 3174e54: chore: remove unnecessary object spreading in eslint configs
+
+  resolves #17
+
+- 09a661d: chore: switch back to stdio: inherit in prettier and set log level
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 4bc436c: chore: update deps
+- 4174900: chore: inherit stdio for format shell fix/check
+
+  this already outputs very little so should be fine to do this
+
+- 2452bc6: chore: add .cmd.ts suffix to cmd files
+- c68dea1: chore: use exec in shell wrappers to improve performance
+
+  using exec replaces the shell process instead of creating a child, which avoids an unnecessary wrapper process and improves signal handling.
+
+  also moved away from #!/usr/bin/env to improve security (no injecting custom shells into env)
+
+- 79d4e30: fix: only include .sh and extensionless files in shfmt
+- 54d11ee: chore: update deps
+- 7cec4eb: chore: use consistent shabang in packages/tools/bin
+- f6665a2: chore: update deps
+- bf2f746: chore: formatting
+
 ## 0.3.2
 
 ### Patch Changes
