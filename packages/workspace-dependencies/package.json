@@ -46,7 +46,7 @@
 		"wrangler": "4.40.2",
 		"yaml": "2.8.1",
 		"zod": "4.1.11",
-		"zx": "8.8.3"
+		"zx": "8.8.4"
 	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",

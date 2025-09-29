@@ -30,11 +30,11 @@
 		"ts-pattern": "5.8.0",
 		"tsx": "4.20.6",
 		"zod": "4.1.11",
-		"zx": "8.8.3"
+		"zx": "8.8.4"
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",
-		"@types/bun": "1.2.22",
+		"@types/bun": "1.2.23",
 		"vitest": "3.2.4"
 	}
 }
