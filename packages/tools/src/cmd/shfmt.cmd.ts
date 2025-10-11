@@ -39,9 +39,16 @@ shfmtCmd
 type Mode = 'write' | 'diff'
 
 async function runShfmt(mode: Mode) {
-	await $`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '!*.*' -g '*.sh' .`.pipe(
-		$`xargs shfmt --case-indent ${`--${mode}`}`
-	)
+	await Promise.all([
+		$`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '!*.*' .`.pipe(
+			$`xargs shfmt --case-indent ${`--${mode}`}`
+		),
+		$({
+			nothrow: true, // may not be any .sh files
+		})`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '*.sh' .`.pipe(
+			$`xargs shfmt --case-indent ${`--${mode}`}`
+		),
+	])
 }
 
 async function checkShfmtAvailable(skipIfUnavailable: boolean, mode: Mode): Promise<void> {
