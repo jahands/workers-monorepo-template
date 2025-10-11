@@ -10,9 +10,10 @@ import * as tseslint from 'typescript-eslint'
 
 import { getDirname, getGitIgnoreFiles, getTsconfigRootDir } from './helpers'
 
+import type { ConfigObject } from '@eslint/core'
 import type { Linter } from 'eslint'
 
-export { defineConfig }
+export { defineConfig, ConfigObject as Config }
 
 const compat = new FlatCompat({
 	// This helps FlatCompat resolve plugins relative to this config file

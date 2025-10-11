@@ -93,6 +93,9 @@ importers:
       '@eslint/compat':
         specifier: 1.4.0
         version: 1.4.0(eslint@9.37.0(jiti@2.6.1))
+      '@eslint/core':
+        specifier: 0.16.0
+        version: 0.16.0
       '@eslint/eslintrc':
         specifier: 3.3.1
         version: 3.3.1
