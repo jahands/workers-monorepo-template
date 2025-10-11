@@ -40,14 +40,14 @@ type Mode = 'write' | 'diff'
 
 async function runShfmt(mode: Mode) {
 	await Promise.all([
-		$`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '!*.*' .`.pipe(
-			$`xargs shfmt --case-indent ${`--${mode}`}`
-		),
+		$`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '!*.*' .`
+			.pipe($`xargs shfmt --case-indent ${`--${mode}`}`)
+			.pipe(process.stderr),
 		$({
 			nothrow: true, // may not be any .sh files
-		})`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '*.sh' .`.pipe(
-			$`xargs shfmt --case-indent ${`--${mode}`}`
-		),
+		})`rg --files-with-matches '^#!.*\\b(sh|bash|zsh|fish|dash|ksh|csh)\\b' -g '*.sh' .`
+			.pipe($`xargs shfmt --case-indent ${`--${mode}`}`)
+			.pipe(process.stderr),
 	])
 }
 
