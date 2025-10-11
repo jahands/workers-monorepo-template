@@ -2,7 +2,7 @@ import { cliError } from '@jahands/cli-tools'
 import Table from 'cli-table3'
 import * as toml from 'smol-toml'
 import { match } from 'ts-pattern'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 import { getRepoRoot } from './path'
 import { PackageJson } from './pkg'

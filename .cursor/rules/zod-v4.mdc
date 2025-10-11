@@ -6,7 +6,7 @@ alwaysApply: false
 <zod-v4-guidelines>
 
 <critical-import-rule>
-<requirement>Always import from 'zod/v4', never 'zod'</requirement>
+<requirement>Always import from 'zod', never 'zod'</requirement>
 </critical-import-rule>
 
 <core-rules>
@@ -151,7 +151,7 @@ z.function({
 
 <complete-example>
 ```typescript
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 /** User registration */
 export type UserReg = z.infer<typeof UserReg>

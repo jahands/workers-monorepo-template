@@ -3,7 +3,7 @@ import { Command } from '@commander-js/extra-typings'
 import { validateArg } from '@jahands/cli-tools/args'
 import * as esbuild from 'esbuild'
 import { match } from 'ts-pattern'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 import { TSHelpers } from '../tsconfig'
 
