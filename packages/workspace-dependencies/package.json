@@ -43,9 +43,9 @@
 	"dependencies": {
 		"esbuild": "0.25.10",
 		"slugify": "1.6.6",
-		"wrangler": "4.40.2",
+		"wrangler": "4.42.2",
 		"yaml": "2.8.1",
-		"zod": "4.1.11",
+		"zod": "4.1.12",
 		"zx": "8.8.4"
 	},
 	"devDependencies": {

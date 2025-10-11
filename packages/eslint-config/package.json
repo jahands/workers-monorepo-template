@@ -10,12 +10,12 @@
 	"devDependencies": {
 		"@eslint/compat": "1.4.0",
 		"@eslint/eslintrc": "3.3.1",
-		"@eslint/js": "9.36.0",
+		"@eslint/js": "9.37.0",
 		"@types/eslint": "9.6.1",
 		"@types/node": "22.15.27",
-		"@typescript-eslint/eslint-plugin": "8.44.1",
-		"@typescript-eslint/parser": "8.44.1",
-		"eslint": "9.36.0",
+		"@typescript-eslint/eslint-plugin": "8.46.0",
+		"@typescript-eslint/parser": "8.46.0",
+		"eslint": "9.37.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-config-turbo": "2.5.8",
 		"eslint-import-resolver-typescript": "4.4.4",
@@ -25,9 +25,9 @@
 		"eslint-plugin-only-warn": "1.1.0",
 		"eslint-plugin-react": "7.37.5",
 		"eslint-plugin-react-hooks": "5.2.0",
-		"jiti": "2.6.0",
+		"jiti": "2.6.1",
 		"typescript": "5.9.2",
-		"typescript-eslint": "8.44.1",
+		"typescript-eslint": "8.46.0",
 		"vitest": "3.2.4"
 	}
 }

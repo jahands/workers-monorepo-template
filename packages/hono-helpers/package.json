@@ -12,14 +12,14 @@
 	},
 	"dependencies": {
 		"@hono/standard-validator": "0.1.5",
-		"hono": "4.9.9",
-		"http-codex": "0.6.1",
-		"workers-tagged-logger": "0.13.2",
-		"zod": "4.1.11"
+		"hono": "4.9.11",
+		"http-codex": "0.6.2",
+		"workers-tagged-logger": "0.13.3",
+		"zod": "4.1.12"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.9.7",
-		"@cloudflare/workers-types": "4.20250927.0",
+		"@cloudflare/vitest-pool-workers": "0.9.12",
+		"@cloudflare/workers-types": "4.20251011.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
