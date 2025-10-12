@@ -26,6 +26,7 @@
 		"empathic": "2.0.0",
 		"esbuild": "0.25.10",
 		"memoize-one": "6.0.0",
+		"p-map": "7.0.3",
 		"smol-toml": "1.4.2",
 		"ts-pattern": "5.8.0",
 		"tsx": "4.20.6",

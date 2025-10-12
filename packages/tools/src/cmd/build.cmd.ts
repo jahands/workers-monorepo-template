@@ -2,6 +2,7 @@ import { inspect } from 'node:util'
 import { Command } from '@commander-js/extra-typings'
 import { validateArg } from '@jahands/cli-tools/args'
 import * as esbuild from 'esbuild'
+import pMap from 'p-map'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
@@ -10,6 +11,9 @@ import { TSHelpers } from '../tsconfig'
 import type { CompilerOptions as TSCompilerOptions } from 'typescript'
 
 export const buildCmd = new Command('build').description('Scripts to build things')
+
+type Format = z.infer<typeof Format>
+const Format = z.enum(['esm', 'cjs'])
 
 buildCmd
 	.command('tsc')
@@ -75,11 +79,8 @@ buildCmd
 				.string()
 				.array()
 				.min(1)
-				.parse(entryPoints)
+				.decode(entryPoints)
 				.map((d) => path.join(rootDir ?? '.', d))
-
-			type Format = z.infer<typeof Format>
-			const Format = z.enum(['esm', 'cjs'])
 
 			const formats = Format.array().parse(moduleFormats)
 
@@ -148,7 +149,7 @@ buildCmd
 	.action(async (entryPoints) => {
 		const tsHelpers = await new TSHelpers().init()
 		const { ts } = tsHelpers
-		z.string().array().min(1).parse(entryPoints)
+		z.string().array().min(1).decode(entryPoints)
 
 		const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
 		if (tsconfig.error) {
@@ -166,4 +167,73 @@ buildCmd
 
 		const program = ts.createProgram(entryPoints, tsCompOpts)
 		program.emit()
+	})
+
+buildCmd
+	.command('bun')
+	.description('Bundle with Bun')
+
+	.argument('<entrypoints...>', 'Entrypoint(s) of the app. e.g. src/index.ts')
+	.option('-f, --format <format...>', 'Formats to use (options: esm, cjs)', ['esm'])
+	.option('--no-minify', `Don't minify output`)
+	.option('--no-sourcemap', `Don't include sourcemaps`)
+
+	.action(async (entryPoints, { format, minify, sourcemap }) => {
+		await fs.rm('./dist/', { force: true, recursive: true })
+
+		const formats = await z
+			.array(Format)
+			.parseAsync(format)
+			.catch((e) => {
+				throw new Error(`Invalid format: ${z.prettifyError(e)}`)
+			})
+
+		await Promise.all([
+			$({
+				stdio: 'inherit',
+			})`runx build bundle-lib-build-types ${entryPoints}`,
+
+			...formats.map(async (fmt) => {
+				const distDir = `./dist/${fmt}`
+
+				await Bun.build({
+					entrypoints: entryPoints,
+					outdir: distDir,
+					target: 'node',
+					minify,
+					format: fmt,
+				})
+
+				const outExt = match(fmt)
+					.with('esm', () => '.mjs')
+					.with('cjs', () => '.cjs')
+					.exhaustive()
+
+				// change output files to mjs/cjs
+				await pMap(await glob(`${distDir}/**/*.js`), async (file) => {
+					await fs.rename(file, file.replace(/\.js$/, outExt))
+				})
+			}),
+		])
+
+		const cleanupSourcemaps = async () => {
+			if (sourcemap === false) {
+				const files = await glob('dist/**/*.map')
+				await Promise.all(files.map((file) => fs.rm(file)))
+			}
+		}
+
+		// executables don't need declaration files
+		const cleanupBin = async () => {
+			const files = await glob('dist/bin/*.d.ts')
+			await Promise.all(files.map((file) => fs.rm(file)))
+		}
+
+		await Promise.all([cleanupSourcemaps(), cleanupBin()])
+
+		// check if bin is empty
+		const files = await glob('dist/bin/*')
+		if (files.length === 0) {
+			await fs.rm('dist/bin', { recursive: true })
+		}
 	})
