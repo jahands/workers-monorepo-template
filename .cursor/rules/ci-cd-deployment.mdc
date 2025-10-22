@@ -66,7 +66,7 @@ Each worker needs [wrangler.jsonc](mdc:apps/example-worker-echoback/wrangler.jso
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "worker-name",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-04-28",
+	"compatibility_date": "2025-09-20",
 	"compatibility_flags": ["nodejs_compat"],
 	"routes": [],
 	"logpush": true,

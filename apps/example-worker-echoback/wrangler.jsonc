@@ -2,7 +2,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "example-worker-echoback",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-04-28",
+	"compatibility_date": "2025-09-20",
 	"compatibility_flags": ["nodejs_compat"],
 	"routes": [],
 	"logpush": true,
