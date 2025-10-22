@@ -30,7 +30,6 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 
 	plop.setGenerator('new-worker', {
 		description: 'Create a new Cloudflare Worker using Hono',
-		// gather information from the user
 		prompts: [
 			{
 				type: 'input',
@@ -39,7 +38,6 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 				validate: nameValidator,
 			},
 		],
-		// perform actions based on the prompts
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
@@ -64,7 +62,6 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 
 	plop.setGenerator('new-worker-vite', {
 		description: 'Create a new Cloudflare Worker using Hono and Vite',
-		// gather information from the user
 		prompts: [
 			{
 				type: 'input',
@@ -73,7 +70,6 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 				validate: nameValidator,
 			},
 		],
-		// perform actions based on the prompts
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
@@ -85,6 +81,38 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					base: 'templates/fetch-worker-vite',
 					destination,
 					templateFiles: ['templates/fetch-worker-vite/**/**.hbs'],
+					data: answers,
+				},
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'fixAll' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+			]
+
+			return actions
+		},
+	})
+
+	plop.setGenerator('new-worker-minimal', {
+		description: 'Create a new Cloudflare Worker with a minimal fetch handler',
+		prompts: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'name of worker',
+				validate: nameValidator,
+			},
+		],
+		actions: (data: unknown) => {
+			const answers = NewWorkerAnswers.parse(data)
+			process.chdir(answers.turbo.paths.root)
+			const destination = `apps/${slugifyText(answers.name)}`
+
+			const actions: PlopTypes.Actions = [
+				{
+					type: 'addMany',
+					base: 'templates/fetch-worker-minimal',
+					destination,
+					templateFiles: ['templates/fetch-worker-minimal/**/**.hbs'],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },

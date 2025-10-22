@@ -1,0 +1,7 @@
+import type { Env } from './context'
+
+export default {
+	fetch: (_request, _env, _ctx) => {
+		return new Response('hello, world!')
+	},
+} satisfies ExportedHandler<Env>
