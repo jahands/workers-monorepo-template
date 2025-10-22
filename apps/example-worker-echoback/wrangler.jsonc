@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "example-worker-echoback",
-	"main": "src/index.ts",
+	"main": "src/example-worker-echoback.app.ts",
 	"compatibility_date": "2025-09-20",
 	"compatibility_flags": ["nodejs_compat"],
 	"routes": [],

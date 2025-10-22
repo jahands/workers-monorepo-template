@@ -1,3 +1,3 @@
 # example-worker-echoback
 
-A simple example Worker. New Workers should use .eslintrc.cjs and tsconfig.json similar to the one here.
+A simple example Worker. New Workers should use eslint.config.ts and tsconfig.json similar to the one here.

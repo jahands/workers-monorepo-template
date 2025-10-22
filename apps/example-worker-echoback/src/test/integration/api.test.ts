@@ -1,7 +1,7 @@
 import { SELF } from 'cloudflare:test'
 import { describe, expect, it, test } from 'vitest'
 
-import '../..'
+import '../../example-worker-echoback.app'
 
 describe('echoback returns data about the request', () => {
 	test('GET', async () => {
