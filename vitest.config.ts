@@ -6,10 +6,7 @@ export default defineConfig(async () => {
 	const cfgTs = 'vitest.config{,.node}.ts'
 
 	// all vitest projects
-	const projectConfigPaths = await glob([
-		`{apps,packages}/**/${cfgTs}`,
-		`turbo/generators/**/${cfgTs}`,
-	])
+	const projectConfigPaths = await glob([`{apps,packages}/*/${cfgTs}`, `turbo/generators/${cfgTs}`])
 
 	return {
 		test: {
