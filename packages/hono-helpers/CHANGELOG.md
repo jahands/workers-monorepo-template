@@ -1,5 +1,30 @@
 # @repo/hono-helpers
 
+## 0.2.0
+
+### Minor Changes
+
+- 6ed56d0: feat: rename hono middleware from use* to with*
+
+  fixes issues where eslint thinks it's a react hook
+
+### Patch Changes
+
+- 3174e54: chore: remove unnecessary object spreading in eslint configs
+
+  resolves #17
+
+- c2e4c63: chore: update deps
+- ce16c92: chore: update deps
+- 7fa27f6: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 4bc436c: chore: update deps
+- ee24328: chore: update deps
+- 546688f: chore: import from zod
+- 54d11ee: chore: update deps
+- ec6ff13: chore: fix eslint type issues
+- f6665a2: chore: update deps
+
 ## 0.1.4
 
 ### Patch Changes
