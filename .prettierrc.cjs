@@ -35,11 +35,13 @@ const config = {
 	singleQuote: true,
 	printWidth: 100,
 	plugins: [
+		'@babel/plugin-proposal-explicit-resource-management',
 		'@ianvs/prettier-plugin-sort-imports',
 		'prettier-plugin-packagejson',
 		'prettier-plugin-toml',
 	],
 	importOrder: [...codeImports, ...typeImports],
+	importOrderParserPlugins: ['typescript', 'jsx', 'explicitResourceManagement'],
 	importOrderTypeScriptVersion: '5.8.2',
 	overrides: [
 		{

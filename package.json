@@ -11,6 +11,7 @@
 		"test:ci": "run-vitest-ci"
 	},
 	"devDependencies": {
+		"@babel/plugin-proposal-explicit-resource-management": "7.27.4",
 		"@changesets/cli": "2.29.7",
 		"@ianvs/prettier-plugin-sort-imports": "4.6.2",
 		"@repo/eslint-config": "workspace:*",
