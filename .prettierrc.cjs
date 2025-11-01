@@ -35,7 +35,7 @@ const config = {
 	singleQuote: true,
 	printWidth: 100,
 	plugins: [
-		'@babel/plugin-proposal-explicit-resource-management',
+		'@babel/plugin-transform-explicit-resource-management',
 		'@ianvs/prettier-plugin-sort-imports',
 		'prettier-plugin-packagejson',
 		'prettier-plugin-toml',
