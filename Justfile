@@ -76,11 +76,11 @@ cs:
 
 [group('3. generator')]
 gen *flags:
-  bun run-turbo-gen {{flags}}
+  bun turbo gen {{flags}}
 
 [group('3. generator')]
 new-package *flags:
-  bun run-turbo-gen new-package {{flags}}
+  bun turbo gen new-package {{flags}}
 
 # =============================== #
 #        UTILITY COMMANDS         #
