@@ -279,6 +279,31 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
 
+  turbo/generators:
+    dependencies:
+      slugify:
+        specifier: 1.6.6
+        version: 1.6.6
+      zod:
+        specifier: 4.1.12
+        version: 4.1.12
+      zx:
+        specifier: 8.8.4
+        version: 8.8.4
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.15.27)(jiti@2.6.1)(lightningcss@1.29.2)(tsx@4.20.6)(yaml@2.8.1)
+
 packages:
 
   '@astrojs/compiler@2.12.0':

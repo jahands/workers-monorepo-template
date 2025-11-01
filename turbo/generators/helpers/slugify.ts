@@ -1,4 +1,4 @@
-import { slugify } from '@repo/workspace-dependencies/slugify'
+import slugify from 'slugify'
 
 export function slugifyText(text: string) {
 	const options = {

@@ -25,17 +25,10 @@
 				"require": "./dist/zod.cjs",
 				"types": "./dist/zod.d.ts"
 			}
-		},
-		"./slugify": {
-			"import": "./src/slugify.ts",
-			"require": {
-				"require": "./dist/slugify.cjs",
-				"types": "./dist/slugify.d.ts"
-			}
 		}
 	},
 	"scripts": {
-		"build": "runx build lib zx.ts yaml.ts zod.ts slugify.ts -d src -f cjs --platform node",
+		"build": "runx build lib yaml.ts zod.ts zx.ts -d src -f cjs --platform node",
 		"check:lint": "run-eslint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"

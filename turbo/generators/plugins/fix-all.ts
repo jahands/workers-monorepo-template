@@ -1,4 +1,4 @@
-import { $ } from '@repo/workspace-dependencies/zx'
+import { $ } from 'zx'
 
 import { catchError, onProcSuccess } from '../helpers/proc'
 import { slugifyText } from '../helpers/slugify'

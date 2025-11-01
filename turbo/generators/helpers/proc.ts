@@ -1,7 +1,9 @@
+import type { ProcessOutput } from 'zx'
+
 export function onProcSuccess(
 	name: string,
 	resolve: (value: unknown) => void,
-	reject: (reason?: any) => void
+	reject: (reason?: unknown) => void
 ) {
 	return (proc: ProcessOutput) => {
 		if (proc.exitCode === 0) {
@@ -12,6 +14,6 @@ export function onProcSuccess(
 	}
 }
 
-export function catchError(reject: (reason?: any) => void) {
+export function catchError(reject: (reason?: unknown) => void) {
 	return () => reject('unknown error')
 }

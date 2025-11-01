@@ -1,4 +1,4 @@
-import { z } from '@repo/workspace-dependencies/zod'
+import { z } from 'zod'
 
 export type Paths = z.infer<typeof Paths>
 export const Paths = z.object({
