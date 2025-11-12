@@ -12,6 +12,7 @@
 		"@eslint/core": "0.16.0",
 		"@eslint/eslintrc": "3.3.1",
 		"@eslint/js": "9.37.0",
+		"@repo/typescript-config": "workspace:*",
 		"@types/eslint": "9.6.1",
 		"@types/node": "22.15.27",
 		"@typescript-eslint/eslint-plugin": "8.46.0",
