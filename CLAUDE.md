@@ -45,6 +45,41 @@
 - Changesets manage versions and changelogs
 </architecture>
 
+<sentry-integration>
+**Optional Sentry error tracking and monitoring** - enabled by setting SENTRY_DSN
+
+Three instrumentation patterns available in `@repo/hono-helpers`:
+1. **`instrumentHandler()`** - Wraps ExportedHandler with Sentry (for handlers, queues, emails, etc.)
+   - Default: 2% trace sampling rate
+   - Usage: `export default instrumentHandler({ handler, sentry: { tracesSampleRate: 0.02 } })`
+
+2. **`instrumentDO()`** - Wraps Durable Object classes
+   - Default: 2% trace sampling rate
+   - Usage: `export const MyDO = instrumentDO<Env>(MyDOClass, { sentry: { tracesSampleRate: 0.02 } })`
+
+3. **`instrumentWorkflow()`** - Wraps Workflow classes
+   - Default: 100% trace sampling rate (workflows are important!)
+   - Usage: `export const MyWorkflow = instrumentWorkflow<Env, Params>(MyWorkflowClass)`
+
+**Middleware:**
+- `withSentry({ op: 'http.server' })` - Adds request-level tracing spans
+  - Automatically skips tracing 401/403/404 responses to reduce noise
+  - Only active if SENTRY_DSN is configured
+
+**Error Handling:**
+- `withOnError()` - Automatically captures 5xx errors and exceptions to Sentry
+  - Adds context for HTTP exceptions
+  - Handles AggregateError by capturing each error individually
+  - Only sends to Sentry if SENTRY_DSN is configured
+
+**Configuration:**
+- `SENTRY_DSN` (optional) - Sentry project DSN, Sentry only activates if provided
+- `SENTRY_RELEASE` (required) - Release version, automatically set to git commit hash during deployment
+- `ENVIRONMENT` (required) - Environment name (development/staging/production)
+
+All Sentry functionality is opt-in via the SENTRY_DSN environment variable.
+</sentry-integration>
+
 <code-style>
 - Use tabs for indentation, spaces for alignment
 - Type imports use `import type`

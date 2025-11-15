@@ -16,6 +16,11 @@ export type SharedHonoEnv = {
 	 */
 	ENVIRONMENT: WorkersEnvironment
 	/**
+	 * Sentry DSN for error tracking and monitoring.
+	 * Optional - Sentry will only be enabled if this is provided.
+	 */
+	SENTRY_DSN?: string
+	/**
 	 * Release version of the Worker (based on the current git commit).
 	 * Useful for logs, Sentry, etc.
 	 */
@@ -23,7 +28,15 @@ export type SharedHonoEnv = {
 }
 /** Global Hono variables */
 export type SharedHonoVariables = {
-	// Things like Sentry, etc. that should be present on all Workers
+	/**
+	 * Unique invocation ID for this request (used for tracing)
+	 * Set automatically by withSentry middleware if not already set
+	 */
+	invocationId?: string
+	/**
+	 * Array of promises to wait for before committing Sentry transaction
+	 */
+	txWaitUntil?: Promise<unknown>[]
 }
 
 /** Top-level Hono app */

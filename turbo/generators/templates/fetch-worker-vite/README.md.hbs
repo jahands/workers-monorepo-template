@@ -27,3 +27,23 @@ pnpm test
 ```sh
 pnpm turbo deploy
 ```
+
+## Optional: Sentry Integration
+
+This worker includes optional Sentry error tracking. To enable:
+
+1. Add your Sentry DSN to `wrangler.jsonc`:
+   ```jsonc
+   "vars": {
+     "SENTRY_DSN": "https://your-sentry-dsn@sentry.io/your-project-id"
+   }
+   ```
+
+2. Optionally add the `withSentry` middleware for request tracing:
+   ```typescript
+   import { withSentry } from '@repo/hono-helpers'
+
+   app.use('*', withSentry({ op: 'http.server' }))
+   ```
+
+For more advanced usage (instrumenting handlers, Durable Objects, or Workflows), see the `@repo/hono-helpers` package documentation.

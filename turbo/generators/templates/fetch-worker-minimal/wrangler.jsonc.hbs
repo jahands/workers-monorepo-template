@@ -11,5 +11,11 @@
 			"enabled": true,
 			"head_sampling_rate": 1 // 100%
 		}
+	},
+	"vars": {
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown", // overridden during deployment
+		// Uncomment to enable Sentry error tracking:
+		// "SENTRY_DSN": "https://your-sentry-dsn@sentry.io/your-project-id"
 	}
 }

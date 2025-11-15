@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/cloudflare'
 import { HTTPException } from 'hono/http-exception'
 import { httpStatus } from 'http-codex/status'
 
@@ -17,8 +18,14 @@ export function withOnError<T extends HonoApp>() {
 			const status = err.getResponse().status as ContentfulStatusCode
 			const body: APIError = { success: false, error: { message: err.message } }
 			if (status >= 500) {
-				// TODO: Capture to Sentry
-				// Log to Sentry
+				// Capture 5xx errors to Sentry with context
+				Sentry.withScope((scope) => {
+					scope.setContext('HTTP Exception', {
+						status: status,
+						body,
+					})
+					Sentry.captureException(err)
+				})
 				logger.error(err)
 			} else if (status === httpStatus.Unauthorized) {
 				body.error.message = 'unauthorized'
@@ -27,7 +34,8 @@ export function withOnError<T extends HonoApp>() {
 			return c.json(body, status)
 		}
 
-		// TODO: Capture to Sentry
+		// Capture all other error types to Sentry
+		Sentry.captureException(err)
 		logger.error(err)
 		return c.json(
 			{

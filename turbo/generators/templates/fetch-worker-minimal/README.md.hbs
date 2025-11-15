@@ -21,3 +21,36 @@ pnpm test
 ```sh
 pnpm turbo deploy
 ```
+
+## Optional: Sentry Integration
+
+This worker includes optional Sentry error tracking. To enable:
+
+1. Update your `context.ts` to extend `SharedHonoEnv`:
+   ```typescript
+   import type { SharedHonoEnv } from '@repo/hono-helpers'
+
+   export type Env = SharedHonoEnv & {
+     // add additional bindings here
+   }
+   ```
+
+2. Add your Sentry DSN to `wrangler.jsonc`:
+   ```jsonc
+   "vars": {
+     "SENTRY_DSN": "https://your-sentry-dsn@sentry.io/your-project-id"
+   }
+   ```
+
+3. Wrap your handler with `instrumentHandler`:
+   ```typescript
+   import { instrumentHandler } from '@repo/hono-helpers'
+
+   const handler: ExportedHandler<Env> = {
+     fetch: (request, env, ctx) => {
+       return new Response('hello, world!')
+     }
+   }
+
+   export default instrumentHandler({ handler })
+   ```
