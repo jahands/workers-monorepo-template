@@ -1,3 +1,5 @@
+import { routePath } from 'hono/route'
+
 import { redactUrl } from './url'
 
 import type { Context } from 'hono'
@@ -25,11 +27,13 @@ export function getRequestLogData<T extends HonoApp>(
 	requestStartTimestamp: number
 ): LogDataRequest {
 	const redactedUrl = redactUrl(c.req.url)
+	const currentPath = routePath(c)
+
 	return {
 		url: redactedUrl.toString(),
 		method: c.req.method,
 		path: c.req.path,
-		routePath: c.req.routePath,
+		routePath: currentPath,
 		searchParams: redactedUrl.searchParams.toString(),
 		headers: JSON.stringify(Array.from(c.req.raw.headers)),
 		ip:
