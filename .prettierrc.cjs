@@ -16,7 +16,7 @@ const codeImports = [
 	'^[.]{2}\\/', // ../
 	'^[.]\\/(?!index)', // ./foo (but not ./index)
 	'^[.]$', // .
-	'^[.]/index$', // ./index
+	'^[.]\\/index$', // ./index
 	'',
 ]
 
