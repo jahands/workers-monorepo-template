@@ -5,16 +5,16 @@ const codeImports = [
 	'<BUILTIN_MODULES>',
 	'<THIRD_PARTY_MODULES>',
 	'',
-	'^(@repo)(\/.*)$', // Workspace imports
+	'^(@repo)(\\/.*)$', // Workspace imports
 	'',
 	// aliases
-	'^~\/', // ~/
-	'^@\/', // @/
+	'^~\\/', // ~/
+	'^@\\/', // @/
 	'',
 	// Local (relative) imports
 	'^[.]{2}$', // ..
-	'^[.]{2}\/', // ../
-	'^[.]\/(?!index)', // ./foo (but not ./index)
+	'^[.]{2}\\/', // ../
+	'^[.]\\/(?!index)', // ./foo (but not ./index)
 	'^[.]$', // .
 	'^[.]/index$', // ./index
 	'',
