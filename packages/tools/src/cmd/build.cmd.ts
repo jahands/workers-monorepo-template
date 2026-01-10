@@ -1,4 +1,3 @@
-import { inspect } from 'node:util'
 import { Command } from '@commander-js/extra-typings'
 import { validateArg } from '@jahands/cli-tools/args'
 import * as esbuild from 'esbuild'
