@@ -19,35 +19,17 @@ buildCmd
 	.command('tsc')
 	.description('Build a library with tsc')
 	.argument('<entrypoint...>', 'Entrypoint(s) for the program')
-	.option('-r, --root-dir <string>', 'Root dir for tsc to use (overrides tsconfig.json)', 'src')
+	.option('-r, --root-dir <string>', 'Root dir for tsc to use (overrides tsconfig.json)')
 	.action(async (entrypoints, { rootDir }) => {
 		const tsHelpers = await new TSHelpers().init()
-		const { ts } = tsHelpers
-		await $`rm -rf ./dist` // Make sure we don't have any previous artifacts
+		await $`rm -rf ./dist`
 
-		// Read the parent config so that we don't get
-		// weird path issues from being in a monorepo
-		const parentTsConfig = z
-			.object({ extends: z.string() })
-			.parse(JSON.parse(fs.readFileSync('./tsconfig.json').toString())).extends
-
-		const tsconfig = ts.readConfigFile(`./node_modules/${parentTsConfig}`, ts.sys.readFile)
-		if (tsconfig.error) {
-			throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
+		const tsOptions: TSCompilerOptions = {
+			...tsHelpers.getTSConfig(),
+			...(rootDir !== undefined && { rootDir }),
 		}
 
-		const jsonCompopts = tsHelpers.getCompilerOptionsJSONFollowExtends('tsconfig.json')
-		const tmp = ts.convertCompilerOptionsFromJson(jsonCompopts, '')
-		if (tmp.errors.length > 0) {
-			throw new Error(`failed parse config: ${inspect(tmp)}`)
-		}
-
-		const tsOptions = {
-			...tmp.options,
-			rootDir: rootDir,
-		} satisfies TSCompilerOptions
-
-		ts.createProgram(entrypoints, tsOptions).emit()
+		tsHelpers.ts.createProgram(entrypoints, tsOptions).emit()
 	})
 
 buildCmd

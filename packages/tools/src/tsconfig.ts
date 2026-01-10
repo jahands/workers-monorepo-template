@@ -1,8 +1,9 @@
+import path from 'node:path'
 import { inspect } from 'node:util'
 
 import type {
-	convertCompilerOptionsFromJson,
 	createProgram,
+	parseJsonConfigFileContent,
 	readConfigFile,
 	sys,
 	CompilerOptions as TSCompilerOptions,
@@ -12,7 +13,7 @@ export type { TSCompilerOptions }
 
 interface TSModule {
 	readConfigFile: typeof readConfigFile
-	convertCompilerOptionsFromJson: typeof convertCompilerOptionsFromJson
+	parseJsonConfigFileContent: typeof parseJsonConfigFileContent
 	sys: typeof sys
 	createProgram: typeof createProgram
 }
@@ -45,27 +46,21 @@ export class TSHelpers {
 	}
 
 	getTSConfig(configPath = 'tsconfig.json'): TSCompilerOptions {
-		const jsonCompopts = this.getCompilerOptionsJSONFollowExtends(configPath)
-		const tmp = this.ts.convertCompilerOptionsFromJson(jsonCompopts, '')
-		if (tmp.errors.length > 0) {
-			throw new Error(`failed parse config: ${inspect(tmp)}`)
+		const absolutePath = path.resolve(configPath)
+		const configFile = this.ts.readConfigFile(absolutePath, this.ts.sys.readFile)
+		if (configFile.error) {
+			throw new Error(`Failed to read tsconfig: ${inspect(configFile.error)}`)
 		}
-		const tsCompopts: TSCompilerOptions = tmp.options
-		return tsCompopts
-	}
 
-	getCompilerOptionsJSONFollowExtends(configPath: string): {
-		[key: string]: unknown
-	} {
-		let compopts = {}
-		const config = this.ts.readConfigFile(configPath, this.ts.sys.readFile).config
-		if (config.extends !== undefined) {
-			const rqrpath = require.resolve(config.extends)
-			compopts = this.getCompilerOptionsJSONFollowExtends(rqrpath)
+		const parsed = this.ts.parseJsonConfigFileContent(
+			configFile.config,
+			this.ts.sys,
+			path.dirname(absolutePath)
+		)
+		if (parsed.errors.length > 0) {
+			throw new Error(`Failed to parse tsconfig: ${inspect(parsed.errors)}`)
 		}
-		return {
-			...compopts,
-			...config.compilerOptions,
-		}
+
+		return parsed.options
 	}
 }
