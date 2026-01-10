@@ -133,11 +133,6 @@ buildCmd
 		const { ts } = tsHelpers
 		z.string().array().min(1).decode(entryPoints)
 
-		const tsconfig = ts.readConfigFile('./tsconfig.json', ts.sys.readFile)
-		if (tsconfig.error) {
-			throw new Error(`failed to read tsconfig: ${inspect(tsconfig)}`)
-		}
-
 		const tsCompOpts = {
 			...tsHelpers.getTSConfig(),
 			declaration: true,
