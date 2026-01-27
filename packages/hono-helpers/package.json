@@ -14,12 +14,12 @@
 		"@hono/standard-validator": "0.1.5",
 		"hono": "4.9.11",
 		"http-codex": "0.6.2",
-		"workers-tagged-logger": "0.13.3",
+		"workers-tagged-logger": "1.0.0",
 		"zod": "4.1.12"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.9.12",
-		"@cloudflare/workers-types": "4.20251011.0",
+		"@cloudflare/vitest-pool-workers": "0.12.6",
+		"@cloudflare/workers-types": "4.20260127.0",
 		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
