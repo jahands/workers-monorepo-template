@@ -45,7 +45,7 @@
 			"outputLogs": "new-only"
 		},
 		"check": {
-			"dependsOn": ["check:types", "check:lint", "topo"],
+			"dependsOn": ["check:types", "check:workers-types", "check:lint", "topo"],
 			"outputLogs": "new-only"
 		},
 		"//#test:ci": {
@@ -66,6 +66,7 @@
 				"//#check:format",
 				"//#check:deps",
 				"check:types",
+				"check:workers-types",
 				"//#check:lint:all",
 				"//#test:ci",
 				"test:ci",
@@ -84,6 +85,10 @@
 			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only",
 			"env": ["FIX_ESLINT"]
+		},
+		"check:workers-types": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
 		},
 		"//#check:lint:all": {
 			"outputLogs": "new-only",

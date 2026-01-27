@@ -4,7 +4,6 @@ import { program } from '@commander-js/extra-typings'
 import { catchProcessError } from '@jahands/cli-tools/proc'
 
 import { buildCmd } from '../cmd/build.cmd'
-import { checkWorkersTypesCmd } from '../cmd/check-workers-types.cmd'
 import { checkCmd } from '../cmd/check.cmd'
 import { ciCmd } from '../cmd/ci.cmd'
 import { devCmd } from '../cmd/dev.cmd'
@@ -19,7 +18,6 @@ program
 	// While `packages/tools/bin` scripts work well for simple tasks,
 	// a typescript CLI is nicer for more complex things.
 
-	.addCommand(checkWorkersTypesCmd)
 	.addCommand(fixCmd)
 	.addCommand(buildCmd)
 	.addCommand(checkCmd)

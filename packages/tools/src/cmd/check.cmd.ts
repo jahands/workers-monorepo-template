@@ -54,6 +54,7 @@ export const checkCmd = new Command('check')
 			types: ['turbo', turboFlags, 'check:types'].flat(),
 			format: ['prettier', '.', '--cache', '--check', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'check', '--skip-if-unavailable'],
+			workersTypes: ['turbo', turboFlags, 'check:workers-types'].flat(),
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]
@@ -146,6 +147,16 @@ export const checkCmd = new Command('check')
 					'Root',
 				] satisfies TableRow
 			)
+
+			const workersTypesExitCode = await $({
+				cwd: repoRoot, // Must be run from root
+			})`${checks.workersTypes}`.exitCode
+			table.push([
+				'workers types',
+				checks.workersTypes.join(' '),
+				getAndCheckOutcome({ exitCode: workersTypesExitCode }),
+				'Root',
+			] satisfies TableRow)
 		}
 
 		echo(table.toString())
