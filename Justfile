@@ -23,25 +23,29 @@ install:
 
 # Check for issues with deps, lint, types, format, etc.
 [group('1. dev')]
+[positional-arguments]
 [no-cd]
-check *flags:
-  bun runx check {{flags}}
+check *args:
+  bun runx check "$@"
 
 # Fix issues with deps, lint, format, etc.
 [group('1. dev')]
+[positional-arguments]
 [no-cd]
-fix *flags:
-  bun runx fix {{flags}}
+fix *args:
+  bun runx fix "$@"
 
 [group('1. dev')]
+[positional-arguments]
 [no-cd]
-test *flags:
-  bun vitest {{flags}}
+test *args:
+  bun vitest "$@"
 
 [group('1. dev')]
+[positional-arguments]
 [no-cd]
-build *flags:
-  bun turbo build {{flags}}
+build *args:
+  bun turbo build "$@"
 
 # =============================== #
 #       LOCAL DEV COMMANDS        #
@@ -49,9 +53,10 @@ build *flags:
 
 # Run dev script. Runs turbo dev if not in a specific project directory.
 [group('2. local dev')]
+[positional-arguments]
 [no-cd]
-dev *flags:
-  bun runx dev {{flags}}
+dev *args:
+  bun runx dev "$@"
 
 # Run Workers in preview mode (if available)
 [group('2. local dev')]
@@ -61,9 +66,10 @@ preview:
 
 # Deploy Workers
 [group('2. local dev')]
+[positional-arguments]
 [no-cd]
-deploy *flags:
-  bun turbo deploy {{flags}}
+deploy *args:
+  bun turbo deploy "$@"
 
 # =============================== #
 #       GENERATOR COMMANDS        #
@@ -75,12 +81,14 @@ cs:
   bun run-changeset-new
 
 [group('3. generator')]
-gen *flags:
-  bun turbo gen {{flags}}
+[positional-arguments]
+gen *args:
+  bun turbo gen "$@"
 
 [group('3. generator')]
-new-package *flags:
-  bun turbo gen new-package {{flags}}
+[positional-arguments]
+new-package *args:
+  bun turbo gen new-package "$@"
 
 # =============================== #
 #        UTILITY COMMANDS         #
@@ -88,10 +96,12 @@ new-package *flags:
 
 # CLI in packages/tools for updating deps, pnpm, etc.
 [group('4. utility')]
-update *flags:
-  bun runx update {{flags}}
+[positional-arguments]
+update *args:
+  bun runx update "$@"
 
 # CLI in packages/tools for running commands in the repo.
 [group('4. utility')]
-runx *flags:
-  bun runx {{flags}}
+[positional-arguments]
+runx *args:
+  bun runx "$@"
