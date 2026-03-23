@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"sideEffects": false,
-	"type": "commonjs",
+	"type": "module",
 	"scripts": {
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
