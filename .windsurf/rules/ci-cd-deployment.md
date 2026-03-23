@@ -172,7 +172,7 @@ just cs
 
 Currently focused on internal packages:
 
-- `@repo/eslint-config`
+- `@repo/oxlint-config`
 - `@repo/typescript-config`
 - `@repo/hono-helpers`
 - `@repo/tools`
