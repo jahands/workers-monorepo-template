@@ -10,14 +10,14 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"@turbo/gen": "2.5.8",
-		"slugify": "1.6.6",
-		"zod": "4.1.12",
-		"zx": "8.8.4"
+		"@turbo/gen": "2.8.20",
+		"slugify": "1.6.8",
+		"zod": "4.3.6",
+		"zx": "8.8.5"
 	},
 	"devDependencies": {
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "3.2.4"
+		"vitest": "4.1.0"
 	}
 }

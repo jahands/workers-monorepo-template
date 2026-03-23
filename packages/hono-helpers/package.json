@@ -11,17 +11,17 @@
 		"test": "run-vitest"
 	},
 	"dependencies": {
-		"@hono/standard-validator": "0.1.5",
-		"hono": "4.9.11",
-		"http-codex": "0.6.2",
+		"@hono/standard-validator": "0.2.2",
+		"hono": "4.12.9",
+		"http-codex": "0.6.6",
 		"workers-tagged-logger": "1.0.0",
-		"zod": "4.1.12"
+		"zod": "4.3.6"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.12.6",
-		"@cloudflare/workers-types": "4.20260127.0",
+		"@cloudflare/vitest-pool-workers": "0.13.3",
+		"@cloudflare/workers-types": "4.20260317.1",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"vitest": "3.2.4"
+		"vitest": "4.1.0"
 	}
 }

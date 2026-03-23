@@ -12,21 +12,21 @@
 		"test:ci": "run-vitest-ci"
 	},
 	"devDependencies": {
-		"@babel/plugin-transform-explicit-resource-management": "7.28.0",
-		"@changesets/cli": "2.29.7",
-		"@ianvs/prettier-plugin-sort-imports": "4.6.2",
+		"@babel/plugin-transform-explicit-resource-management": "7.28.6",
+		"@changesets/cli": "2.30.0",
+		"@ianvs/prettier-plugin-sort-imports": "4.7.1",
 		"@repo/oxlint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/workspace-dependencies": "workspace:*",
-		"@turbo/gen": "2.5.8",
-		"prettier": "3.6.2",
-		"prettier-plugin-packagejson": "2.5.19",
+		"@turbo/gen": "2.8.20",
+		"prettier": "3.8.1",
+		"prettier-plugin-packagejson": "3.0.2",
 		"prettier-plugin-toml": "2.0.6",
 		"syncpack": "13.0.4",
-		"turbo": "2.5.8",
-		"typescript": "5.9.2",
-		"vitest": "3.2.4"
+		"turbo": "2.8.20",
+		"typescript": "5.9.3",
+		"vitest": "4.1.0"
 	},
 	"packageManager": "pnpm@10.14.0"
 }

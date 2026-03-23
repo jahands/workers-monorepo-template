@@ -12,7 +12,7 @@
 		"oxlint-tsgolint": "0.17.1"
 	},
 	"devDependencies": {
-		"@types/node": "22.15.27",
-		"vitest": "3.2.4"
+		"@types/node": "25.5.0",
+		"vitest": "4.1.0"
 	}
 }
