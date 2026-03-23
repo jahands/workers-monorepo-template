@@ -1,6 +1,5 @@
 ---
 'example-worker-echoback': minor
-'@repo/eslint-config': minor
 '@repo/hono-helpers': minor
 ---
 

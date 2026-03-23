@@ -47,7 +47,7 @@ export class TSHelpers {
 
 	getTSConfig(configPath = 'tsconfig.json'): TSCompilerOptions {
 		const absolutePath = path.resolve(configPath)
-		const configFile = this.ts.readConfigFile(absolutePath, this.ts.sys.readFile)
+		const configFile = this.ts.readConfigFile(absolutePath, (p) => this.ts.sys.readFile(p))
 		if (configFile.error) {
 			throw new Error(`Failed to read tsconfig: ${inspect(configFile.error)}`)
 		}

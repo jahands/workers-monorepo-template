@@ -1,3 +1,29 @@
 # example-worker-echoback
 
-A simple example Worker. New Workers should use eslint.config.ts and tsconfig.json similar to the one here.
+A simple example Worker. New Workers should use `tsconfig.json` and package layout similar to the one here; repo-wide linting uses oxlint at the monorepo root, although can be overridden by adding `oxlint.config.ts` to the Worker with the following:
+
+```ts
+// oxlint.config.ts
+import { defineConfig, getConfig } from '@repo/oxlint-config'
+
+const config = getConfig()
+
+export default defineConfig({
+  ...config,
+  // Add overrides as needed here
+})
+```
+
+For example, Tanstack Start projects would use something like this:
+
+```ts
+// oxlint.config.ts
+import { defineConfig, getConfig } from '@repo/oxlint-config'
+
+const config = getConfig()
+
+export default defineConfig({
+  ...config,
+  ignorePatterns: [...(config.ignorePatterns ?? []), 'src/routeTree.gen.ts'],
+})
+```

@@ -11,7 +11,7 @@ export const checkCmd = new Command('check')
 
 	.option('-r, --root', 'Run checks from root of repo. Defaults to cwd', false)
 	.option('-d, --deps', 'Check for dependency issues with Syncpack')
-	.option('-l, --lint', 'Check for eslint issues')
+	.option('-l, --lint', 'Check for oxlint issues')
 	.option('-t, --types', 'Check for TypeScript issues')
 	.option(
 		'-f, --format',
@@ -49,8 +49,8 @@ export const checkCmd = new Command('check')
 
 		const checks = {
 			deps: ['syncpack', 'lint'],
-			// eslint can be run from anywhere and it'll automatically only lint the current dir and children
-			lint: ['run-eslint'],
+			// oxlint can be run from anywhere and it'll automatically only lint the current dir and children
+			lint: ['run-oxlint'],
 			types: ['turbo', turboFlags, 'check:types'].flat(),
 			format: ['prettier', '.', '--cache', '--check', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'check', '--skip-if-unavailable'],

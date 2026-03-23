@@ -5,7 +5,7 @@
 	"sideEffects": false,
 	"type": "commonjs",
 	"scripts": {
-		"check:lint": "run-eslint",
+		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
@@ -16,7 +16,6 @@
 		"zx": "8.8.4"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"vitest": "3.2.4"

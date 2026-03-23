@@ -28,7 +28,7 @@
 - Cloudflare Workers monorepo using pnpm workspaces and Turborepo
 - `apps/` - Individual Cloudflare Worker applications
 - `packages/` - Shared libraries and configurations
-  - `@repo/eslint-config` - Shared ESLint configuration
+  - `@repo/oxlint-config` - Shared oxlint configuration
   - `@repo/typescript-config` - Shared TypeScript configuration
   - `@repo/hono-helpers` - Hono framework utilities
   - `@repo/tools` - Development tools and scripts

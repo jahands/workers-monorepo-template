@@ -21,7 +21,7 @@ This guide covers the continuous integration, deployment, and release processes 
    - Dependency version checks
    - Code formatting validation
    - TypeScript type checking
-   - ESLint linting
+   - oxlint linting
    - Unit tests across all packages
    - Integration tests for workers
 
@@ -172,7 +172,7 @@ just cs
 
 Currently focused on internal packages:
 
-- `@repo/eslint-config`
+- `@repo/oxlint-config`
 - `@repo/typescript-config`
 - `@repo/hono-helpers`
 - `@repo/tools`

@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "run-vite-build",
-		"check:lint": "run-eslint",
+		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"check:workers-types": "run-wrangler-types --check",
 		"deploy": "run-wrangler-deploy",
@@ -23,7 +23,6 @@
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "^1.1.0",
 		"@cloudflare/vitest-pool-workers": "0.8.24",
-		"@repo/eslint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "22.15.3",

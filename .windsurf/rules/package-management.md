@@ -14,7 +14,7 @@ This guide covers how to manage packages and dependencies in the Workers monorep
 
 All internal packages use the `@repo/` namespace:
 
-- `@repo/eslint-config` - Shared ESLint configuration
+- `@repo/oxlint-config` - Shared oxlint configuration
 - `@repo/typescript-config` - Shared TypeScript configuration
 - `@repo/hono-helpers` - Hono framework utilities
 - `@repo/tools` - Development tools and scripts

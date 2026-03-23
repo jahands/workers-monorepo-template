@@ -83,17 +83,14 @@
 		},
 		"check:lint": {
 			"dependsOn": ["build", "topo"],
-			"outputLogs": "new-only",
-			"env": ["FIX_ESLINT"]
+			"outputLogs": "new-only"
 		},
 		"check:workers-types": {
 			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only"
 		},
 		"//#check:lint:all": {
-			"outputLogs": "new-only",
-			"outputs": ["node_modules/.cache/.eslintcache"],
-			"env": ["FIX_ESLINT"]
+			"outputLogs": "new-only"
 		},
 		"//#check:format": {
 			"dependsOn": [],

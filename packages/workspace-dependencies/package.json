@@ -29,7 +29,7 @@
 	},
 	"scripts": {
 		"build": "runx build lib yaml.ts zod.ts zx.ts -d src -f cjs --platform node",
-		"check:lint": "run-eslint",
+		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},
