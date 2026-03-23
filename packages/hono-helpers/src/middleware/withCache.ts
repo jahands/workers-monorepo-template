@@ -36,9 +36,12 @@ export function withCacheDefault<T extends HonoApp>(ttl: number) {
 			return c.newResponse(cachedRes.body, cachedRes)
 		}
 		await next()
-		const clonedRes = c.res.clone()
-		clonedRes.headers.set('Cloudflare-CDN-Cache-Control', `max-age=${ttl}`)
-		c.executionCtx.waitUntil(cache.put(c.req.raw, clonedRes))
+
+		if (c.res.status === httpStatus.OK) {
+			const clonedRes = c.res.clone()
+			clonedRes.headers.set('Cloudflare-CDN-Cache-Control', `max-age=${ttl}`)
+			c.executionCtx.waitUntil(cache.put(c.req.raw, clonedRes))
+		}
 	}
 }
 
