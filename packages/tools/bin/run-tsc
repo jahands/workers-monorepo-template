@@ -1,4 +1,6 @@
 #!/bin/sh
 set -eu
 
+# TODO: migrate back to tsc once typescript 7.0 comes out
+# (which will be based on tsgo)
 exec tsgo --noEmit -p tsconfig.json
