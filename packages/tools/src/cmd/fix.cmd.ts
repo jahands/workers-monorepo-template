@@ -40,7 +40,7 @@ export const fixCmd = new Command('fix')
 
 		const fixes = {
 			deps: ['run-fix-deps'],
-			lint: ['run-oxlint', '--fix'].flat(),
+			lint: ['run-oxlint', '--fix'],
 			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
 			format: ['prettier', '.', '--cache', '--write', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'fix', '--skip-if-unavailable'],
