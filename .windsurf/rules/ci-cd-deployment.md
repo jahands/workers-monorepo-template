@@ -21,7 +21,7 @@ This guide covers the continuous integration, deployment, and release processes 
    - Dependency version checks
    - Code formatting validation
    - TypeScript type checking
-   - ESLint linting
+   - oxlint linting
    - Unit tests across all packages
    - Integration tests for workers
 
