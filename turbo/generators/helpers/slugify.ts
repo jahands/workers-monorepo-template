@@ -129,6 +129,7 @@ export function split(value: string) {
 	if (start === end) return []
 	while (result.charAt(end - 1) === '\0') end--
 
+	// oxlint-disable-next-line no-control-regex -- intentional null character split
 	return result.slice(start, end).split(/\0/g)
 }
 
