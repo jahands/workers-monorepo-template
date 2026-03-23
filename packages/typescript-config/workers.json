@@ -6,10 +6,15 @@
 		"${configDir}/**/*.ts",
 		"${configDir}/**/*.tsx"
 	],
-	"exclude": ["${configDir}/node_modules/", "${configDir}/dist/", "${configDir}/oxlint.config.ts"],
+	"exclude": [
+		"${configDir}/node_modules/",
+		"${configDir}/dist/",
+		"${configDir}/**/opensrc/",
+		"${configDir}/oxlint.config.ts"
+	],
 	"compilerOptions": {
 		"target": "es2022",
-		"lib": ["es2022"],
+		"lib": ["ESNext"],
 		"jsx": "react",
 		"module": "es2022",
 		"moduleResolution": "bundler",
@@ -22,8 +27,7 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"moduleDetection": "force"
+		"noImplicitOverride": true,
+		"skipLibCheck": true
 	}
 }
