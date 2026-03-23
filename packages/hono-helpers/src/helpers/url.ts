@@ -6,8 +6,8 @@ export function redactUrl(_url: URL | string): URL {
 	} else {
 		url = new URL(_url.toString()) // clone
 	}
-	for (const [key, _] of Array.from(url.searchParams)) {
-		if (['key', 'apikey', 'api_key', 'token'].includes(key.toLowerCase())) {
+	for (const [key] of url.searchParams) {
+		if (/key|token|secret|password|passwd|auth|credential/i.test(key)) {
 			url.searchParams.set(key, 'REDACTED')
 		}
 	}
