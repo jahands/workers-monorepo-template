@@ -84,7 +84,7 @@
 		"check:lint": {
 			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only",
-			"env": ["FIX_ESLINT"]
+			"env": ["FIX_OXLINT"]
 		},
 		"check:workers-types": {
 			"dependsOn": ["build", "topo"],
@@ -93,7 +93,7 @@
 		"//#check:lint:all": {
 			"outputLogs": "new-only",
 			"outputs": ["node_modules/.cache/.eslintcache"],
-			"env": ["FIX_ESLINT"]
+			"env": ["FIX_OXLINT"]
 		},
 		"//#check:format": {
 			"dependsOn": [],
