@@ -33,15 +33,11 @@ export const fixCmd = new Command('fix')
 		const cwd = process.cwd()
 		const runFromRoot = cwd === repoRoot
 		const cwdName = path.basename(cwd)
-		const turboFlags = [
-			// use all available CPU cores
-			'--concurrency=100%',
-		] satisfies string[]
 
 		const fixes = {
 			deps: ['run-fix-deps'],
 			lint: ['run-oxlint', '--fix'],
-			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
+			workersTypes: ['turbo', 'fix:workers-types'],
 			format: ['prettier', '.', '--cache', '--write', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'fix', '--skip-if-unavailable'],
 		} as const satisfies { [key: string]: string[] }

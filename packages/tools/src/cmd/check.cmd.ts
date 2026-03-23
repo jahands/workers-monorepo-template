@@ -38,10 +38,7 @@ export const checkCmd = new Command('check')
 		const runFromRoot = cwd === repoRoot
 		const cwdName = path.basename(cwd)
 
-		const turboFlags = [
-			// use all available CPU cores
-			'--concurrency=100%',
-		] satisfies string[]
+		const turboFlags: string[] = []
 
 		if (useContinue) {
 			turboFlags.push('--continue')
@@ -51,10 +48,10 @@ export const checkCmd = new Command('check')
 			deps: ['syncpack', 'lint'],
 			// oxlint can be run from anywhere and it'll automatically only lint the current dir and children
 			lint: ['run-oxlint'],
-			types: ['turbo', turboFlags, 'check:types'].flat(),
+			types: ['turbo', ...turboFlags, 'check:types'],
 			format: ['prettier', '.', '--cache', '--check', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'check', '--skip-if-unavailable'],
-			workersTypes: ['turbo', turboFlags, 'check:workers-types'].flat(),
+			workersTypes: ['turbo', ...turboFlags, 'check:workers-types'],
 		} as const satisfies { [key: string]: string[] }
 
 		type TableRow = [string, string, string, string]
