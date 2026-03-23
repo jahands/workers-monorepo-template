@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"sideEffects": false,
+	"type": "module",
 	"scripts": {
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",

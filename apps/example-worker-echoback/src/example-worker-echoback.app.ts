@@ -49,7 +49,7 @@ const app = new Hono<App>()
 				type: 'echoback_request',
 				echoback_host: url.hostname,
 			})
-			.info(`echoback request: ${url}`, {
+			.info(`echoback request: ${url.toString()}`, {
 				data: JSON.stringify(data),
 				request: getRequestLogData(c, Date.now()),
 			})
