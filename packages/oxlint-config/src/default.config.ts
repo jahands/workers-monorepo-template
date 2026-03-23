@@ -4,8 +4,8 @@ import type { OxlintConfig } from 'oxlint'
 
 export { defineConfig }
 
-export function getConfig(): OxlintConfig {
-	return defineConfig({
+export function getConfig() {
+	return {
 		plugins: ['typescript', 'import', 'unicorn'],
 		env: {
 			builtin: true,
@@ -71,5 +71,5 @@ export function getConfig(): OxlintConfig {
 				},
 			},
 		],
-	})
+	} as const satisfies OxlintConfig
 }

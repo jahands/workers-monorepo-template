@@ -10,19 +10,17 @@ For example, you can add a TanStack Start config by adding `src/tanstack.config.
 
 ```ts
 // src/tanstack.config.ts
-import { defineConfig } from 'oxlint'
-
 import { getConfig } from '@repo/oxlint-config'
 
 import type { OxlintConfig } from 'oxlint'
 
 const config = getConfig()
 
-export function getTanstackConfig(): OxlintConfig {
-  return defineConfig({
+export function getTanstackConfig() {
+  return {
     ...config,
-    ignorePatterns: [...(config.ignorePatterns ?? []), 'src/routeTree.gen.ts'],
-  })
+    ignorePatterns: [...config.ignorePatterns, 'src/routeTree.gen.ts'],
+  } as const satisfies OxlintConfig
 }
 ```
 
