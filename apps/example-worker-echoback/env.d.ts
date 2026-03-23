@@ -5,4 +5,7 @@ type LocalEnv = import('./src/context').Env
 // import { env } from 'cloudflare:workers'
 declare namespace Cloudflare {
 	interface Env extends LocalEnv {}
+	interface GlobalProps {
+		mainModule: typeof import('./src/example-worker-echoback.app')
+	}
 }

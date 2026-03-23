@@ -1,11 +1,11 @@
-import { SELF } from 'cloudflare:test'
+import { exports } from 'cloudflare:workers'
 import { describe, expect, it, test } from 'vitest'
 
 import '../../example-worker-echoback.app'
 
 describe('echoback returns data about the request', () => {
 	test('GET', async () => {
-		const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+		const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 			headers: {
 				'X-Test': 'true',
 			},
@@ -27,7 +27,7 @@ describe('echoback returns data about the request', () => {
 	})
 
 	test('POST', async () => {
-		const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+		const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 			method: 'POST',
 			body: 'hello world!',
 			headers: {
@@ -53,7 +53,7 @@ describe('echoback returns data about the request', () => {
 	})
 
 	test('PUT', async () => {
-		const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+		const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 			method: 'PUT',
 			body: 'hello world!',
 			headers: {
@@ -79,7 +79,7 @@ describe('echoback returns data about the request', () => {
 	})
 
 	test('PATCH', async () => {
-		const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+		const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 			method: 'PATCH',
 			body: 'hello world!',
 			headers: {
@@ -105,7 +105,7 @@ describe('echoback returns data about the request', () => {
 	})
 
 	test('DELETE', async () => {
-		const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+		const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 			method: 'DELETE',
 			body: 'hello world!',
 			headers: {
@@ -132,7 +132,7 @@ describe('echoback returns data about the request', () => {
 })
 
 it(`Doesn't return body for HEAD`, async () => {
-	const res = await SELF.fetch('https://example.com/stuff?foo=bar', {
+	const res = await exports.default.fetch('https://example.com/stuff?foo=bar', {
 		method: 'HEAD',
 		headers: {
 			'X-Test': 'true',
