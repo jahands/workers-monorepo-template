@@ -1,0 +1,18 @@
+{
+	"name": "@repo/oxlint-config",
+	"version": "0.1.0",
+	"private": true,
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./src/default.config.ts"
+	},
+	"dependencies": {
+		"oxlint": "1.56.0",
+		"oxlint-tsgolint": "0.17.1"
+	},
+	"devDependencies": {
+		"@types/node": "22.15.27",
+		"vitest": "3.2.4"
+	}
+}
