@@ -1,22 +1,18 @@
 import slugify from 'slugify'
 
 export function slugifyText(text: string) {
-	const options = {
+	const slug = slugify(text, {
 		lower: true,
 		remove: /['.]/g,
-	}
-
-	const slug = slugify(text, options)
+	})
 	return slug
 }
 
 export function slugifyTextSingular(text: string) {
-	const options = {
+	const slug = slugify(text, {
 		lower: true,
 		remove: /['.]/g,
-	}
-
-	const slug = slugify(text, options)
+	})
 	if (slug.endsWith('s')) {
 		return slug.slice(0, slug.length - 1)
 	}
@@ -25,14 +21,12 @@ export function slugifyTextSingular(text: string) {
 }
 
 export function slugifyTextPlural(text: string) {
-	const options = {
+	const slug = slugify(text, {
 		lower: true,
 		remove: /['.]/g,
-	}
-
-	const slug = slugify(text, options)
+	})
 	if (slug.endsWith('s')) {
-		return slugifyText
+		return slug
 	}
 
 	return `${slug}s`
@@ -55,7 +49,7 @@ export function pascalTextPlural(text: string) {
 	const slug = pascalCase(text)
 
 	if (slug.endsWith('s')) {
-		return slugifyText
+		return slug
 	}
 
 	return `${slug}s`
