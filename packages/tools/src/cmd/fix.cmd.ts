@@ -9,7 +9,7 @@ export const fixCmd = new Command('fix')
 
 	.option('-r, --root', 'Run fixes from root of repo. Defaults to cwd', false)
 	.option('-d, --deps', 'Fix dependency versions with syncpack')
-	.option('-l, --lint', 'Fix eslint issues')
+	.option('-l, --lint', 'Fix oxlint issues')
 	.option('-f, --format', 'Format code with prettier')
 	.option(
 		'-w, --workers-types',
@@ -40,7 +40,7 @@ export const fixCmd = new Command('fix')
 
 		const fixes = {
 			deps: ['run-fix-deps'],
-			lint: ['FIX_OXLINT=1', 'turbo', turboFlags, 'check:lint'].flat(),
+			lint: ['FIX_OXLINT=1', 'run-oxlint'].flat(),
 			workersTypes: ['turbo', turboFlags, 'fix:workers-types'].flat(),
 			format: ['prettier', '.', '--cache', '--write', '--log-level=warn'],
 			formatShell: ['runx', 'shfmt', 'fix', '--skip-if-unavailable'],
