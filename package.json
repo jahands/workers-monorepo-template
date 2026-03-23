@@ -6,7 +6,7 @@
 	"scripts": {
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
-		"check:lint:all": "run-eslint",
+		"check:lint:all": "run-oxlint",
 		"test": "vitest",
 		"test:ci": "run-vitest-ci"
 	},
@@ -14,7 +14,7 @@
 		"@babel/plugin-transform-explicit-resource-management": "7.28.0",
 		"@changesets/cli": "2.29.7",
 		"@ianvs/prettier-plugin-sort-imports": "4.6.2",
-		"@repo/eslint-config": "workspace:*",
+		"@repo/oxlint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/workspace-dependencies": "workspace:*",

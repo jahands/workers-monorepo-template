@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euo pipefail
+
+args=(
+	--type-aware
+	.
+)
+
+if [[ -n "${FIX_OXLINT:-}" ]]; then
+	args+=("--fix")
+fi
+
+if [[ -n "${CI:-}" ]]; then
+	args+=("--max-warnings=0")
+else
+	args+=("--max-warnings=1000")
+fi
+
+# get additional args
+while [[ $# -gt 0 ]]; do
+	args+=("$1")
+	shift
+done
+
+exec oxlint "${args[@]}"
