@@ -8,7 +8,7 @@
 		"enabled": false,
 		"signature": true
 	},
-	"ui": "stream-with-experimental-timestamps",
+	"ui": "stream",
 	"tasks": {
 		"topo": {
 			"dependsOn": ["^topo"]
