@@ -13,17 +13,3 @@ export default defineConfig({
   // Add overrides as needed here
 })
 ```
-
-For example, Tanstack Start projects would use something like this:
-
-```ts
-// oxlint.config.ts
-import { defineConfig, getConfig } from '@repo/oxlint-config'
-
-const config = getConfig()
-
-export default defineConfig({
-  ...config,
-  ignorePatterns: [...(config.ignorePatterns ?? []), 'src/routeTree.gen.ts'],
-})
-```
