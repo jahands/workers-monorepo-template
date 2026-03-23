@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@babel/plugin-transform-explicit-resource-management": "7.28.6",
 		"@changesets/cli": "2.30.0",
-		"@ianvs/prettier-plugin-sort-imports": "4.7.1",
+		"@ianvs/prettier-plugin-sort-imports": "4.6.2",
 		"@repo/oxlint-config": "workspace:*",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
