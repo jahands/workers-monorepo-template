@@ -23,10 +23,6 @@
 	// I always prefer format on save
 	"editor.formatOnSave": true,
 
-	"eslint.options": {
-		"flags": ["v10_config_lookup_from_file"]
-	},
-
 	"github-actions.workflows.pinned.workflows": [
 		".github/workflows/release.yml",
 		".github/workflows/branches.yml"
@@ -41,11 +37,6 @@
 		"**/packages/typescript-config/*.json": "jsonc",
 		"*.mdc": "markdown"
 	},
-	"eslint.workingDirectories": [
-		{
-			"mode": "auto"
-		}
-	],
 	"cSpell.words": [
 		"cftrace",
 		"cloudflareaccess",

@@ -18,7 +18,7 @@ This is a Cloudflare Workers monorepo template built with Turborepo, pnpm worksp
   - Example: [apps/example-worker-echoback/](mdc:apps/example-worker-echoback/) - demonstrates basic worker functionality
 
 - **`packages/`** - Shared libraries, utilities, and configurations
-  - [packages/eslint-config/](mdc:packages/eslint-config/) - Shared ESLint configuration
+  - [packages/oxlint-config/](mdc:packages/oxlint-config/) - Shared oxlint configuration
   - [packages/typescript-config/](mdc:packages/typescript-config/) - Shared TypeScript configuration
   - [packages/hono-helpers/](mdc:packages/hono-helpers/) - Hono framework utilities and middleware
   - [packages/tools/](mdc:packages/tools/) - CLI tools and development scripts
