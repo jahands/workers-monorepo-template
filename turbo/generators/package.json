@@ -5,7 +5,7 @@
 	"sideEffects": false,
 	"type": "commonjs",
 	"scripts": {
-		"check:lint": "run-eslint",
+		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"test": "run-vitest"
 	},

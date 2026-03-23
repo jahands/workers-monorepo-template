@@ -92,7 +92,6 @@
 		},
 		"//#check:lint:all": {
 			"outputLogs": "new-only",
-			"outputs": ["node_modules/.cache/.eslintcache"],
 			"env": ["FIX_OXLINT"]
 		},
 		"//#check:format": {
