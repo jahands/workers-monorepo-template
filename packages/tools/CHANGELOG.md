@@ -1,5 +1,63 @@
 # @repo/tools
 
+## 0.4.0
+
+### Minor Changes
+
+- 8940e93: feat: add build bun cmd
+- e3c8f04: feat: migrate from tsc to tsgo
+- d0bf900: feat: improve scripts based on shellcheck lint suggestions
+- a946b57: feat(runx): add shfmt for shell script formatting
+
+  Integrates shfmt with check --format and fix --format commands.
+  Adds a dedicated shfmt command that can skip if tools are missing.
+
+  resolves #16
+
+- 471b744: feat: add workers types to check cmd and remove old git based version
+
+### Patch Changes
+
+- ed5cb4c: fix: pass in args to wrangler types cmd in run-wrangler-types
+- 3174e54: chore: remove unnecessary object spreading in eslint configs
+
+  resolves #17
+
+- a73c2f9: chore: remove run-turbo-gen (no longer needed)
+- 09a661d: chore: switch back to stdio: inherit in prettier and set log level
+- c2e4c63: chore: update deps
+- ce16c92: chore: update deps
+- ce16c92: chore: upgrade to eslint 9
+- 4bc436c: chore: update deps
+- ee24328: chore: update deps
+- 546688f: chore: import from zod
+- 58147c3: fix: don't needlessly read tsconfig
+- abf40ba: fix: properly resolve tsc configs
+- 4174900: chore: inherit stdio for format shell fix/check
+
+  this already outputs very little so should be fine to do this
+
+- 2452bc6: chore: add .cmd.ts suffix to cmd files
+- 7c5e37c: chore: add todo to run-tsc
+- d4dc855: chore: update deps
+- c68dea1: chore: use exec in shell wrappers to improve performance
+
+  using exec replaces the shell process instead of creating a child, which avoids an unnecessary wrapper process and improves signal handling.
+
+  also moved away from #!/usr/bin/env to improve security (no injecting custom shells into env)
+
+- 79d4e30: fix: only include .sh and extensionless files in shfmt
+- 54d11ee: chore: update deps
+- 4957efe: fix: add minify flag to run-wrangler-deploy
+- 99c1934: fix: don't throw if there are no .sh files
+- 7cec4eb: chore: use consistent shabang in packages/tools/bin
+- ec6ff13: chore: fix eslint type issues
+- f6665a2: chore: update deps
+- 1bdf764: chore: pipe output to stderr
+- c35dd7d: chore: use default turbo concurrency
+- 0e1b031: chore: migrate from eslint to oxlint
+- bf2f746: chore: formatting
+
 ## 0.3.2
 
 ### Patch Changes
