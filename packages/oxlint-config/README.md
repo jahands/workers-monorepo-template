@@ -1,4 +1,4 @@
-# `@turbo/oxlint-config`
+# `@repo/oxlint-config`
 
 Collection of internal oxlint configurations.
 
