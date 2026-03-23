@@ -83,16 +83,14 @@
 		},
 		"check:lint": {
 			"dependsOn": ["build", "topo"],
-			"outputLogs": "new-only",
-			"env": ["FIX_OXLINT"]
+			"outputLogs": "new-only"
 		},
 		"check:workers-types": {
 			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only"
 		},
 		"//#check:lint:all": {
-			"outputLogs": "new-only",
-			"env": ["FIX_OXLINT"]
+			"outputLogs": "new-only"
 		},
 		"//#check:format": {
 			"dependsOn": [],

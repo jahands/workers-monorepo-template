@@ -6,10 +6,6 @@ args=(
 	.
 )
 
-if [[ -n "${FIX_OXLINT:-}" ]]; then
-	args+=("--fix")
-fi
-
 if [[ -n "${CI:-}" ]]; then
 	args+=("--max-warnings=0")
 else

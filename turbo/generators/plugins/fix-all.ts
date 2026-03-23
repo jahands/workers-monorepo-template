@@ -14,7 +14,7 @@ export function fixAll(answers: Answers, _config: any, _plop: PlopTypes.NodePlop
 			cwd: answers.turbo.paths.root,
 			nothrow: true,
 			quiet: true,
-		})`FIX_OXLINT=1 pnpm -F ${slugifyText(answers.name)} check:lint && pnpm runx fix --deps --format --workers-types`
+		})`pnpm -F ${slugifyText(answers.name)} check:lint --fix && pnpm runx fix --deps --format --workers-types`
 			.then(onProcSuccess('pnpm fix', resolve, reject))
 			.catch(catchError(reject))
 	})
