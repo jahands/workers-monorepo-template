@@ -1,4 +1,4 @@
 #!/bin/sh
 set -eu
 
-exec tsc --noEmit -p tsconfig.json
+exec tsgo --noEmit -p tsconfig.json
