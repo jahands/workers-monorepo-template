@@ -17,8 +17,6 @@ export function withOnError<T extends HonoApp>() {
 			const status = err.getResponse().status as ContentfulStatusCode
 			const body: APIError = { success: false, error: { message: err.message } }
 			if (status >= 500) {
-				// TODO: Capture to Sentry
-				// Log to Sentry
 				logger.error(err)
 			} else if (status === httpStatus.Unauthorized) {
 				body.error.message = 'unauthorized'
@@ -27,7 +25,6 @@ export function withOnError<T extends HonoApp>() {
 			return c.json(body, status)
 		}
 
-		// TODO: Capture to Sentry
 		logger.error(err)
 		return c.json(
 			{

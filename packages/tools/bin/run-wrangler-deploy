@@ -9,6 +9,6 @@ VERSION=$(get-version)
 echo "Deploying worker $NAME version $VERSION"
 exec wrangler deploy \
 	--var NAME:"$NAME" \
-	--var SENTRY_RELEASE:"$VERSION" \
+	--var RELEASE:"$VERSION" \
 	--minify \
 	"$@"

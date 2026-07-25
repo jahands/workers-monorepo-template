@@ -13,7 +13,7 @@ const app = new Hono<App>()
 		(c, next) =>
 			useWorkersLogger(c.env.NAME, {
 				environment: c.env.ENVIRONMENT,
-				release: c.env.SENTRY_RELEASE,
+				release: c.env.RELEASE,
 			})(c, next)
 	)
 
@@ -25,7 +25,7 @@ const app = new Hono<App>()
 
 		// we can also access env variables via
 		// import { env } from 'cloudflare:workers'
-		logger.info(`release: ${env.SENTRY_RELEASE}`)
+		logger.info(`release: ${env.RELEASE}`)
 
 		let body: string | undefined
 		if (['PUT', 'POST'].includes(c.req.method) && c.req.raw.body !== null) {

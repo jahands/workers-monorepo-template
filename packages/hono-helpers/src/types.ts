@@ -17,13 +17,13 @@ export type SharedHonoEnv = {
 	ENVIRONMENT: WorkersEnvironment
 	/**
 	 * Release version of the Worker (based on the current git commit).
-	 * Useful for logs, Sentry, etc.
+	 * Useful for logs, error tracking, etc.
 	 */
-	SENTRY_RELEASE: string
+	RELEASE: string
 }
 /** Global Hono variables */
 export type SharedHonoVariables = {
-	// Things like Sentry, etc. that should be present on all Workers
+	// Variables that should be present on all Workers
 }
 
 /** Top-level Hono app */

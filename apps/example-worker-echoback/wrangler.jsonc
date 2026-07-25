@@ -19,7 +19,7 @@
 	},
 	"vars": {
 		"ENVIRONMENT": "development",
-		"SENTRY_RELEASE": "unknown",
+		"RELEASE": "unknown",
 		"NAME": "example-worker-echoback"
 	},
 	"version_metadata": {

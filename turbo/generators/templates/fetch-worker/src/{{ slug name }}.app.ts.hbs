@@ -12,7 +12,7 @@ const app = new Hono<App>()
 		(c, next) =>
 			useWorkersLogger(c.env.NAME, {
 				environment: c.env.ENVIRONMENT,
-				release: c.env.SENTRY_RELEASE,
+				release: c.env.RELEASE,
 			})(c, next)
 	)
 

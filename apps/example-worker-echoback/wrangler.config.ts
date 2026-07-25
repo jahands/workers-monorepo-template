@@ -9,6 +9,6 @@ export default defineConfig(async (c) => ({
 	upload_source_maps: true,
 	vars: {
 		...c.defaults.vars,
-		SENTRY_RELEASE: 'unknown', // overridden during deployment
+		RELEASE: 'unknown', // overridden during deployment
 	},
 }))
