@@ -2,7 +2,7 @@ import { Command } from '@commander-js/extra-typings'
 import Table from 'cli-table3'
 
 import { getRepoRoot } from '../path'
-import { getOutcome, SHFMT_SKIPPED_EXIT_CODE } from '../proc'
+import { getOutcome, PRETTIER_CACHE_LOCATION, SHFMT_SKIPPED_EXIT_CODE } from '../proc'
 
 export const checkCmd = new Command('check')
 	.description(
@@ -17,21 +17,26 @@ export const checkCmd = new Command('check')
 		'-f, --format',
 		'Check for formatting issues with prettier. Also checks shell scripts if shfmt and rg (ripgrep) are available'
 	)
+	.option(
+		'-w, --workers-types',
+		'Check that Workers runtime types (worker-configuration.d.ts) are up to date'
+	)
 
 	.option('--continue', 'Use --continue when executing turbo commands', false)
 
-	.action(async ({ root, deps, lint, types, format, continue: useContinue }) => {
+	.action(async ({ root, deps, lint, types, format, workersTypes, continue: useContinue }) => {
 		const repoRoot = getRepoRoot()
 		if (root) {
 			cd(repoRoot)
 		}
 
 		// Run all if none are selected
-		if (!deps && !lint && !types && !format) {
+		if (!deps && !lint && !types && !format && !workersTypes) {
 			deps = true
 			lint = true
 			types = true
 			format = true
+			workersTypes = true
 		}
 
 		const cwd = process.cwd()
@@ -49,7 +54,15 @@ export const checkCmd = new Command('check')
 			// oxlint can be run from anywhere and it'll automatically only lint the current dir and children
 			lint: ['run-oxlint'],
 			types: ['turbo', ...turboFlags, 'check:types'],
-			format: ['prettier', '.', '--cache', '--check', '--log-level=warn'],
+			format: [
+				'prettier',
+				'.',
+				'--cache',
+				'--cache-location',
+				PRETTIER_CACHE_LOCATION,
+				'--check',
+				'--log-level=warn',
+			],
 			formatShell: ['runx', 'shfmt', 'check', '--skip-if-unavailable'],
 			workersTypes: ['turbo', ...turboFlags, 'check:workers-types'],
 		} as const satisfies { [key: string]: string[] }
@@ -114,6 +127,16 @@ export const checkCmd = new Command('check')
 			] satisfies TableRow)
 		}
 
+		if (workersTypes) {
+			const exitCode = await $`${checks.workersTypes}`.exitCode
+			table.push([
+				'workers types',
+				checks.workersTypes.join(' '),
+				getAndCheckOutcome({ exitCode }),
+				runFromRoot ? 'Root' : `cwd (${cwdName})`,
+			] satisfies TableRow)
+		}
+
 		if (format) {
 			echo(chalk.dim('checking formatting with prettier (and shfmt if available)...'))
 
@@ -144,16 +167,6 @@ export const checkCmd = new Command('check')
 					'Root',
 				] satisfies TableRow
 			)
-
-			const workersTypesExitCode = await $({
-				cwd: repoRoot, // Must be run from root
-			})`${checks.workersTypes}`.exitCode
-			table.push([
-				'workers types',
-				checks.workersTypes.join(' '),
-				getAndCheckOutcome({ exitCode: workersTypesExitCode }),
-				'Root',
-			] satisfies TableRow)
 		}
 
 		echo(table.toString())

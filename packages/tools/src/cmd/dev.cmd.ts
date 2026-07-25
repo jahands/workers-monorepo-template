@@ -1,6 +1,9 @@
 import { Command } from '@commander-js/extra-typings'
 
+import { ensureDevVarsExists } from '../dev-vars'
 import { getRepoRoot } from '../path'
+
+import type { Options as ZXOptions } from 'zx'
 
 export const devCmd = new Command('dev')
 	.description(
@@ -36,4 +39,27 @@ export const devCmd = new Command('dev')
 			const argsWithSeparator = args.length > 0 ? ['--', ...args] : args
 			await $`pnpm turbo dev ${argsWithSeparator}`
 		}
+	})
+
+/** Default zx options */
+const opts = {
+	stdio: 'inherit',
+	verbose: true,
+} satisfies Partial<ZXOptions>
+
+devCmd
+	.command('wrangler')
+	.description('Build workspace dependencies and run wrangler dev')
+	.argument(
+		'[extraWranglerArgs...]',
+		'Additional args to pass to wrangler dev. Recommend adding -- first'
+	)
+	.allowUnknownOption()
+	.action(async (args) => {
+		// build workspace dependencies first so that
+		// wrangler dev runs against up-to-date packages
+		await $(opts)`bun turbo build`
+		await ensureDevVarsExists()
+
+		await $(opts)`wrangler dev ${args}`
 	})

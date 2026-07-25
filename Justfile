@@ -2,6 +2,8 @@
 # a convenient way to run commands in the repo
 # without needing to remember all commands.
 
+set dotenv-load := true
+
 [private]
 @help:
   just --list
@@ -34,6 +36,13 @@ check *args:
 [no-cd]
 fix *args:
   bun runx fix "$@"
+
+# Check for lint + type issues (agent-friendly: grouped logs, keeps going after failures)
+[group('1. dev')]
+[positional-arguments]
+[no-cd]
+lint *args:
+  bun turbo --continue --log-order=grouped check:lint check:types "$@"
 
 [group('1. dev')]
 [positional-arguments]

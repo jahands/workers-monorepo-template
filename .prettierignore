@@ -8,6 +8,11 @@
 AGENT.md
 AGENTS.md
 CLAUDE.md
+**/__pycache__/**
+**/.venv/**
+**/.nitro/**
+**/.output/**
+**/.tanstack/**
 **/dist/**
 *.lock
 /turbo/generators/**/*.hbs

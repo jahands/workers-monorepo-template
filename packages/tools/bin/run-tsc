@@ -3,4 +3,10 @@ set -eu
 
 # TODO: migrate back to tsc once typescript 7.0 comes out
 # (which will be based on tsgo)
-exec tsgo --noEmit -p tsconfig.json
+
+# Set DISABLE_TSGO to fall back to tsc (useful if tsgo misbehaves)
+if [ -n "${DISABLE_TSGO:-}" ]; then
+	exec tsc --noEmit -p tsconfig.json
+else
+	exec tsgo --noEmit -p tsconfig.json
+fi

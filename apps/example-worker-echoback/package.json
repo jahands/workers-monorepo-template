@@ -5,7 +5,7 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build:wrangler": "run-wrangler-build",
+		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"check:workers-types": "run-wrangler-types --check",

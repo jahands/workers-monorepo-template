@@ -2,8 +2,8 @@
 set -eu
 
 if test -f ./vitest.config.ts; then
-	vitest --testTimeout=15000 "$@"
+	vitest run --testTimeout=15000 --maxConcurrency=20 "$@"
 fi
 if test -f ./vitest.config.node.ts; then
-	vitest --testTimeout=15000 -c ./vitest.config.node.ts "$@"
+	vitest run --testTimeout=15000 --maxConcurrency=20 -c ./vitest.config.node.ts "$@"
 fi

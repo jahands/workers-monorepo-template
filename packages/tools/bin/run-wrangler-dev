@@ -3,6 +3,6 @@ set -eu
 
 NAME=$(jq -r '.name' package.json)
 
-exec wrangler dev \
-	--var NAME:"$NAME" \
-	"$@"
+# Builds workspace dependencies and copies .dev.vars.example
+# to .dev.vars (if missing) before running wrangler dev
+exec runx dev wrangler -- --var NAME:"$NAME" "$@"
