@@ -1,0 +1,62 @@
+#!/bin/sh
+set -eu
+
+get_script_dir() {
+	# Ensure readlink exists (portable use; no -f).
+	command -v readlink >/dev/null 2>&1 || {
+		printf '%s\n' "readlink not found" >&2
+		return 1
+	}
+
+	# 1) Seed from call path if available; else PATH
+	case "$0" in
+		*/*) script=$0 ;;
+		*) script=$(command -v "$0" 2>/dev/null) || {
+			printf '%s\n' "cannot resolve: $0" >&2
+			return 1
+		} ;;
+	esac
+	case "$script" in
+		*/*) ;; # we have a pathname
+		*)
+			printf '%s\n' "could not determine path for $0" >&2
+			return 1
+			;;
+	esac
+
+	# 2) Follow file-level symlinks (guard against cycles)
+	max=100
+	while [ -L "$script" ] && [ "$max" -gt 0 ]; do
+		target=$(readlink "$script") || break
+		case "$target" in
+			/*) script=$target ;;
+			*) script="${script%/*}/$target" ;;
+		esac
+		max=$((max - 1))
+	done
+	[ "$max" -eq 0 ] && {
+		printf '%s\n' "symlink loop detected: $0" >&2
+		return 1
+	}
+
+	# 3) Canonicalize directory and print
+	dir=${script%/*}
+	script_dir=$(
+		# shellcheck disable=SC1007
+		CDPATH= cd -P -- "$dir" 2>/dev/null && pwd -P
+	) || {
+		printf '%s\n' "failed to cd to script dir: $dir" >&2
+		return 1
+	}
+
+	printf '%s\n' "$script_dir"
+}
+
+cli_ts=$(get_script_dir)/../src/bin/wrangler-config.cmd.ts
+
+if ! command -v bun >/dev/null 2>&1; then
+	printf '%s\n' "bun is required to run wrangler-config" >&2
+	exit 1
+fi
+
+exec bun "$cli_ts" "$@"

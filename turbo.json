@@ -12,9 +12,14 @@
 			"dependsOn": ["^topo"]
 		},
 		"build": {
-			"dependsOn": ["^build", "topo"],
+			"dependsOn": ["^build", "build:wrangler-config", "topo"],
 			"outputLogs": "new-only",
 			"outputs": ["dist/**", ".wrangler/deploy/config.json"]
+		},
+		"build:wrangler-config": {
+			"dependsOn": ["topo"],
+			"outputLogs": "new-only",
+			"outputs": ["wrangler.jsonc"]
 		},
 		"dev": {
 			"cache": false,

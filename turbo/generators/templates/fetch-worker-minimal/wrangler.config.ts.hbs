@@ -1,0 +1,9 @@
+import { defineConfig } from '@repo/wrangler-config'
+
+export default defineConfig(async (c) => ({
+	...c.defaults,
+	name: '{{ slug name }}',
+	main: 'src/{{ slug name }}.app.ts',
+	routes: [],
+	upload_source_maps: true,
+}))

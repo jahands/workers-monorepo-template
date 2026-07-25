@@ -1,5 +1,5 @@
 /* eslint-disable */
-// Runtime types generated with workerd@1.20260710.1 2025-09-20 nodejs_compat
+// Runtime types generated with workerd@1.20260710.1 2026-06-04 nodejs_compat
 // Begin runtime types
 /*! *****************************************************************************
 Copyright (c) Cloudflare. All rights reserved.
@@ -420,6 +420,7 @@ interface TestController {
 interface ExecutionContext<Props = unknown> {
     waitUntil(promise: Promise<any>): void;
     passThroughOnException(): void;
+    readonly exports: Cloudflare.Exports;
     readonly props: Props;
     cache?: CacheContext;
     readonly access?: CloudflareAccessContext;
@@ -526,6 +527,7 @@ interface DurableObjectClass<_T extends Rpc.DurableObjectBranded | undefined = u
 }
 interface DurableObjectState<Props = unknown> {
     waitUntil(promise: Promise<any>): void;
+    readonly exports: Cloudflare.Exports;
     readonly props: Props;
     readonly id: DurableObjectId;
     readonly storage: DurableObjectStorage;
@@ -1643,7 +1645,7 @@ declare class Headers {
         value: string
     ]>;
 }
-type BodyInit = ReadableStream<Uint8Array> | string | ArrayBuffer | ArrayBufferView | Blob | URLSearchParams | FormData;
+type BodyInit = ReadableStream<Uint8Array> | string | ArrayBuffer | ArrayBufferView | Blob | URLSearchParams | FormData | Iterable<ArrayBuffer | ArrayBufferView> | AsyncIterable<ArrayBuffer | ArrayBufferView>;
 declare abstract class Body {
     /* [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/body) */
     get body(): ReadableStream | null;

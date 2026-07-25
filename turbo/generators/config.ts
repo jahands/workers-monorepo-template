@@ -11,14 +11,20 @@ import { nameValidator } from './helpers/validate'
 import { fixAll } from './plugins/fix-all'
 import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
+import { wranglerConfigGenerate } from './plugins/wrangler-config-generate'
 
 import type { PlopTypes } from '@turbo/gen'
 import type { PnpmInstallData } from './plugins/pnpm-install'
+import type { WranglerConfigGenerateData } from './plugins/wrangler-config-generate'
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
 	plop.setActionType('pnpmInstall', pnpmInstall as PlopTypes.CustomActionFunction)
 	plop.setActionType('fixAll', fixAll as PlopTypes.CustomActionFunction)
 	plop.setActionType('fixDepsAndFormat', fixDepsAndFormat as PlopTypes.CustomActionFunction)
+	plop.setActionType(
+		'wranglerConfigGenerate',
+		wranglerConfigGenerate as PlopTypes.CustomActionFunction
+	)
 
 	plop.setHelper('slug', slugifyText)
 	plop.setHelper('slug-s', slugifyTextSingular)
@@ -52,6 +58,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{
+					type: 'wranglerConfigGenerate',
+					data: { ...answers, destination } satisfies WranglerConfigGenerateData,
+				},
 				{ type: 'fixAll' },
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
 			]
@@ -84,6 +94,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{
+					type: 'wranglerConfigGenerate',
+					data: { ...answers, destination } satisfies WranglerConfigGenerateData,
+				},
 				{ type: 'fixAll' },
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
 			]
@@ -116,6 +130,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{
+					type: 'wranglerConfigGenerate',
+					data: { ...answers, destination } satisfies WranglerConfigGenerateData,
+				},
 				{ type: 'fixAll' },
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
 			]
