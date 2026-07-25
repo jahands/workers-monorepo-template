@@ -75,7 +75,7 @@ Each worker needs [wrangler.jsonc](mdc:apps/example-worker-echoback/wrangler.jso
   },
   "vars": {
     "ENVIRONMENT": "development", // overridden during deployment
-    "SENTRY_RELEASE": "unknown", // overridden during deployment
+    "RELEASE": "unknown", // overridden during deployment
   },
 }
 ```

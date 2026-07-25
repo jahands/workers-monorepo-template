@@ -96,7 +96,7 @@ Most packages reference scripts from [packages/tools/](mdc:packages/tools):
 ```json
 {
 	"scripts": {
-		"build:wrangler": "run-wrangler-build",
+		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"deploy": "run-wrangler-deploy",

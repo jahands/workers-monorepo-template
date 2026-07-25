@@ -11,7 +11,7 @@ This guide covers the common development workflows and commands for working with
 ## Prerequisites
 
 - Node.js v22 or later
-- pnpm v10 or later
+- pnpm v11 or later
 
 ## Getting Started
 

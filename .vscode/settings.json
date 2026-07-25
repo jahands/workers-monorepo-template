@@ -6,7 +6,7 @@
 		"*.jsx": "$(capture).js",
 		"*.tsx": "$(capture).ts",
 		"tsconfig.json": "tsconfig.*.json",
-		"package.json": ".*, *.config.ts, CLAUDE.md, AGENTS.md, bun.lock, docker-compose.yml, docker-compose.yaml, dagger.json, env.d.ts, postcss.config.ts, vitest.config.*.ts, Dockerfile, railway.json, vitest.config.*.ts, uuid-rocks.code-workspace, astro.config.ts, ndstories.code-workspace, wrangler.jsonc, workflows.code-workspace, astroblog.code-workspace, astro.config.mjs, drizzle.config.ts, Earthfile, workers.code-workspace, Justfile, CHANGELOG.md, vitest.config.ts, vitest.workspace.ts, postcss.config.mjs, vite.config.ts, worker-configuration.d.ts, README.md, package-lock.json, yarn.lock, postcss.config.js, remix.config.js, remix.env.d.ts, tailwind.config.js, tsconfig.json, server.ts, tailwind.config.ts, turbo.json, turbo.config.ts, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
+		"package.json": ".*, *.config.ts, CLAUDE.md, AGENTS.md, env.d.ts, vitest.config.*.ts, wrangler.jsonc, wrangler.config.ts, worker-configuration.d.ts, vitest.config.ts, vite.config.ts, tsconfig.json, turbo.json, turbo.config.ts, Justfile, CHANGELOG.md, README.md, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
 	},
 	"editor.detectIndentation": true,
 
@@ -32,31 +32,8 @@
 
 	"files.associations": {
 		"**/packages/tools/bin/*": "shellscript",
-		"**/*.css": "tailwindcss",
 		"turbo.json": "jsonc",
-		"**/packages/typescript-config/*.json": "jsonc",
-		"*.mdc": "markdown"
+		"**/packages/typescript-config/*.json": "jsonc"
 	},
-	"cSpell.words": [
-		"cftrace",
-		"cloudflareaccess",
-		"codemod",
-		"Hono",
-		"itty",
-		"jachands",
-		"luxon",
-		"miniflare",
-		"opentelemetry",
-		"otel",
-		"pnpx",
-		"runx",
-		"syncpack",
-		"typecheck",
-		"addrs",
-		"devlist",
-		"gitea",
-		"logtail",
-		"miniflare",
-		"tldraw"
-	]
+	"cSpell.words": ["codemod", "echoback", "Hono", "miniflare", "runx", "syncpack", "typecheck"]
 }

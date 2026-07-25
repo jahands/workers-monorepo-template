@@ -90,7 +90,7 @@ app.use('*', cors(), logger())
 	},
 	"vars": {
 		"ENVIRONMENT": "development", // overridden during deployment
-		"SENTRY_RELEASE": "unknown", // overridden during deployment
+		"RELEASE": "unknown", // overridden during deployment
 	},
 }
 ```
