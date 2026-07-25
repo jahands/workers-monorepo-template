@@ -2,8 +2,13 @@
 /** @type {import("syncpack").RcFile} */
 const config = {
 	indent: '\t',
-	lintFormatting: false, // handled by prettier
 	versionGroups: [
+		{
+			// url is not supported so we need to exclude it
+			// to allow using deps from pkg.pr.new
+			label: 'ignore url specifiers',
+			specifierTypes: ['url'],
+		},
 		{
 			label: 'local packages',
 			packages: ['**'],
