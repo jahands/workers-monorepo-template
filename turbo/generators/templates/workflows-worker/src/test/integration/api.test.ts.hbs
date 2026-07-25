@@ -1,0 +1,35 @@
+import { SELF } from 'cloudflare:test'
+import { expect, it } from 'vitest'
+
+it('creates a new {{ pascal workflowName }} instance', async () => {
+	const res = await SELF.fetch('https://example.com/workflows/{{ slug workflowName }}', {
+		method: 'POST',
+	})
+	expect(res.status).toBe(200)
+
+	const body = (await res.json()) as { instance_id: string; status: { status: string } }
+	expect(body.instance_id).toBeTypeOf('string')
+	expect(body.status.status).toBeTypeOf('string')
+})
+
+it('gets instance status from the admin API', async () => {
+	const createRes = await SELF.fetch('https://example.com/workflows/{{ slug workflowName }}', {
+		method: 'POST',
+	})
+	expect(createRes.status).toBe(200)
+	const { instance_id } = (await createRes.json()) as { instance_id: string }
+
+	const res = await SELF.fetch(
+		`https://example.com/workflows/{{ slug workflowName }}/instances/${instance_id}`
+	)
+	expect(res.status).toBe(200)
+
+	const body = (await res.json()) as { id: string; status: { status: string } }
+	expect(body.id).toBe(instance_id)
+	expect(body.status.status).toBeTypeOf('string')
+})
+
+it('rejects unknown workflow names', async () => {
+	const res = await SELF.fetch('https://example.com/workflows/does-not-exist/instances/some-id')
+	expect(res.status).toBe(400)
+})

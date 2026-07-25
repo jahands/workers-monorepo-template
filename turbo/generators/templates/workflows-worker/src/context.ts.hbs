@@ -1,0 +1,21 @@
+import type { HonoApp } from '@repo/hono-helpers'
+import type { SharedHonoEnv, SharedHonoVariables } from '@repo/hono-helpers/src/types'
+import type { {{ pascal workflowName }}Params } from './workflows/{{ slug workflowName }}/{{ slug workflowName }}'
+
+export type Env = SharedHonoEnv & {
+	// add additional Bindings here
+
+	// ============================= //
+	// ========= Workflows ========= //
+	// ============================= //
+
+	{{ pascal workflowName }}: Workflow<{{ pascal workflowName }}Params>
+}
+
+/** Variables can be extended */
+export type Variables = SharedHonoVariables
+
+export interface App extends HonoApp {
+	Bindings: Env
+	Variables: Variables
+}

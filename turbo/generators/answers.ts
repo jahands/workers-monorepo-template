@@ -18,6 +18,13 @@ export const NewWorkerAnswers = z.object({
 	turbo: Turbo,
 })
 
+export type NewWorkflowsAnswers = z.infer<typeof NewWorkflowsAnswers>
+export const NewWorkflowsAnswers = z.object({
+	name: z.string(),
+	workflowName: z.string(),
+	turbo: Turbo,
+})
+
 export type NewPackageAnswers = z.infer<typeof NewPackageAnswers>
 export const NewPackageAnswers = z.object({
 	name: z.string(),
@@ -26,4 +33,4 @@ export const NewPackageAnswers = z.object({
 })
 
 export type Answers = z.infer<typeof Answers>
-export const Answers = z.union([NewWorkerAnswers, NewPackageAnswers])
+export const Answers = z.union([NewWorkerAnswers, NewWorkflowsAnswers, NewPackageAnswers])

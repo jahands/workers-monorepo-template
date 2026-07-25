@@ -1,0 +1,64 @@
+import { sValidator } from '@hono/standard-validator'
+import { Hono } from 'hono'
+import { match } from 'ts-pattern'
+import { useWorkersLogger } from 'workers-tagged-logger'
+import * as z from 'zod'
+
+import { withNotFound, withOnError } from '@repo/hono-helpers'
+
+import type { App } from './context'
+
+const app = new Hono<App>()
+	.use(
+		'*',
+		// middleware
+		(c, next) =>
+			useWorkersLogger(c.env.NAME, {
+				environment: c.env.ENVIRONMENT,
+				release: c.env.SENTRY_RELEASE,
+			})(c, next)
+	)
+
+	.onError(withOnError())
+	.notFound(withNotFound())
+
+	// Admin API to get an instance from any Workflow in this Worker
+	.get(
+		'/workflows/:workflowName/instances/:id',
+		sValidator(
+			'param',
+			z.object({
+				workflowName: z.enum(['{{ slug workflowName }}']),
+				id: z.string(),
+			})
+		),
+		async (c) => {
+			const { id, workflowName } = c.req.valid('param')
+			const workflow = match(workflowName)
+				.with('{{ slug workflowName }}', () => c.env.{{ pascal workflowName }})
+				.exhaustive()
+
+			const instance = await workflow.get(id)
+			return c.json({
+				id: instance.id,
+				status: await instance.status(),
+			})
+		}
+	)
+
+	// Create a new instance of the {{ pascal workflowName }} Workflow
+	.post('/workflows/{{ slug workflowName }}', async (c) => {
+		const instance = await c.env.{{ pascal workflowName }}.create({
+			params: {
+				// add params here
+			},
+		})
+
+		return c.json({
+			instance_id: instance.id,
+			status: await instance.status(),
+		})
+	})
+
+export default app
+export { {{ pascal workflowName }} } from './workflows/{{ slug workflowName }}/{{ slug workflowName }}'

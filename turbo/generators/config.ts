@@ -1,4 +1,4 @@
-import { NewPackageAnswers, NewWorkerAnswers } from './answers'
+import { NewPackageAnswers, NewWorkerAnswers, NewWorkflowsAnswers } from './answers'
 import {
 	pascalText,
 	pascalTextPlural,
@@ -127,6 +127,48 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					base: 'templates/fetch-worker-minimal',
 					destination,
 					templateFiles: ['templates/fetch-worker-minimal/**/**.hbs'],
+					data: answers,
+				},
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{
+					type: 'wranglerConfigGenerate',
+					data: { ...answers, destination } satisfies WranglerConfigGenerateData,
+				},
+				{ type: 'fixAll' },
+				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+			]
+
+			return actions
+		},
+	})
+
+	plop.setGenerator('workflows-worker', {
+		description: 'Create a new Cloudflare Worker using Hono and Cloudflare Workflows',
+		prompts: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'name of worker',
+				validate: nameValidator,
+			},
+			{
+				type: 'input',
+				name: 'workflowName',
+				message: 'name of Workflow',
+				validate: nameValidator,
+			},
+		],
+		actions: (data: unknown) => {
+			const answers = NewWorkflowsAnswers.parse(data)
+			process.chdir(answers.turbo.paths.root)
+			const destination = `apps/${slugifyText(answers.name)}`
+
+			const actions: PlopTypes.Actions = [
+				{
+					type: 'addMany',
+					base: 'templates/workflows-worker',
+					destination,
+					templateFiles: ['templates/workflows-worker/**/**.hbs'],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
