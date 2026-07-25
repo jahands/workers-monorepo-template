@@ -1,78 +1,27 @@
-<cloudflare-workers-monorepo>
+# Workers Monorepo
 
-<title>Cloudflare Workers Monorepo Guidelines for AmpCode</title>
+- Use `bun turbo <command>` for validation.
+  - For individual packages, run the command within the package directory.
+  - For multiple packages, use `bun turbo -F <package name> -F <package name 2> <command>` and run from root (get the package name from package.json).
+  - For multiple checks, use a single command, not multiple: `bun turbo -F <package name> build check:types check:lint`
+  - `just lint` runs `check:lint` + `check:types` across the repo with grouped logs and `--continue` (agent-friendly).
+  - Common commands: `check` (run all checks), `check:types`, `check:lint`.
+  - For the full list of tasks, see turbo.config.ts (turbo.json is generated from it - run `just generate-turbo-config` after editing).
+  - NEVER run a dev server (e.g. `bun run dev`, `just dev`).
+- Do not worry about formatting while making edits. When you're done, run `just fix --format`.
+- Use `pnpm install` without any filters to install updated dependencies. NEVER use `--filter` with `pnpm install`.
+- ALWAYS use rg/fd tools via Bash tool (NEVER use glob/grep tools).
+- NEVER name variables `error` - either use `err` or `e`.
+- ALWAYS look for local patterns and follow them unless otherwise instructed - consistency is important for maintainability.
+- I often stage changes as you're working (and sometimes commit them).
+- Follow existing patterns for commit messages and PR titles.
+  - Every change that affects a workspace package MUST contain a changeset (using consistent pattern).
+- DO NOT create helper functions because you think "maybe it will be useful later". That is a bad reason to make something a helper.
 
-<commands>
-- `just install` - Install dependencies
-- `just dev` - Run development servers (uses `bun runx dev` - context-aware)
-- `just test` - Run tests with vitest (uses `bun vitest`)
-- `just build` - Build all workers (uses `bun turbo build`)
-- `just check` - Check code quality - deps, lint, types, format (uses `bun runx check`)
-- `just fix` - Fix code issues - deps, lint, format, workers-types (uses `bun runx fix`)
-- `just deploy` - Deploy all workers (uses `bun turbo deploy`)
-- `just preview` - Run Workers in preview mode
-- `just new-worker` (alias: `just gen`) - Create a new Cloudflare Worker
-- `just new-package` - Create a new shared package
-- `just update deps` (alias: `just up deps`) - Update dependencies across the monorepo
-- `just update pnpm` - Update pnpm version
-- `just update turbo` - Update turbo version
-- `just cs` - Create a changeset for versioning
-- `bun turbo -F worker-name dev` - Start specific worker
-- `bun turbo -F worker-name test` - Test specific worker
-- `bun turbo -F worker-name deploy` - Deploy specific worker
-- `bun vitest path/to/test.test.ts` - Run a single test file
-- `pnpm -F @repo/package-name add dependency` - Add dependency to specific package
-</commands>
+## Layout
 
-<architecture>
-- Cloudflare Workers monorepo using pnpm workspaces and Turborepo
-- `apps/` - Individual Cloudflare Worker applications
-- `packages/` - Shared libraries and configurations
-  - `@repo/oxlint-config` - Shared oxlint configuration
-  - `@repo/typescript-config` - Shared TypeScript configuration
-  - `@repo/hono-helpers` - Hono framework utilities
-  - `@repo/tools` - Development tools and scripts
-- Worker apps delegate scripts to `@repo/tools` for consistency
-- Hono web framework with helpers in `@repo/hono-helpers`
-- Vitest with `@cloudflare/vitest-pool-workers` for testing
-- Syncpack ensures dependency version consistency
-- Turborepo enables parallel task execution and caching
-- Workers configured via `wrangler.jsonc` with environment variables
-- Each worker has `context.ts` for typed environment bindings
-- Integration tests in `src/test/integration/`
-- Workers use `nodejs_compat` compatibility flag
-- GitHub Actions deploy automatically on merge to main
-- Changesets manage versions and changelogs
-</architecture>
-
-<code-style>
-- Use tabs for indentation, spaces for alignment
-- Type imports use `import type`
-- Workspace imports use `@repo/` prefix
-- Import order: Built-ins → Third-party → `@repo/` → Relative
-- Prefix unused variables with `_`
-- Prefer `const` over `let`
-- Use `array-simple` notation
-- Explicit function return types are optional
-</code-style>
-
-<critical-notes>
-- TypeScript configs MUST use fully qualified paths: `@repo/typescript-config/base.json` not `./base.json`
-- Do NOT add 'WebWorker' to TypeScript config - types are in worker-configuration.d.ts or @cloudflare/workers-types
-- For lint checking: First `cd` to the package directory, then run `bun turbo check:types check:lint`
-- Use `workspace:*` protocol for internal dependencies
-- Use `bun turbo -F` for build/test/deploy tasks
-- Use `pnpm -F` for dependency management (pnpm is still used for package management)
-- Commands delegate to `bun runx` which provides context-aware behavior
-- Test commands use `bun vitest` directly, not through turbo
-- NEVER create files unless absolutely necessary
-- ALWAYS prefer editing existing files over creating new ones
-- NEVER proactively create documentation files unless explicitly requested
-</critical-notes>
-
-<context-specific-rules>
-- When user asks to auto commit changes: Read @.cursor/rules/auto-commit.mdc
-- When working with Zod: Read @.cursor/rules/zod-v4.mdc
-</context-specific-rules>
-
-</cloudflare-workers-monorepo>
+- `apps/` - Cloudflare Workers. Each has `src/context.ts` for typed bindings and a `wrangler.config.ts` (`wrangler.jsonc` is generated from it by `@repo/wrangler-config` - never edit it by hand).
+- `packages/` - shared code: `@repo/hono-helpers`, `@repo/test-helpers`, `@repo/tools` (the `runx` CLI), `@repo/wrangler-config`, plus shared `oxlint`/`typescript`/dependency configs.
+- `turbo/generators/` - `just new-worker` (fetch, vite, minimal, workflows) and `just new-package` templates.
+- Internal deps use `workspace:*`. TypeScript configs extend fully qualified paths (`@repo/typescript-config/base.json`).
+- Tests use vitest with `@cloudflare/vitest-pool-workers`; run a single file with `bun vitest path/to/file.test.ts`.

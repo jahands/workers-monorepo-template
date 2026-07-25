@@ -9,7 +9,7 @@ Managing multiple related services (like Cloudflare Workers) in separate reposit
 - **Simplified dependency management** - `pnpm workspaces` allow you to manage dependencies across all your workers and shared packages from a single place. The tool `syncpack` (configured via `.syncpackrc.cjs`) help keep versions consistent.
 - **Code sharing and reuse** - Easily create and share common logic, types, and utilities between workers by placing them in the `packages/` directory. Changes to shared code are immediately available to all consumers.
 - **Atomic commits** - Changes affecting multiple workers or shared libraries can be committed together, making the history easier to understand and reducing the risk of inconsistencies.
-- **Consistent tooling** - Apply the same build, test, linting, and formatting configurations (e.g., via Turborepo in `turbo.json` and shared configs in `packages/`) across all projects, ensuring consistent tooling and code quality across Workers.
+- **Consistent tooling** - Apply the same build, test, linting, and formatting configurations (e.g., via Turborepo in `turbo.config.ts` and shared configs in `packages/`) across all projects, ensuring consistent tooling and code quality across Workers.
 - **Streamlined CI/CD** - A single pipeline (like the ones in `.github/workflows/`) can build, test, and deploy all Workers, simplifying the release process.
 - **Easier refactoring** - Refactoring code that spans multiple workers or shared packages is significantly easier within a single repository.
 
@@ -24,11 +24,11 @@ npm create workers-monorepo@latest
 ## Prerequisites
 
 - node.js v22 or later
-- pnpm v10 or later
-- bun 1.2 or later
-- rg (ripgrep) - optional, but recommended for shell formatting
+- pnpm v11 or later
+- bun 1.3 or later
+- rg (ripgrep) and fd - optional, but recommended
 - shfmt - optional, but recommended for shell formatting
-- mise - optional, but recommended for tool management
+- mise - optional, but recommended for tool management (see `.mise.toml`)
 
 ## Getting Started
 
@@ -73,7 +73,10 @@ This monorepo is organized as follows:
   - Each Workers application's package.json scripts point to scripts within `packages/tools/bin/`. This makes it easier to keep scripts consistent across Workers.
 - `turbo/` - Contains `turbo gen` templates
   - `fetch-worker`: A basic Cloudflare Worker template.
+  - `fetch-worker-minimal`: A Cloudflare Worker template without Hono or other extras.
   - `fetch-worker-vite`: A Cloudflare Worker template using Vite for bundling and development.
+  - `workflows-worker`: A Cloudflare Worker template using [Workflows](https://developers.cloudflare.com/workflows/).
+  - `package`: A shared package template (`just new-package`).
 - `Justfile` - Defines convenient aliases for common development tasks.
 - `pnpm-workspace.yaml` - Defines the pnpm workspace structure.
 - `turbo.config.ts` - Configures Turborepo build and task execution. `turbo.json` is generated from this file via [`turbo-config`](https://www.npmjs.com/package/turbo-config) (run `just generate-turbo-config` after editing).
@@ -92,6 +95,7 @@ Here are some key commands:
 - `just build` - Build all workers (runs `bun turbo build`).
 - `just test` - Run tests (runs `bun vitest`).
 - `just check` - Check code quality: deps, lint, types, format (runs `bun runx check`).
+- `just lint` - Check lint + types across the repo, continuing past failures.
 - `just fix` - Fix code issues: deps, lint, format, workers-types (runs `bun runx fix`).
 - `just preview` - Run Workers in preview mode.
 - `just deploy` - Deploy workers (runs `bun turbo deploy`).
