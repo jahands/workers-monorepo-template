@@ -25,8 +25,5 @@
 	"version_metadata": {
 		"binding": "CF_VERSION_METADATA"
 	},
-	"dependencies_instrumentation": {
-		"enabled": true
-	},
 	"upload_source_maps": true
 }

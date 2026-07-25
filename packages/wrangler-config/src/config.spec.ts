@@ -76,9 +76,6 @@ describe('defineConfig', () => {
 			  "compatibility_flags": [
 			    "nodejs_compat",
 			  ],
-			  "dependencies_instrumentation": {
-			    "enabled": true,
-			  },
 			  "main": "./src/index.ts",
 			  "name": "test-worker",
 			  "observability": {
@@ -179,7 +176,6 @@ describe('defineConfig', () => {
 			'tail_consumers',
 			'vars',
 			'version_metadata',
-			'dependencies_instrumentation',
 		])
 	})
 
