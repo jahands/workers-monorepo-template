@@ -8,6 +8,8 @@
 		"check:deps": "runx check --deps",
 		"check:format": "runx check --format",
 		"check:lint:all": "run-oxlint",
+		"check:turbo-config": "turbo-config check",
+		"postinstall": "turbo-config --skip-in-ci",
 		"test": "vitest",
 		"test:ci": "run-vitest-ci"
 	},
@@ -26,6 +28,7 @@
 		"prettier-plugin-toml": "2.0.6",
 		"syncpack": "15.1.2",
 		"turbo": "2.10.1",
+		"turbo-config": "0.4.1",
 		"typescript": "5.9.3",
 		"vitest": "4.1.5"
 	},

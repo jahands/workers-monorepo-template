@@ -76,7 +76,7 @@ This monorepo is organized as follows:
   - `fetch-worker-vite`: A Cloudflare Worker template using Vite for bundling and development.
 - `Justfile` - Defines convenient aliases for common development tasks.
 - `pnpm-workspace.yaml` - Defines the pnpm workspace structure.
-- `turbo.json` - Configures Turborepo build and task execution.
+- `turbo.config.ts` - Configures Turborepo build and task execution. `turbo.json` is generated from this file via [`turbo-config`](https://www.npmjs.com/package/turbo-config) (run `just generate-turbo-config` after editing).
 - `.syncpackrc.cjs` - Configures `syncpack` for managing and synchronizing dependency versions across packages in the monorepo.
   - The included configuration ensures that dependencies are all kept in sync and use a pinned version so that we can choose when to update dependencies.
 

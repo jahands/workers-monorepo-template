@@ -1,37 +1,34 @@
 {
-	"$schema": "https://turbo.build/schema.json",
+	"$schema": "https://v2-10-1.turborepo.dev/schema.json",
 	"globalDependencies": ["**/.dev.vars"],
 	"globalEnv": ["CI", "GITHUB_ACTIONS", "VITEST"],
 	"globalPassThroughEnv": ["WRANGLER_LOG", "FORCE_COLOR"],
 	"remoteCache": {
-		// Enable if using Turbo Remote Cache
 		"enabled": false,
 		"signature": true
 	},
-	"ui": "stream",
 	"tasks": {
 		"topo": {
 			"dependsOn": ["^topo"]
 		},
 		"build": {
 			"dependsOn": ["^build", "topo"],
-			"outputs": ["dist/**", ".wrangler/deploy/config.json"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+			"outputs": ["dist/**", ".wrangler/deploy/config.json"]
 		},
 		"dev": {
 			"cache": false,
 			"dependsOn": ["build", "topo"],
 			"interactive": true,
-			"persistent": true,
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+			"persistent": true
 		},
-		// preview is used in Vite applications
 		"preview": {
 			"cache": false,
 			"dependsOn": ["build", "topo"],
 			"interactive": true,
-			"persistent": true,
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+			"persistent": true
 		},
 		"deploy": {
 			"cache": false,
@@ -39,7 +36,6 @@
 			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
 			"outputLogs": "new-only"
 		},
-		// build:wrangler isn't used much, but can be useful for debugging
 		"build:wrangler": {
 			"dependsOn": ["build", "topo"],
 			"outputLogs": "new-only"
@@ -49,12 +45,7 @@
 			"outputLogs": "new-only"
 		},
 		"//#test:ci": {
-			"dependsOn": [
-				"build"
-				// Packages that need to be built before running tests can be added here.
-				// Example:
-				// "@repo/test-helpers#build"
-			],
+			"dependsOn": ["build", "@repo/workspace-dependencies#build"],
 			"outputLogs": "new-only"
 		},
 		"test:ci": {
@@ -63,6 +54,7 @@
 		},
 		"check:ci": {
 			"dependsOn": [
+				"//#check:turbo-config",
 				"//#check:format",
 				"//#check:deps",
 				"check:types",
@@ -72,6 +64,9 @@
 				"test:ci",
 				"topo"
 			],
+			"outputLogs": "new-only"
+		},
+		"//#check:turbo-config": {
 			"outputLogs": "new-only"
 		},
 		"//#check:deps": {
@@ -90,20 +85,28 @@
 			"outputLogs": "new-only"
 		},
 		"//#check:lint:all": {
+			"dependsOn": ["@repo/workspace-dependencies#build"],
 			"outputLogs": "new-only"
 		},
 		"//#check:format": {
 			"dependsOn": [],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/.prettier/.prettier-cache"]
 		},
 		"fix:workers-types": {
 			"dependsOn": ["topo"],
-			"outputs": ["worker-configuration.d.ts"],
-			"outputLogs": "new-only"
+			"outputLogs": "new-only",
+			"outputs": ["worker-configuration.d.ts"]
+		},
+		"fix:format": {
+			"dependsOn": ["topo"],
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/.prettier/.prettier-cache"]
 		},
 		"//#build": {
 			"dependsOn": ["^build"],
 			"outputLogs": "new-only"
 		}
-	}
+	},
+	"ui": "stream"
 }

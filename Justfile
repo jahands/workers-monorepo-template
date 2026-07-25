@@ -114,3 +114,8 @@ update *args:
 [positional-arguments]
 runx *args:
   bun runx "$@"
+
+# Generate turbo.json from turbo.config.ts
+[group('4. utility')]
+generate-turbo-config:
+  bun turbo-config generate
