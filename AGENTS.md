@@ -20,8 +20,8 @@
 
 ## Layout
 
-- `apps/` - Cloudflare Workers. Each has `src/context.ts` for typed bindings and a `wrangler.config.ts` (`wrangler.jsonc` is generated from it by `@repo/wrangler-config` - never edit it by hand).
-- `packages/` - shared code: `@repo/hono-helpers`, `@repo/test-helpers`, `@repo/tools` (the `runx` CLI), `@repo/wrangler-config`, plus shared `oxlint`/`typescript`/dependency configs.
+- `apps/` - Cloudflare Workers. Each has `src/context.ts` for typed bindings and a `wrangler.jsonc`.
+- `packages/` - shared code: `@repo/hono-helpers`, `@repo/test-helpers`, `@repo/tools` (the `runx` CLI), plus shared `oxlint`/`typescript`/dependency configs.
 - `turbo/generators/` - `just new-worker` (fetch, vite, minimal, workflows) and `just new-package` templates.
 - Internal deps use `workspace:*`. TypeScript configs extend fully qualified paths (`@repo/typescript-config/base.json`).
 - Tests use vitest with `@cloudflare/vitest-pool-workers`; run a single file with `bun vitest path/to/file.test.ts`.

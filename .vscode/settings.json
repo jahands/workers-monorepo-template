@@ -6,7 +6,7 @@
 		"*.jsx": "$(capture).js",
 		"*.tsx": "$(capture).ts",
 		"tsconfig.json": "tsconfig.*.json",
-		"package.json": ".*, *.config.ts, CLAUDE.md, AGENTS.md, env.d.ts, vitest.config.*.ts, wrangler.jsonc, wrangler.config.ts, worker-configuration.d.ts, vitest.config.ts, vite.config.ts, tsconfig.json, turbo.json, turbo.config.ts, Justfile, CHANGELOG.md, README.md, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
+		"package.json": ".*, *.config.ts, CLAUDE.md, AGENTS.md, env.d.ts, vitest.config.*.ts, wrangler.jsonc, worker-configuration.d.ts, vitest.config.ts, vite.config.ts, tsconfig.json, turbo.json, turbo.config.ts, Justfile, CHANGELOG.md, README.md, LICENSE, pnpm-lock.yaml, pnpm-workspace.yaml"
 	},
 	"editor.detectIndentation": true,
 

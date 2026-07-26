@@ -105,9 +105,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
-      '@repo/wrangler-config':
-        specifier: workspace:*
-        version: link:../../packages/wrangler-config
       '@types/node':
         specifier: 25.5.0
         version: 25.5.0
@@ -292,46 +289,6 @@ importers:
       vitest:
         specifier: 4.1.5
         version: 4.1.5(@types/node@25.5.0)(@vitest/ui@4.1.5)(msw@2.13.4(@types/node@25.5.0)(typescript@5.9.3))(vite@7.3.5(@types/node@25.5.0)(tsx@4.21.0)(yaml@2.8.3))
-
-  packages/wrangler-config:
-    dependencies:
-      jsonc-parser:
-        specifier: 3.3.1
-        version: 3.3.1
-    devDependencies:
-      '@commander-js/extra-typings':
-        specifier: 14.0.0
-        version: 14.0.0(commander@14.0.3)
-      '@jahands/cli-tools':
-        specifier: 0.11.4
-        version: 0.11.4(@commander-js/extra-typings@14.0.0(commander@14.0.3))(commander@14.0.3)(typescript@5.9.3)(zod@4.3.6)(zx@8.8.5)
-      '@repo/tools':
-        specifier: workspace:*
-        version: link:../tools
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      p-filter:
-        specifier: 4.1.0
-        version: 4.1.0
-      p-map:
-        specifier: 7.0.4
-        version: 7.0.4
-      vite:
-        specifier: 7.3.5
-        version: 7.3.5(@types/node@25.5.0)(tsx@4.21.0)(yaml@2.8.3)
-      vitest:
-        specifier: 4.1.5
-        version: 4.1.5(@types/node@25.5.0)(@vitest/ui@4.1.5)(msw@2.13.4(@types/node@25.5.0)(typescript@5.9.3))(vite@7.3.5(@types/node@25.5.0)(tsx@4.21.0)(yaml@2.8.3))
-      wrangler:
-        specifier: 4.111.0
-        version: 4.111.0
-      zod:
-        specifier: 4.3.6
-        version: 4.3.6
-      zx:
-        specifier: 8.8.5
-        version: 8.8.5
 
   turbo/generators:
     dependencies:
@@ -2126,9 +2083,6 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  jsonc-parser@3.3.1:
-    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
-
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
 
@@ -2233,10 +2187,6 @@ packages:
   p-filter@2.1.0:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
     engines: {node: '>=8'}
-
-  p-filter@4.1.0:
-    resolution: {integrity: sha512-37/tPdZ3oJwHaS3gNJdenCDB3Tz26i9sjhnguBtvN0vYlRIiDNnvTWkuh+0hETV9rLPdJ3rlL3yVOYPIAnM8rw==}
-    engines: {node: '>=18'}
 
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -4274,8 +4224,6 @@ snapshots:
 
   json5@2.2.3: {}
 
-  jsonc-parser@3.3.1: {}
-
   jsonfile@4.0.0:
     optionalDependencies:
       graceful-fs: 4.2.11
@@ -4409,10 +4357,6 @@ snapshots:
   p-filter@2.1.0:
     dependencies:
       p-map: 2.1.0
-
-  p-filter@4.1.0:
-    dependencies:
-      p-map: 7.0.4
 
   p-limit@2.3.0:
     dependencies:

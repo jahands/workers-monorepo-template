@@ -38,15 +38,8 @@ export default defineConfig(async () => {
 				dependsOn: ['^topo'],
 			},
 			build: {
-				dependsOn: ['^build', 'build:wrangler-config', 'topo'],
+				dependsOn: ['^build', 'topo'],
 				outputs: ['dist/**', '.wrangler/deploy/config.json'],
-				outputLogs: 'new-only',
-			},
-			// generates wrangler.jsonc from wrangler.config.ts (and
-			// checks that it's up to date when running in CI)
-			'build:wrangler-config': {
-				dependsOn: ['topo'],
-				outputs: ['wrangler.jsonc'],
 				outputLogs: 'new-only',
 			},
 			dev: {
