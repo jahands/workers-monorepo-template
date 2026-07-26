@@ -1,5 +1,6 @@
 import { exports } from 'cloudflare:workers'
 import { describe, expect, it, test } from 'vitest'
+import * as z from 'zod'
 
 import { http, HttpResponse, useHttpMock } from '@repo/test-helpers/test'
 
@@ -142,7 +143,7 @@ it('mocks outbound requests with @repo/test-helpers', async () => {
 
 	const res = await fetch('https://example.com/api/id')
 	expect(res.status).toBe(200)
-	const { id } = (await res.json()) as { id: string }
+	const { id } = z.object({ id: z.string() }).parse(await res.json())
 	// custom matcher registered in src/test/setup.ts
 	expect(id).toBeUUID()
 })
