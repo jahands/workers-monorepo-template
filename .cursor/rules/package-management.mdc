@@ -99,8 +99,8 @@ Most packages reference scripts from [packages/tools/](mdc:packages/tools):
 		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
-		"deploy": "run-wrangler-deploy",
-		"dev": "run-wrangler-dev",
+		"deploy": "runx deploy wrangler",
+		"dev": "runx dev wrangler",
 		"fix:workers-types": "run-wrangler-types",
 		"test": "run-vitest"
 	}
