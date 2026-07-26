@@ -5,14 +5,14 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build": "run-vite-build",
+		"build": "vite build",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"check:workers-types": "run-wrangler-types --check",
 		"deploy": "runx deploy wrangler",
-		"dev": "run-vite-dev",
+		"dev": "vite dev",
 		"fix:workers-types": "run-wrangler-types",
-		"preview": "run-vite-preview",
+		"preview": "vite preview",
 		"test": "run-vitest"
 	},
 	"dependencies": {

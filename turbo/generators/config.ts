@@ -48,7 +48,11 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/fetch-worker',
 					destination,
-					templateFiles: ['templates/fetch-worker/**/**.hbs'],
+					// dotfiles must be listed explicitly - '**.hbs' doesn't match them
+					templateFiles: [
+						'templates/fetch-worker/**/**.hbs',
+						'templates/fetch-worker/.dev.vars.example.hbs',
+					],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
@@ -80,7 +84,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/fetch-worker-vite',
 					destination,
-					templateFiles: ['templates/fetch-worker-vite/**/**.hbs'],
+					templateFiles: [
+						'templates/fetch-worker-vite/**/**.hbs',
+						'templates/fetch-worker-vite/.dev.vars.example.hbs',
+					],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
@@ -112,7 +119,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/fetch-worker-minimal',
 					destination,
-					templateFiles: ['templates/fetch-worker-minimal/**/**.hbs'],
+					templateFiles: [
+						'templates/fetch-worker-minimal/**/**.hbs',
+						'templates/fetch-worker-minimal/.dev.vars.example.hbs',
+					],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
@@ -150,7 +160,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/workflows-worker',
 					destination,
-					templateFiles: ['templates/workflows-worker/**/**.hbs'],
+					templateFiles: [
+						'templates/workflows-worker/**/**.hbs',
+						'templates/workflows-worker/.dev.vars.example.hbs',
+					],
 					data: answers,
 				},
 				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },

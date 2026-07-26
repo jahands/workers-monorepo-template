@@ -11,7 +11,7 @@
 		"check:turbo-config": "turbo-config check",
 		"postinstall": "turbo-config --skip-in-ci",
 		"test": "vitest",
-		"test:ci": "run-vitest-ci"
+		"test:ci": "vitest run --silent --testTimeout=15000"
 	},
 	"devDependencies": {
 		"@babel/plugin-transform-explicit-resource-management": "7.28.6",
