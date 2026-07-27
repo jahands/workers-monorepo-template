@@ -6,6 +6,7 @@ import { catchProcessError } from '@jahands/cli-tools/proc'
 import { buildCmd } from '../cmd/build.cmd'
 import { checkCmd } from '../cmd/check.cmd'
 import { ciCmd } from '../cmd/ci.cmd'
+import { deployCmd } from '../cmd/deploy.cmd'
 import { devCmd } from '../cmd/dev.cmd'
 import { fixCmd } from '../cmd/fix.cmd'
 import { shfmtCmd } from '../cmd/shfmt.cmd'
@@ -22,6 +23,7 @@ program
 	.addCommand(buildCmd)
 	.addCommand(checkCmd)
 	.addCommand(devCmd)
+	.addCommand(deployCmd)
 	.addCommand(ciCmd)
 	.addCommand(updateCmd)
 	.addCommand(shfmtCmd)

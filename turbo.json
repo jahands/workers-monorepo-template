@@ -1,0 +1,112 @@
+{
+	"$schema": "https://v2-10-1.turborepo.dev/schema.json",
+	"globalDependencies": ["**/.dev.vars"],
+	"globalEnv": ["CI", "GITHUB_ACTIONS", "VITEST"],
+	"globalPassThroughEnv": ["WRANGLER_LOG", "FORCE_COLOR"],
+	"remoteCache": {
+		"enabled": false,
+		"signature": true
+	},
+	"tasks": {
+		"topo": {
+			"dependsOn": ["^topo"]
+		},
+		"build": {
+			"dependsOn": ["^build", "topo"],
+			"outputLogs": "new-only",
+			"outputs": ["dist/**", ".wrangler/deploy/config.json"]
+		},
+		"dev": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"interactive": true,
+			"outputLogs": "new-only",
+			"persistent": true
+		},
+		"preview": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"interactive": true,
+			"outputLogs": "new-only",
+			"persistent": true
+		},
+		"deploy": {
+			"cache": false,
+			"dependsOn": ["build", "topo"],
+			"env": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"],
+			"outputLogs": "new-only"
+		},
+		"build:wrangler": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check": {
+			"dependsOn": ["check:types", "check:workers-types", "check:lint", "topo"],
+			"outputLogs": "new-only"
+		},
+		"//#test:ci": {
+			"dependsOn": ["build", "@repo/workspace-dependencies#build"],
+			"outputLogs": "new-only"
+		},
+		"test:ci": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check:ci": {
+			"dependsOn": [
+				"//#check:turbo-config",
+				"//#check:format",
+				"//#check:deps",
+				"check:types",
+				"check:workers-types",
+				"//#check:lint:all",
+				"//#test:ci",
+				"test:ci",
+				"topo"
+			],
+			"outputLogs": "new-only"
+		},
+		"//#check:turbo-config": {
+			"outputLogs": "new-only"
+		},
+		"//#check:deps": {
+			"outputLogs": "new-only"
+		},
+		"check:types": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check:lint": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"check:workers-types": {
+			"dependsOn": ["build", "topo"],
+			"outputLogs": "new-only"
+		},
+		"//#check:lint:all": {
+			"dependsOn": ["@repo/workspace-dependencies#build"],
+			"outputLogs": "new-only"
+		},
+		"//#check:format": {
+			"dependsOn": [],
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/.prettier/.prettier-cache"]
+		},
+		"fix:workers-types": {
+			"dependsOn": ["topo"],
+			"outputLogs": "new-only",
+			"outputs": ["worker-configuration.d.ts"]
+		},
+		"fix:format": {
+			"dependsOn": ["topo"],
+			"outputLogs": "new-only",
+			"outputs": ["node_modules/.cache/.prettier/.prettier-cache"]
+		},
+		"//#build": {
+			"dependsOn": ["^build"],
+			"outputLogs": "new-only"
+		}
+	},
+	"ui": "stream"
+}

@@ -1,0 +1,44 @@
+import { SELF } from 'cloudflare:test'
+import { expect, it } from 'vitest'
+import * as z from 'zod'
+
+const CreateInstanceResponse = z.object({
+	instance_id: z.string(),
+	status: z.object({ status: z.string() }),
+})
+
+const InstanceStatusResponse = z.object({
+	id: z.string(),
+	status: z.object({ status: z.string() }),
+})
+
+it('creates a new {{ pascal workflowName }} instance', async () => {
+	const res = await SELF.fetch('https://example.com/workflows/{{ slug workflowName }}', {
+		method: 'POST',
+	})
+	expect(res.status).toBe(200)
+
+	const body = CreateInstanceResponse.parse(await res.json())
+	expect(body.instance_id).not.toBe('')
+})
+
+it('gets instance status from the admin API', async () => {
+	const createRes = await SELF.fetch('https://example.com/workflows/{{ slug workflowName }}', {
+		method: 'POST',
+	})
+	expect(createRes.status).toBe(200)
+	const { instance_id } = CreateInstanceResponse.parse(await createRes.json())
+
+	const res = await SELF.fetch(
+		`https://example.com/workflows/{{ slug workflowName }}/instances/${instance_id}`
+	)
+	expect(res.status).toBe(200)
+
+	const body = InstanceStatusResponse.parse(await res.json())
+	expect(body.id).toBe(instance_id)
+})
+
+it('rejects unknown workflow names', async () => {
+	const res = await SELF.fetch('https://example.com/workflows/does-not-exist/instances/some-id')
+	expect(res.status).toBe(400)
+})

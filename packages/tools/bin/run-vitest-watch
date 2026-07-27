@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+# Watch mode for run-vitest (requires watchexec: https://github.com/watchexec/watchexec)
+exec watchexec -re ts -- run-vitest "$@"

@@ -6,6 +6,12 @@ args=(
 	.
 )
 
+# Set FIX_OXLINT to auto-fix issues (useful for tooling
+# that can't easily pass --fix)
+if [[ -n "${FIX_OXLINT:-}" ]]; then
+	args+=("--fix")
+fi
+
 if [[ -n "${CI:-}" ]]; then
 	args+=("--max-warnings=0")
 else

@@ -1,8 +1,0 @@
-#!/bin/sh
-set -eu
-
-NAME=$(jq -r '.name' package.json)
-
-exec wrangler dev \
-	--var NAME:"$NAME" \
-	"$@"

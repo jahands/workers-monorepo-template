@@ -5,26 +5,27 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build:wrangler": "run-wrangler-build",
+		"build:wrangler": "runx build wrangler",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"check:workers-types": "run-wrangler-types --check",
-		"deploy": "run-wrangler-deploy",
-		"dev": "run-wrangler-dev",
+		"deploy": "runx deploy wrangler",
+		"dev": "runx dev wrangler",
 		"fix:workers-types": "run-wrangler-types",
 		"test": "run-vitest"
 	},
 	"dependencies": {
 		"@repo/hono-helpers": "workspace:*",
-		"hono": "4.7.8",
-		"workers-tagged-logger": "0.10.0"
+		"hono": "4.12.9",
+		"workers-tagged-logger": "1.0.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.8.24",
+		"@cloudflare/vitest-pool-workers": "0.16.18",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"@types/node": "22.15.3",
-		"vitest": "3.1.2",
-		"wrangler": "4.14.1"
+		"@types/node": "25.5.0",
+		"vite": "7.3.5",
+		"vitest": "4.1.5",
+		"wrangler": "4.111.0"
 	}
 }

@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-
-exec vitest run --silent --testTimeout=15000

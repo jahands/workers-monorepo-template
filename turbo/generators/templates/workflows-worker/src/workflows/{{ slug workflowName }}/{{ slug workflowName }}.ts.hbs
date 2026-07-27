@@ -1,0 +1,42 @@
+import { WorkflowEntrypoint } from 'cloudflare:workers'
+import { withLogTags } from 'workers-tagged-logger'
+import * as z from 'zod'
+
+import { logger } from '@repo/hono-helpers'
+
+import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
+import type { Env } from '../../context'
+
+export type {{ pascal workflowName }}Params = z.infer<typeof {{ pascal workflowName }}Params>
+export const {{ pascal workflowName }}Params = z.object({})
+
+export class {{ pascal workflowName }} extends WorkflowEntrypoint<Env, {{ pascal workflowName }}Params> {
+	override async run(
+		event: WorkflowEvent<{{ pascal workflowName }}Params>,
+		step: WorkflowStep
+	): Promise<void> {
+		await withLogTags(
+			{
+				source: this.env.NAME,
+				tags: { workflow: '{{ pascal workflowName }}', instanceId: event.instanceId },
+			},
+			async () => {
+				const params = {{ pascal workflowName }}Params.parse(event.payload)
+				await handle{{ pascal workflowName }}(step, params)
+			}
+		)
+	}
+}
+
+async function handle{{ pascal workflowName }}(
+	step: WorkflowStep,
+	params: {{ pascal workflowName }}Params
+): Promise<void> {
+	logger.info(`params: ${JSON.stringify(params)}`)
+
+	const greeting = await step.do('generate a greeting', async () => {
+		return 'hello, world!'
+	})
+
+	logger.info(`greeting: ${greeting}`)
+}

@@ -17,6 +17,9 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+        with:
+          # bun 1.3.14 segfaults on linux x64
+          bun-version: 1.3.12
       - uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,6 +50,9 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+        with:
+          # bun 1.3.14 segfaults on linux x64
+          bun-version: 1.3.12
       - uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4

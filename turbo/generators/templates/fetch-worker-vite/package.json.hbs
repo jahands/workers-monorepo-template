@@ -5,29 +5,29 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"build": "run-vite-build",
+		"build": "vite build",
 		"check:lint": "run-oxlint",
 		"check:types": "run-tsc",
 		"check:workers-types": "run-wrangler-types --check",
-		"deploy": "run-wrangler-deploy",
-		"dev": "run-vite-dev",
+		"deploy": "runx deploy wrangler",
+		"dev": "vite dev",
 		"fix:workers-types": "run-wrangler-types",
-		"preview": "run-vite-preview",
+		"preview": "vite preview",
 		"test": "run-vitest"
 	},
 	"dependencies": {
 		"@repo/hono-helpers": "workspace:*",
-		"hono": "4.7.8",
-		"workers-tagged-logger": "0.10.0"
+		"hono": "4.12.9",
+		"workers-tagged-logger": "1.0.0"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.1.0",
-		"@cloudflare/vitest-pool-workers": "0.8.24",
+		"@cloudflare/vite-plugin": "1.41.0",
+		"@cloudflare/vitest-pool-workers": "0.16.18",
 		"@repo/tools": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
-		"@types/node": "22.15.3",
-		"vite": "^6.3.4",
-		"vitest": "3.1.2",
-		"wrangler": "4.14.1"
+		"@types/node": "25.5.0",
+		"vite": "7.3.5",
+		"vitest": "4.1.5",
+		"wrangler": "4.111.0"
 	}
 }

@@ -19,7 +19,7 @@ export type SharedHonoEnv = {
 	 * Release version of the Worker (based on the current git commit).
 	 * Useful for logs, Sentry, etc.
 	 */
-	SENTRY_RELEASE: string
+	RELEASE: string
 }
 /** Global Hono variables */
 export type SharedHonoVariables = {

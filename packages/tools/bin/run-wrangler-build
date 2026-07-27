@@ -1,8 +1,0 @@
-#!/bin/sh
-set -eu
-
-# Extract name and version from package.json using jq
-NAME=$(jq -r '.name' package.json)
-
-echo "Building worker $NAME"
-exec wrangler build "$@"

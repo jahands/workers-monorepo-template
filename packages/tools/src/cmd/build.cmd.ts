@@ -5,6 +5,8 @@ import pMap from 'p-map'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
+import { isCI } from '../environment'
+import { timeFn } from '../time'
 import { TSHelpers } from '../tsconfig'
 
 import type { CompilerOptions as TSCompilerOptions } from 'typescript'
@@ -13,6 +15,49 @@ export const buildCmd = new Command('build').description('Scripts to build thing
 
 type Format = z.infer<typeof Format>
 const Format = z.enum(['esm', 'cjs'])
+
+buildCmd
+	.command('wrangler')
+	.description('Build a Workers project with Wrangler')
+	.option(
+		'--no-output',
+		`Don't output to ./dist directory (useful for frameworks with their own build.) `
+	)
+	.option(
+		'--no-minify',
+		`Don't use --minify flag (useful for frameworks that already minify the output))`
+	)
+	.option('-c, --config <path>', 'Use specified wrangler config')
+	.action(async ({ output, minify, config: wranglerConfigPath }) => {
+		const cmd: string[] = ['wrangler', 'deploy', '--dry-run']
+
+		if (wranglerConfigPath) {
+			cmd.push('--config', wranglerConfigPath)
+		}
+
+		if (minify) {
+			cmd.push('--minify')
+		}
+		if (output) {
+			cmd.push('--outdir', './dist')
+		}
+
+		const env: Record<string, string | undefined> = { ...process.env }
+		// always force color outside CI (although CI
+		// technically forces color anyway)
+		if (!isCI()) {
+			env.FORCE_COLOR = '1'
+		}
+
+		await timeFn(
+			'wrangler build',
+			() =>
+				$({
+					verbose: true,
+					env,
+				})`${cmd}`
+		)()
+	})
 
 buildCmd
 	.command('tsc')

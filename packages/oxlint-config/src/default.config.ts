@@ -59,12 +59,6 @@ export function getConfig() {
 		},
 		overrides: [
 			{
-				files: ['**/dagger/*.ts', '**/dagger/**/*.ts'],
-				rules: {
-					'no-unused-vars': 'off',
-				},
-			},
-			{
 				files: ['tailwind.config.ts', 'postcss.config.mjs'],
 				rules: {
 					'@typescript-eslint/no-require-imports': 'off',

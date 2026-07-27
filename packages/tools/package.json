@@ -5,8 +5,10 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		".": "./src/lib/index.ts",
-		"./zx": "./src/lib/zx.ts"
+		"./path": "./src/path.ts",
+		"./environment": "./src/environment.ts",
+		"./workspace": "./src/workspace/workspace.ts",
+		"./package": "./src/workspace/package-json.ts"
 	},
 	"directories": {
 		"bin": "bin"
@@ -31,11 +33,12 @@
 		"smol-toml": "1.6.0",
 		"ts-pattern": "5.9.0",
 		"tsx": "4.21.0",
+		"yaml": "2.8.3",
 		"zod": "4.3.6",
 		"zx": "8.8.5"
 	},
 	"devDependencies": {
 		"@types/bun": "1.3.11",
-		"vitest": "4.1.0"
+		"vitest": "4.1.5"
 	}
 }

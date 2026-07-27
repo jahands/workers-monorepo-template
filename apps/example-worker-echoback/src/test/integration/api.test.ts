@@ -1,5 +1,8 @@
 import { exports } from 'cloudflare:workers'
 import { describe, expect, it, test } from 'vitest'
+import * as z from 'zod'
+
+import { http, HttpResponse, useHttpMock } from '@repo/test-helpers/test'
 
 import '../../example-worker-echoback.app'
 
@@ -129,6 +132,20 @@ describe('echoback returns data about the request', () => {
 			}
 		`)
 	})
+})
+
+it('mocks outbound requests with @repo/test-helpers', async () => {
+	useHttpMock(
+		http.get('https://example.com/api/id', () =>
+			HttpResponse.json({ id: '3f7d0c1e-6a53-4b8f-9d2a-1c5e8b4a9f60' })
+		)
+	)
+
+	const res = await fetch('https://example.com/api/id')
+	expect(res.status).toBe(200)
+	const { id } = z.object({ id: z.string() }).parse(await res.json())
+	// custom matcher registered in src/test/setup.ts
+	expect(id).toBeUUID()
 })
 
 it(`Doesn't return body for HEAD`, async () => {

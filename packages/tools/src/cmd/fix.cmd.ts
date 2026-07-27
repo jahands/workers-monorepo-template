@@ -2,7 +2,7 @@ import { Command } from '@commander-js/extra-typings'
 import Table from 'cli-table3'
 
 import { getRepoRoot } from '../path'
-import { getOutcome, SHFMT_SKIPPED_EXIT_CODE } from '../proc'
+import { getOutcome, PRETTIER_CACHE_LOCATION, SHFMT_SKIPPED_EXIT_CODE } from '../proc'
 
 export const fixCmd = new Command('fix')
 	.description('Fix deps/lint/format issues. If no options are provided, all fixes are run.')
@@ -38,7 +38,15 @@ export const fixCmd = new Command('fix')
 			deps: ['run-fix-deps'],
 			lint: ['run-oxlint', '--fix'],
 			workersTypes: ['turbo', 'fix:workers-types'],
-			format: ['prettier', '.', '--cache', '--write', '--log-level=warn'],
+			format: [
+				'prettier',
+				'.',
+				'--cache',
+				'--cache-location',
+				PRETTIER_CACHE_LOCATION,
+				'--write',
+				'--log-level=warn',
+			],
 			formatShell: ['runx', 'shfmt', 'fix', '--skip-if-unavailable'],
 		} as const satisfies { [key: string]: string[] }
 
