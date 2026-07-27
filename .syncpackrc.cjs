@@ -24,7 +24,10 @@ const config = {
 			dependencies: ['**'],
 			packages: ['**'],
 			// url is not supported so we need to exclude it
-			// to allow using deps from pkg.pr.new
+			// to allow using deps from pkg.pr.new (though this is
+			// not recommended because pnpm will error when a package
+			// at the same URL changes without a version bump, which
+			// is common for pkg.pr.new - use with caution).
 			specifierTypes: ['!url'],
 		},
 	],
