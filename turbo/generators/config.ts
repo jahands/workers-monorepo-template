@@ -48,9 +48,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					type: 'addMany',
 					base: 'templates/fetch-worker',
 					destination,
-					// dotfiles must be listed explicitly - '**.hbs' doesn't match them
 					templateFiles: [
 						'templates/fetch-worker/**/**.hbs',
+						// dotfiles must be listed explicitly - '**.hbs' doesn't match them
 						'templates/fetch-worker/.dev.vars.example.hbs',
 					],
 					data: answers,
@@ -86,6 +86,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					destination,
 					templateFiles: [
 						'templates/fetch-worker-vite/**/**.hbs',
+						// dotfiles must be listed explicitly - '**.hbs' doesn't match them
 						'templates/fetch-worker-vite/.dev.vars.example.hbs',
 					],
 					data: answers,
@@ -121,6 +122,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					destination,
 					templateFiles: [
 						'templates/fetch-worker-minimal/**/**.hbs',
+						// dotfiles must be listed explicitly - '**.hbs' doesn't match them
 						'templates/fetch-worker-minimal/.dev.vars.example.hbs',
 					],
 					data: answers,
@@ -162,6 +164,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					destination,
 					templateFiles: [
 						'templates/workflows-worker/**/**.hbs',
+						// dotfiles must be listed explicitly - '**.hbs' doesn't match them
 						'templates/workflows-worker/.dev.vars.example.hbs',
 					],
 					data: answers,
