@@ -91,11 +91,13 @@ cs:
 
 [group('3. generator')]
 [positional-arguments]
+[no-cd]
 gen *args:
   bun turbo gen "$@"
 
 [group('3. generator')]
 [positional-arguments]
+[no-cd]
 new-package *args:
   bun turbo gen new-package "$@"
 

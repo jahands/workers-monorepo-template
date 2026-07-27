@@ -1,4 +1,5 @@
 import { NewPackageAnswers, NewWorkerAnswers, NewWorkflowsAnswers } from './answers'
+import { packageDestination } from './helpers/package-destination'
 import {
 	pascalText,
 	pascalTextPlural,
@@ -13,7 +14,6 @@ import { fixDepsAndFormat } from './plugins/fix-deps-and-format'
 import { pnpmInstall } from './plugins/pnpm-install'
 
 import type { PlopTypes } from '@turbo/gen'
-import type { PnpmInstallData } from './plugins/pnpm-install'
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
 	plop.setActionType('pnpmInstall', pnpmInstall as PlopTypes.CustomActionFunction)
@@ -41,7 +41,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `apps/${slugifyText(answers.name)}`
+			const destination = packageDestination(answers.turbo.paths, slugifyText(answers.name), 'apps')
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -55,9 +55,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					],
 					data: answers,
 				},
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 			]
 
 			return actions
@@ -77,7 +77,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `apps/${slugifyText(answers.name)}`
+			const destination = packageDestination(answers.turbo.paths, slugifyText(answers.name), 'apps')
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -91,9 +91,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					],
 					data: answers,
 				},
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 			]
 
 			return actions
@@ -113,7 +113,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkerAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `apps/${slugifyText(answers.name)}`
+			const destination = packageDestination(answers.turbo.paths, slugifyText(answers.name), 'apps')
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -127,9 +127,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					],
 					data: answers,
 				},
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 			]
 
 			return actions
@@ -155,7 +155,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewWorkflowsAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `apps/${slugifyText(answers.name)}`
+			const destination = packageDestination(answers.turbo.paths, slugifyText(answers.name), 'apps')
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -169,9 +169,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					],
 					data: answers,
 				},
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 				{ type: 'fixAll' },
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 			]
 
 			return actions
@@ -197,7 +197,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 		actions: (data: unknown) => {
 			const answers = NewPackageAnswers.parse(data)
 			process.chdir(answers.turbo.paths.root)
-			const destination = `packages/${slugifyText(answers.name)}`
+			const destination = packageDestination(answers.turbo.paths, slugifyText(answers.name))
 
 			const actions: PlopTypes.Actions = [
 				{
@@ -211,7 +211,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
 					},
 				},
 				{ type: 'fixDepsAndFormat' },
-				{ type: 'pnpmInstall', data: { ...answers, destination } satisfies PnpmInstallData },
+				{ type: 'pnpmInstall' },
 			]
 
 			return actions
